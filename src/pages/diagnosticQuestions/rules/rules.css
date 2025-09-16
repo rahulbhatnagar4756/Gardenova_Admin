@@ -1,0 +1,166 @@
+/* ===============================
+   Rules Management Styles
+================================= */
+
+.rules-page {
+  padding: 1.5rem;
+  background: #f9fafb;
+  font-family: "Inter", sans-serif;
+  color: #111827;
+}
+
+.rules-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.rules-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.rules-header .btn {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-primary {
+  background-color: #2563eb;
+  color: #ffffff;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #1d4ed8;
+}
+
+/* Table column styles */
+.rule-number-column {
+  width: 50px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.rule-name-column {
+  min-width: 180px;
+  font-weight: 500;
+  color: #111827;
+}
+
+.conditions-column {
+  min-width: 250px;
+}
+
+.action-column {
+  min-width: 220px;
+}
+
+/* Conditions container */
+.conditions-list {
+  display: flex;
+  flex-direction: column; /* stack vertically */
+  gap: 8px;
+}
+
+/* Each condition as a row */
+.condition-item {
+  display: flex;
+  justify-content: flex-start; /* align items horizontally */
+  gap: 12px; /* space between question, operator, values */
+  padding: 6px 10px;
+  border-radius: 8px;
+  background-color: #f9fafb;
+  font-size: 0.9rem;
+  color: #374151;
+  align-items: center;
+}
+
+/* Style each part */
+.condition-question {
+  font-weight: 600;
+  color: #111827;
+  min-width: 120px; /* optional: make columns aligned */
+}
+
+.condition-operator {
+  font-weight: 500;
+  color: #4b5563;
+  min-width: 60px;
+}
+
+.condition-values {
+  font-style: italic;
+  color: #6b7280;
+}
+
+/* No conditions placeholder */
+.no-conditions {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  font-style: italic;
+}
+
+/* Table row actions */
+.btn-secondary,
+.btn-danger {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  border: none;
+}
+
+.btn-secondary {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+.btn-secondary:hover {
+  background-color: #d1d5db;
+}
+
+.btn-danger {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.btn-danger:hover {
+  background-color: #fecaca;
+}
+
+/* Empty, Loading, Error states */
+.loading,
+.error,
+.empty-message {
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.95rem;
+  border-radius: 8px;
+}
+
+.loading {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
+
+.error {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.empty-message {
+  background-color: #f3f4f6;
+  color: #6b7280;
+}

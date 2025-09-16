@@ -1,0 +1,198 @@
+/* === Plant Theme Login Styles === */
+
+/* Background with soft green gradient */
+.plant-theme {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #e8f5e9 0%, #d0f0c0 100%);
+  font-family: "Inter", sans-serif;
+  padding: 2rem;
+}
+
+/* Card */
+.login-card {
+  background: #ffffff;
+  border-radius: 1rem;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 28rem;
+  box-shadow: 0 10px 30px rgba(34, 197, 94, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Illustration */
+.login-illustration {
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  opacity: 0.2;
+}
+
+.login-illustration img {
+  width: 150px;
+  height: auto;
+}
+
+/* Title and Subtitle */
+.login-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #14532d; /* Deep green */
+  text-align: center;
+}
+
+.login-subtitle {
+  font-size: 1rem;
+  text-align: center;
+  color: #4d7c57; /* Muted green */
+  margin-bottom: 1.5rem;
+}
+
+/* Error */
+.login-error {
+  background-color: #fef2f2;
+  border: 1px solid #fca5a5;
+  color: #b91c1c;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  text-align: center;
+}
+
+/* Inputs */
+.login-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.login-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  color: #14532d;
+  transition: all 0.2s ease;
+  background: #f9fafb;
+}
+
+.login-input::placeholder {
+  color: #94a3b8;
+}
+
+.login-input:focus {
+  border-color: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.3);
+  background: #ffffff;
+  outline: none;
+}
+
+/* Password Input Container */
+.password-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input {
+  padding-right: 3rem !important; /* Make room for the toggle button */
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  border-radius: 0.25rem;
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.password-toggle-btn:hover {
+  color: #22c55e;
+  background-color: rgba(34, 197, 94, 0.1);
+}
+
+.password-toggle-btn:focus {
+  outline: none;
+  color: #22c55e;
+  background-color: rgba(34, 197, 94, 0.1);
+}
+
+.password-toggle-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Links */
+.login-options,
+.login-footer {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.login-link {
+  color: #15803d;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.login-link:hover {
+  color: #166534;
+}
+
+/* Button */
+.login-button {
+  width: 100%;
+  background-color: #22c55e; /* Green button */
+  color: #ffffff;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.login-button:hover:not(:disabled) {
+  background-color: #16a34a;
+  transform: translateY(-1px);
+}
+
+.login-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Footer text */
+.login-footer span {
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .plant-theme {
+    padding: 1rem;
+  }
+
+  .login-card {
+    padding: 2rem;
+  }
+
+  .login-title {
+    font-size: 1.6rem;
+  }
+}

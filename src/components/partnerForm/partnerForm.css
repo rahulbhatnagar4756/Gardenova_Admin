@@ -1,0 +1,21 @@
+.partner-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.partner-form-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.partner-form-group {
+  flex: 1;
+}
+
+.partner-form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
