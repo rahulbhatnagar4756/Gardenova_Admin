@@ -1,0 +1,94 @@
+body {
+  background-color: var(--Dark-Green, #2e3a30) !important;
+}
+
+.bl_section {
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bf_wrapper {
+  width: 430px;
+  max-width: 100%;
+  border-radius: 20px;
+  border: 5px solid rgba(244, 244, 244, 0.1);
+  background: var(--Dark-Green, #2e3a30);
+  box-shadow: 0 0 30px 0 rgba(244, 244, 244, 0.1);
+  padding: 30px;
+}
+
+.k_logo {
+  width: 60px;
+  margin: 0 auto 40px auto;
+}
+
+.bl_head {
+  color: var(--Off-White, #f4f4f4);
+  font-size: 20.889px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.bl_sub_head {
+  color: var(--Off-White, #f4f4f4);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-block: 7px 33px;
+  opacity: 0.8;
+}
+
+.sent_email {
+  display: block;
+  font-size: 13px;
+  font-weight: 400;
+  margin-top: 3px;
+}
+
+.verfication_code_field {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 10px;
+}
+
+.verfication_code_field .form-control {
+  text-align: center;
+}
+
+.code_receive_after {
+  text-align: center;
+  display: block;
+  color: var(--Off-White);
+  margin-top: 5px;
+  font-size: 12px;
+}
+
+.resend_now {
+  font-weight: 600;
+  color: inherit;
+}
+
+.password-hints {
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.password-hint {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+.password-hint.error {
+  color: #ff6b6b; /* soft red */
+}
+
+.password-hint.success {
+  color: #4fe09a; /* soft green */
+}
