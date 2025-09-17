@@ -80,6 +80,7 @@ import { Rules } from "../pages/diagnosticQuestions/rules/rules";
 import ForgotPassword1 from "../pages/auth/Forgot1";
 import ForgotPassword2 from "../pages/auth/Forgot2";
 import ForgotPassword3 from "../pages/auth/Forgot3";
+import ForgotPassword4 from "../pages/auth/Forgot4";
 
 export const AppRoutes = () => {
   return (
@@ -90,6 +91,7 @@ export const AppRoutes = () => {
        <Route path={APP_ROUTES.auth.forgotPassword} element={<ForgotPassword1 />} />
        <Route path={APP_ROUTES.auth.forgotPassword2} element={<ForgotPassword2 />} />
        <Route path={APP_ROUTES.auth.forgotPassword3} element={<ForgotPassword3 />} />
+       <Route path={APP_ROUTES.auth.forgotPassword4} element={<ForgotPassword4 />} />
 
       {/* Main Routes (no authentication protection) */}
       <Route path={APP_ROUTES.admin.root} element={<MainLayout />}>

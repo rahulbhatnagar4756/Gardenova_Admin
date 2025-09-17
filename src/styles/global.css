@@ -186,11 +186,7 @@ transition: 0.3s;
     padding-left: 45px;
 }
 
-.icon_field svg
-{
-    position: absolute;
-    
-}
+
 
 .icon_field .field_icon {
     position: absolute;
@@ -198,4 +194,24 @@ transition: 0.3s;
     left: 15px;
     transform: translateY(-50%);
     z-index: 1;
+}
+
+.hide_show_icon
+{
+    left: auto !important;
+    right: 15px;
+    cursor: pointer;
+}
+
+.login-link {
+    color: var(--Off-White, #F4F4F4);
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    display: block;
+    user-select: none;
+    cursor: pointer;
+    text-decoration: none;
+    margin-top: 12px;
 }
