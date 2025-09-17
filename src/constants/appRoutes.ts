@@ -1,7 +1,9 @@
 export const APP_ROUTES = {
   auth: {
     login: "/login",
-    forgotPassword: "/forgot-password",
+    forgotPassword: "/forgotpassword1",
+      forgotPassword2: "/forgotpassword2",
+      forgotPassword3: "/forgotpassword3",
   },
   admin: {
     root: "/adminPanel",

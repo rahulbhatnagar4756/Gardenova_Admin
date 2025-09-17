@@ -1,7 +1,7 @@
 // ForgotPassword.tsx
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./ForgotPassword.css";
+import "../before-login.css";
 import { authService } from "../../../services/apiCalls/authentication";
 import type { ApiError } from "../../../types";
 import { APP_ROUTES } from "../../../constants/appRoutes";
