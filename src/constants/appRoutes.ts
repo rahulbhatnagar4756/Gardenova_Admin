@@ -1,7 +1,7 @@
 export const APP_ROUTES = {
   auth: {
     login: "/login",
-    forgotPassword: "/forgotpassword1",
+    forgotPassword: "/forgotpassword",
       forgotPassword2: "/forgotpassword2",
       forgotPassword3: "/forgotpassword3",
   },

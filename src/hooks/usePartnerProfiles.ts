@@ -16,7 +16,6 @@ export const usePartnerProfiles = () => {
       setError(null);
 
       const response = await partnerProfileService.getAll();
-      console.log("Fetched partners response:", response);
 
       // Support both wrapped and direct response formats
       const { success, data: partnersData, message } = response || {};
