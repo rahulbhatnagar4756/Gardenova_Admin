@@ -1,4 +1,4 @@
-body
+body:has(.bl_section)
 {
 	background-color: var(--Dark-Green, #2E3A30) !important;
 }

@@ -158,21 +158,23 @@ line-height: normal;
     margin-block: 10px 22px;
 }
 
-.common_button
-{
+.common_button {
     background: var(--Brunt-Gold-Gradient);
     border-radius: 10px;
     color: var(--Off-White, #F4F4F4);
-text-align: center;
-font-size: 14px;
-font-style: normal;
-font-weight: 600;
-line-height: normal;
-width: 100%;
-border: 0;
-padding: 10px;
-text-transform: uppercase;
-transition: 0.3s;
+    text-align: center;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    width: 100%;
+    border: 0;
+    padding: 10px 15px;
+    text-transform: uppercase;
+    transition: 0.3s;
+    display: flex;
+    grid-gap: 5px;
+    text-decoration: none;
 }
 
 .common_button:hover
@@ -214,4 +216,30 @@ transition: 0.3s;
     cursor: pointer;
     text-decoration: none;
     margin-top: 12px;
+}
+
+
+
+.inner_main_wrapper
+{
+    padding-left: 250px;
+}
+
+.page_heading
+{
+  color: var(--Dark-Gray, #313131);
+font-size: 25px;
+font-style: normal;
+font-weight: 700;
+line-height: normal;
+}
+
+.main_page
+{
+    padding: 0 15px 0 15px;
+}
+
+.main_heading_area
+{
+    margin-bottom: 20px;
 }
