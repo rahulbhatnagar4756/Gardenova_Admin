@@ -66,7 +66,6 @@
 //   );
 // };
 
-
 import { Routes, Route } from "react-router-dom";
 import { MainLayout } from "../layouts/mainLayout";
 import { Dashboard } from "../pages/dashboard/dashboard";
@@ -74,24 +73,19 @@ import { DiagnosticQuestions } from "../pages/diagnosticQuestions/diagnosticQues
 import { PartnerProfiles } from "../pages/partnerProfiles/partnerProfiles";
 import { Leads } from "../pages/leads/leads";
 import { Login } from "../pages/auth/login/login";
-import { ForgotPassword } from "../pages/auth/forgotPassword/forgotPassword";
 import { APP_ROUTES } from "../constants/appRoutes";
 import { Rules } from "../pages/diagnosticQuestions/rules/rules";
-import ForgotPassword1 from "../pages/auth/Forgot1";
-import ForgotPassword2 from "../pages/auth/Forgot2";
-import ForgotPassword3 from "../pages/auth/Forgot3";
-import ForgotPassword4 from "../pages/auth/Forgot4";
+import { ForgotPassword } from "../pages/auth/forgotPassword/forgotPassword";
 
 export const AppRoutes = () => {
   return (
     <Routes>
       {/* Public Routes */}
       <Route path={APP_ROUTES.auth.login} element={<Login />} />
-      {/* <Route path={APP_ROUTES.auth.forgotPassword} element={<ForgotPassword />} /> */}
-       <Route path={APP_ROUTES.auth.forgotPassword} element={<ForgotPassword1 />} />
-       <Route path={APP_ROUTES.auth.forgotPassword2} element={<ForgotPassword2 />} />
-       <Route path={APP_ROUTES.auth.forgotPassword3} element={<ForgotPassword3 />} />
-       <Route path={APP_ROUTES.auth.forgotPassword4} element={<ForgotPassword4 />} />
+      <Route
+        path={APP_ROUTES.auth.forgotPassword}
+        element={<ForgotPassword />}
+      />
 
       {/* Main Routes (no authentication protection) */}
       <Route path={APP_ROUTES.admin.root} element={<MainLayout />}>
@@ -109,4 +103,3 @@ export const AppRoutes = () => {
     </Routes>
   );
 };
-
