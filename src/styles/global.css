@@ -175,6 +175,7 @@ line-height: normal;
     display: flex;
     grid-gap: 5px;
     text-decoration: none;
+    justify-content: center;
 }
 
 .common_button:hover
@@ -242,4 +243,69 @@ line-height: normal;
 .main_heading_area
 {
     margin-bottom: 20px;
+}
+
+.modal-backdrop {
+    background: rgba(46, 58, 48, 0.95);
+    backdrop-filter: blur(5px);
+}
+
+.modal-backdrop.show {
+    opacity: 1;
+}
+
+.modal-content {
+    border-radius: 30px;
+    border: 5px solid rgba(244, 244, 244, 0.15);
+    background: var(--Dark-Green, #2E3A30);
+    box-shadow: 0 0 30px 0 rgba(244, 244, 244, 0.10);
+}
+
+.modal-body
+{
+    padding: 50px 30px 30px 30px;
+}
+
+.head_modal
+{
+  color: var(--Off-White, #F4F4F4);
+font-size: 20px;
+font-style: normal;
+font-weight: 700;
+line-height: normal;
+text-transform: capitalize;
+}
+
+.sub_head
+{
+  color: var(--Off-White, #F4F4F4);
+font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+text-transform: capitalize;
+margin-top: 5px;
+opacity: 0.75;
+}
+
+.head_area
+{
+    margin-bottom: 30px;
+}
+
+.btn-close {
+    background: none;
+    opacity: 1;
+    position: absolute;
+    right: -13px;
+    top: -13px;
+    height: auto;
+    width: auto;
+    z-index: 1;
+}
+
+.btn-close:focus
+{
+    outline: 0;
+    box-shadow: none;
 }
