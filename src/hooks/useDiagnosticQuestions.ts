@@ -110,25 +110,25 @@ export const useDiagnosticQuestions = () => {
   };
 
   const deleteQuestion = async (id: string) => {
-    try {
-      // Optimistic update - remove question from local state
-      const originalQuestions = [...questions];
-      setQuestions((prev) =>
-        prev.filter((_, index) => index.toString() !== id)
-      );
+    // Keep a copy of the current state in case we need to rollback
+    const originalQuestions = [...questions];
 
+    try {
       const response = await questionService.deleteQuestion(id);
 
       if (response.success) {
+        // Optimistic update - remove question locally
+        setQuestions((prev) => prev.filter((q) => q._id !== id));
+        // ✅ On success, state is already updated, nothing else needed
         return response;
       } else {
-        // Rollback optimistic update
+        // Rollback if API fails
         setQuestions(originalQuestions);
         throw new Error("Failed to delete question");
       }
     } catch (err) {
-      // Rollback optimistic update
-      setQuestions(() => [...questions]);
+      // Rollback in case of error
+      setQuestions(originalQuestions);
       setError(
         err instanceof Error ? err.message : "Failed to delete question"
       );

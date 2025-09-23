@@ -36,7 +36,8 @@ export const Login: React.FC = () => {
   //#region  CUSTOM HOOKS
   const { login } = useAuth(); // Custom hook for authentication context
   const navigate = useNavigate(); // Hook for navigation
-  const { showSuccess, showError, showWarning, showInfo } = useToast(); // Updated hook using package
+  const { showSuccess, showError, showWarning, showInfo} =
+    useToast(); // Updated hook using package
 
   //#endregion
 
