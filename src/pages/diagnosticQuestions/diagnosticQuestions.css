@@ -184,3 +184,8 @@ background: linear-gradient(180deg, #E0B669 0%, #B48A3E 100%), var(--Burnt-Gold,
     height: 15px;
     transition: 0.3s;
 }
+.questions-container {
+    display: flex;
+    flex-direction: column;
+    grid-gap: 10px;
+}

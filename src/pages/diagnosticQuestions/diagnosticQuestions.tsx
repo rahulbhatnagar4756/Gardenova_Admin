@@ -195,10 +195,7 @@ export const DiagnosticQuestions = ({
         {displayedQuestions.length > 0 && (
           <div className="questions-container">
             {displayedQuestions.map((question, index) => (
-              <div
-                key={question.questionId || index}
-                className="single_question"
-              >
+              <div key={question.questionId || index} className="single_question">
                 <div className="row align-items-end">
                   <div className="col">
                     <ul className="question_heading">
