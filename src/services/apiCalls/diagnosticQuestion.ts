@@ -4,7 +4,7 @@ import { API_ROUTES } from "../apiRoutes";
 
 // Types for Question operations
 export interface Question {
-  _id: string;
+  questionId: string;
   questionText: string;
   options: string[];
   order: number;
@@ -23,7 +23,7 @@ export interface UpdateQuestionRequest {
 }
 
 export interface QuestionsResponse {
-  questions: Question[];
+  formattedQuestions: Question[];
 }
 
 /**

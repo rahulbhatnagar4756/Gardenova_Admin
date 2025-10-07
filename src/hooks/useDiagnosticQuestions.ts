@@ -17,7 +17,7 @@ export const useDiagnosticQuestions = () => {
       const response = await questionService.getAllQuestions();
 
       if (response.success) {
-        setQuestions(response.data.questions);
+        setQuestions(response.data.formattedQuestions);
         setError(null);
       } else {
         setError("Failed to fetch questions");
@@ -39,7 +39,7 @@ export const useDiagnosticQuestions = () => {
     try {
       // Optimistic update
       const tempQuestion: Question = {
-        _id: "",
+        questionId: "",
         questionText: data.text,
         options: data.options,
         order: data.order,
@@ -71,7 +71,7 @@ export const useDiagnosticQuestions = () => {
   const updateQuestion = async (id: string, data: UpdateQuestionRequest) => {
     try {
       // Find question by some criteria (since we don't have ID in response)
-      const questionIndex = questions.findIndex((q) => q._id === id);
+      const questionIndex = questions.findIndex((q) => q.questionId === id);
 
       if (questionIndex === -1) {
         throw new Error("Question not found");
@@ -79,7 +79,7 @@ export const useDiagnosticQuestions = () => {
 
       // Optimistic update
       const updatedQuestion: Question = {
-        _id: id,
+        questionId: id,
         questionText: data.text,
         options: data.options,
         order: data.order,
@@ -118,7 +118,7 @@ export const useDiagnosticQuestions = () => {
 
       if (response.success) {
         // Optimistic update - remove question locally
-        setQuestions((prev) => prev.filter((q) => q._id !== id));
+        setQuestions((prev) => prev.filter((q) => q.questionId !== id));
         // ✅ On success, state is already updated, nothing else needed
         return response;
       } else {
