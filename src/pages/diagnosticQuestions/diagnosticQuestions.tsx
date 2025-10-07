@@ -124,7 +124,7 @@ export const DiagnosticQuestions = ({
           return;
         }
         await updateQuestion(
-          editingQuestion._id,
+          editingQuestion.questionId,
           questionData as UpdateQuestionRequest
         );
         showSuccess("Question updated successfully!");
@@ -195,7 +195,10 @@ export const DiagnosticQuestions = ({
         {displayedQuestions.length > 0 && (
           <div className="questions-container">
             {displayedQuestions.map((question, index) => (
-              <div key={question._id || index} className="single_question">
+              <div
+                key={question.questionId || index}
+                className="single_question"
+              >
                 <div className="row align-items-end">
                   <div className="col">
                     <ul className="question_heading">
@@ -241,7 +244,7 @@ export const DiagnosticQuestions = ({
                         <li className="question_actions delete_action">
                           <button
                             type="button"
-                            onClick={() => handleDelete(question._id)}
+                            onClick={() => handleDelete(question.questionId)}
                             style={{
                               background: "none",
                               border: "none",
