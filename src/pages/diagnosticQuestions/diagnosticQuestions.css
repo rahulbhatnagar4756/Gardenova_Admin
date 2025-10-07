@@ -145,15 +145,16 @@ line-height: normal;
 .added_list_main .added_list {
 border-radius: 5px;
 background: rgba(244, 244, 244, 0.10);
-
 color: var(--Off-White, #F4F4F4);
 font-size: 12px;
 font-style: normal;
 font-weight: 500;
 line-height: 17px; /* 141.667% */
-    padding: 8px 14px;
-    flex: 1;
-    display: block;
+padding: 8px 14px;
+flex: 1;
+display: block;
+border: 0;
+outline: 0
 }
 
 .list_icons {

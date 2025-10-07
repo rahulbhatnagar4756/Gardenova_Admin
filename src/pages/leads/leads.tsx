@@ -144,7 +144,7 @@ export const Leads = ({ limit }: LeadProps) => {
       <td scope="row">Jane Smith</td>
       <td>janesmith@gmail.com</td>
       <td><span className="cus_badge closed_lead">Closed</span></td>
-      <td className="text-end"><a href="" className="underline_link">São Paulo - Capital, Ribeirão Preto</a></td>
+      <td className="text-end"><a href="" className="underline_link" data-bs-toggle="modal" data-bs-target="#professtionalModal" >São Paulo - Capital, Ribeirão Preto</a></td>
       
     </tr>
 
@@ -266,7 +266,7 @@ export const Leads = ({ limit }: LeadProps) => {
 </div>
       </div>
     </div>
-  <div
+<div
   className="modal fade"
   id="exampleModal"
   tabIndex={-1}
@@ -317,7 +317,7 @@ export const Leads = ({ limit }: LeadProps) => {
   </defs>
 </svg>
 
-          </button>
+  </button>
       <div className="modal-body">
         <div className="head_area"> 
           <h4 className="head_modal">Add New Question</h4>
@@ -328,9 +328,9 @@ export const Leads = ({ limit }: LeadProps) => {
               <label htmlFor="email">Question Text *</label>
               <div className="position-relative">
                 <textarea rows={3}
-  placeholder="Enter Your Question"
-  className="form-control"
-/>
+                    placeholder="Enter Your Question"
+                    className="form-control"
+                  />
 
               </div>
             </div>
@@ -419,10 +419,25 @@ export const Leads = ({ limit }: LeadProps) => {
   </span>
   <ul className="added_list_main">
     <li>
-      <span className="added_list">
-        Home Garden
+      <input className="added_list" type="text" name="" value="Home Garden" />
+
+      <span className="list_icons d-none">      
+        <span className="bg_icon_et">
+          <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M6.14642 10.0711L15.9246 0.292969L17.3388 1.70718L6.14642 12.8996L0.661133 7.4143L2.07535 6.0001L6.14642 10.0711Z" fill="white"></path>
+          </svg>
+        </span>
       </span>
-      <span className="list_icons">
+
+      <span className="list_icons">      
+        <span className="bg_icon_et">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14.6484 3.70243L11.2968 0.351555C11.1854 0.2401 11.0531 0.151688 10.9075 0.0913673C10.7619 0.0310468 10.6058 0 10.4482 0C10.2906 0 10.1346 0.0310468 9.98897 0.0913673C9.84336 0.151688 9.71107 0.2401 9.59964 0.351555L0.351743 9.59945C0.239831 9.71047 0.151105 9.84263 0.0907219 9.98825C0.0303385 10.1339 -0.00049756 10.29 6.07098e-06 10.4477V13.7993C6.07098e-06 14.1175 0.126429 14.4228 0.351464 14.6478C0.576499 14.8728 0.881712 14.9992 1.19996 14.9992H13.7995C13.9586 14.9992 14.1112 14.936 14.2237 14.8235C14.3362 14.711 14.3995 14.5584 14.3995 14.3993C14.3995 14.2401 14.3362 14.0875 14.2237 13.975C14.1112 13.8625 13.9586 13.7993 13.7995 13.7993H6.24877L14.6484 5.39961C14.7599 5.28818 14.8483 5.15589 14.9086 5.01028C14.969 4.86468 15 4.70862 15 4.55102C15 4.39342 14.969 4.23736 14.9086 4.09175C14.8483 3.94615 14.7599 3.81386 14.6484 3.70243ZM3.54887 12.2993L10.3241 5.52411L11.5758 6.77506L4.79982 13.5511L3.54887 12.2993ZM9.47364 4.67514L2.6999 11.4511L1.4482 10.1994L8.22419 3.42419L9.47364 4.67514ZM1.19996 11.6476L3.35163 13.7993H1.19996V11.6476Z" fill="#ffffff"/>
+          </svg>
+        </span>
+      </span>
+      
+       <span className="list_icons">
       
         <span className="bg_icon_et">
           <svg
@@ -442,9 +457,16 @@ export const Leads = ({ limit }: LeadProps) => {
       </span>
     </li>
     <li>
-      <span className="added_list">
-       Apartment Balcony
+      <input className="added_list" type="text" name="" value="Apartment Balcony" />
+
+      <span className="list_icons">      
+        <span className="bg_icon_et">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14.6484 3.70243L11.2968 0.351555C11.1854 0.2401 11.0531 0.151688 10.9075 0.0913673C10.7619 0.0310468 10.6058 0 10.4482 0C10.2906 0 10.1346 0.0310468 9.98897 0.0913673C9.84336 0.151688 9.71107 0.2401 9.59964 0.351555L0.351743 9.59945C0.239831 9.71047 0.151105 9.84263 0.0907219 9.98825C0.0303385 10.1339 -0.00049756 10.29 6.07098e-06 10.4477V13.7993C6.07098e-06 14.1175 0.126429 14.4228 0.351464 14.6478C0.576499 14.8728 0.881712 14.9992 1.19996 14.9992H13.7995C13.9586 14.9992 14.1112 14.936 14.2237 14.8235C14.3362 14.711 14.3995 14.5584 14.3995 14.3993C14.3995 14.2401 14.3362 14.0875 14.2237 13.975C14.1112 13.8625 13.9586 13.7993 13.7995 13.7993H6.24877L14.6484 5.39961C14.7599 5.28818 14.8483 5.15589 14.9086 5.01028C14.969 4.86468 15 4.70862 15 4.55102C15 4.39342 14.969 4.23736 14.9086 4.09175C14.8483 3.94615 14.7599 3.81386 14.6484 3.70243ZM3.54887 12.2993L10.3241 5.52411L11.5758 6.77506L4.79982 13.5511L3.54887 12.2993ZM9.47364 4.67514L2.6999 11.4511L1.4482 10.1994L8.22419 3.42419L9.47364 4.67514ZM1.19996 11.6476L3.35163 13.7993H1.19996V11.6476Z" fill="#ffffff"/>
+          </svg>
+        </span>
       </span>
+
       <span className="list_icons">
         
         <span className="bg_icon_et">
@@ -471,6 +493,86 @@ export const Leads = ({ limit }: LeadProps) => {
 
       </div>
       
+    </div>
+  </div>
+</div>
+
+
+
+<div className="modal fade" id="professtionalModal" tabIndex={-1} aria-labelledby="professtionalModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div className="modal-dialog modal-dialog-centered professt_pop_width">
+    <div className="modal-content">
+      <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        <svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="27" height="27" rx="13.5" fill="url(#paint0_linear_790_3809)"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M18.2908 18.2908C18.5697 18.0118 18.5697 17.5596 18.2908 17.2806L9.71936 8.70921C9.44042 8.43026 8.98816 8.43026 8.70921 8.70921C8.43026 8.98816 8.43026 9.44042 8.70921 9.71936L17.2806 18.2908C17.5596 18.5697 18.0118 18.5697 18.2908 18.2908Z" fill="#F4F4F4"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M8.70921 18.2908C8.98816 18.5697 9.44042 18.5697 9.71936 18.2908L18.2908 9.71936C18.5697 9.44042 18.5697 8.98815 18.2908 8.70921C18.0118 8.43026 17.5596 8.43026 17.2806 8.70921L8.70921 17.2806C8.43026 17.5596 8.43026 18.0118 8.70921 18.2908Z" fill="#F4F4F4"/>
+          <defs>
+          <linearGradient id="paint0_linear_790_3809" x1="13.5" y1="0" x2="13.5" y2="27" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#E0B669"/>
+          <stop offset="1" stop-color="#B48A3E"/>
+          </linearGradient>
+          </defs>
+        </svg>
+      </button>
+      <div className="modal-body">
+        <div className="head_area">
+          <h4 className="head_modal">Professtionals</h4>
+          <p className="sub_head">Quote Request sent to professtionals</p>
+        </div>
+        
+        <div className="professtional_pop_table">
+            <div className="mp_table">
+              <table className="table mb-0">
+                <thead>
+                  <tr>
+                    <th scope="col">Photo</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Specialty</th>
+                    <th scope="col">Service Region</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td scope="row">
+                      <img src="../src/images/profile.jpg" className="profile_img" alt="" />
+                    </td>
+                    <td>Gilberto Elkis Paisagismo</td>
+                    <td>Exuberant Tropical Gardens</td>
+                    <td>São Paulo - Capital, Ribeirão Preto</td>
+                  </tr>
+
+                  <tr>
+                    <td scope="row">
+                      <img src="../src/images/profile.jpg" className="profile_img" alt="" />
+                    </td>
+                    <td>Gilberto Elkis Paisagismo</td>
+                    <td>Exuberant Tropical Gardens</td>
+                    <td>São Paulo - Capital, Ribeirão Preto</td>
+                  </tr>
+
+                  <tr>
+                    <td scope="row">
+                      <img src="../src/images/profile.jpg" className="profile_img" alt="" />
+                    </td>
+                    <td>Gilberto Elkis Paisagismo</td>
+                    <td>Exuberant Tropical Gardens</td>
+                    <td>São Paulo - Capital, Ribeirão Preto</td>
+                  </tr>
+
+                  <tr>
+                    <td scope="row">
+                      <img src="../src/images/profile.jpg" className="profile_img" alt="" />
+                    </td>
+                    <td>Gilberto Elkis Paisagismo</td>
+                    <td>Exuberant Tropical Gardens</td>
+                    <td>São Paulo - Capital, Ribeirão Preto</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
