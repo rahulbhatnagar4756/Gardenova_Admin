@@ -49,9 +49,10 @@ export const usePartnerProfiles = () => {
   }, []);
 
   const createPartner = async (data: PartnerProfileRequest) => {
+    debugger;
     try {
       const response = await partnerProfileService.create(data);
-      if (response?.data?.success) {
+      if (response?.success) {
         await fetchPartners(); // Refresh list after creation
       } else {
         console.error("Create partner failed:", response?.data);
@@ -66,8 +67,9 @@ export const usePartnerProfiles = () => {
     data: Partial<PartnerProfileRequest>
   ) => {
     try {
+      debugger;
       const response = await partnerProfileService.update(id, data);
-      if (response?.data?.success && response.data.data) {
+      if (response?.success && response.data) {
         setPartners((prev) =>
           prev.map((p) => (p._id === id ? response.data.data : p))
         );

@@ -31,8 +31,8 @@ export const API_ROUTES = {
     // Partner Profile routes
     getAll: `${PARTNER_PROFILE_BASE}`,
     create: `${PARTNER_PROFILE_BASE}`,
-    update: `${PARTNER_PROFILE_BASE}/`,
-    delete: `${PARTNER_PROFILE_BASE}/`,
+    update: `${PARTNER_PROFILE_BASE}`,
+    delete: `${PARTNER_PROFILE_BASE}`,
   },
 } as const;
 
