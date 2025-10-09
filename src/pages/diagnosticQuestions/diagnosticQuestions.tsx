@@ -161,11 +161,11 @@ export const DiagnosticQuestions = ({
     <>
       <div className="main_page">
         <div className="main_heading_area">
-          <div className="row">
-            <div className="col-md">
+          <div className="row g-3">
+            <div className="col">
               <h4 className="page_heading">Manage Questions</h4>
             </div>
-            <div className="col-md-auto">
+            <div className="col-auto">
               <button
                 type="button"
                 className="common_button"
@@ -197,7 +197,7 @@ export const DiagnosticQuestions = ({
             {displayedQuestions.map((question, index) => (
               <div key={question.questionId || index} className="single_question">
                 <div className="row align-items-end">
-                  <div className="col">
+                  <div className="col-md">
                     <ul className="question_heading">
                       <li className="question_number">Q.{index + 1}</li>
                       <li className="question_name">{question.questionText}</li>
@@ -212,7 +212,7 @@ export const DiagnosticQuestions = ({
                     </ul>
                   </div>
                   {isActionShow && (
-                    <div className="col-auto">
+                    <div className="col-md-auto">
                       <ul className="question_options_area mt-0">
                         <li className="ms-auto question_actions">
                           <button

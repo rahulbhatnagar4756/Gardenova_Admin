@@ -73,3 +73,8 @@ grid-gap: 13px;
 margin-top: 5px;
 
 }
+.mobile_bars svg {
+    display: block;
+    width: 30px;
+    fill: #ffffff;
+}

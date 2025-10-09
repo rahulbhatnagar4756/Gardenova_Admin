@@ -143,11 +143,11 @@ export const Rules = ({ limit, isActionShow = true }: RulesProps) => {
       </div> */}
 
       <div className="main_heading_area">
-          <div className="row">
-            <div className="col-md">
+          <div className="row g-3">
+            <div className="col">
               <h4 className="page_heading">Create Rules</h4>
             </div>
-            <div className="col-md-auto">
+            <div className="col-auto">
               <button onClick={() => setIsModalOpen(true)}
                 type="button"
                 className="common_button">
@@ -175,7 +175,7 @@ export const Rules = ({ limit, isActionShow = true }: RulesProps) => {
         
         <div className="create_rule_container">
           <div className="row">
-            <div className="col-md-6">
+            <div className="col-xl-6">
                 <div className="single_question">
                     <div className="row align-items-end">
                       <div className="col">
@@ -206,7 +206,7 @@ export const Rules = ({ limit, isActionShow = true }: RulesProps) => {
                 </div>
             </div>
 
-            <div className="col-md-6">
+            <div className="col-xl-6">
               <div className="single_question">
                   <div className="row align-items-end">
                     <div className="col">
@@ -237,7 +237,7 @@ export const Rules = ({ limit, isActionShow = true }: RulesProps) => {
                 </div>
             </div>
 
-            <div className="col-md-6">
+            <div className="col-xl-6">
               <div className="single_question">
                   <div className="row align-items-end">
                     <div className="col">
@@ -268,7 +268,7 @@ export const Rules = ({ limit, isActionShow = true }: RulesProps) => {
                 </div>
             </div>
 
-            <div className="col-md-6">
+            <div className="col-xl-6">
               <div className="single_question">
                   <div className="row align-items-end">
                     <div className="col">

@@ -10,7 +10,7 @@
     top: 0;
     left: 0;
     bottom: 0;
-    z-index: 9;
+    z-index: 10;
     overflow-y: auto;
     
 }
@@ -97,4 +97,73 @@ transition: 0.3s;
 .dashboard_logo .k_logo
 {
     margin-bottom: 0;
+}
+.close_btn svg {
+    width: 30px;
+    fill: #ffffff;
+}
+.close_btn {
+    width: auto;
+    display: inline;
+    z-index: 99;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.close_btn {
+    width: auto;
+    display: inline;
+    z-index: 99;
+    position: relative;
+    left: 0px;
+    top: 10px;
+}
+
+.close_btn a {
+    border-radius: 10px;
+    border: 1px solid var(--Burnt-Gold, #B48A3E);
+    color: var(--Off-White, #F4F4F4);
+    text-align: center;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    padding: 8px 10px;
+    min-width: auto;
+    text-decoration: none;
+    display: inline-flex;
+    justify-content: center;
+    transition: 0.3s;
+    outline: none;
+}
+
+@media only screen and (max-width:991px){
+    .sidebar_main {
+        left: -100%;
+        transition: all 0.8s ease-in-out;
+    }
+    .sidebar-expand .sidebar_main {
+        left: 0;
+    }
+    .sidebar-expand .main_wrapper {
+        position: relative;
+    }
+    .sidebar-expand .main_wrapper:after {
+        content: '';
+        width: 100%;
+        height: 100%;
+        background: rgba(46, 58, 48, 0.60);
+        backdrop-filter: blur(5px);
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 9;
+    }
+    .main_wrapper {
+        min-height: 100dvh;
+    }
 }

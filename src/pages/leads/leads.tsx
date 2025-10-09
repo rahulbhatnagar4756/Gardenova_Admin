@@ -102,12 +102,12 @@ export const Leads = ({ limit }: LeadProps) => {
     // </div>
     <>
     <div className="main_page">
-      <div className="main_heading_area">
-        <div className="row">
-          <div className="col-md">
+      <div className="mobile">
+        <div className="row g-3">
+          <div className="col">
             <h4 className="page_heading">All Leads</h4>
           </div>
-          <div className="col-md-auto">
+          <div className="col-auto">
              <div className="input_field">
               <div className="position-relative">
                 <select name="" id="" className="form-select">

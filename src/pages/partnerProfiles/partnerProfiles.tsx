@@ -283,11 +283,11 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
     <>
       <div className="main_page">
         <div className="main_heading_area">
-          <div className="row">
-            <div className="col-md">
+          <div className="row g-3">
+            <div className="col">
               <h4 className="page_heading">Manage Professionals</h4>
             </div>
-            <div className="col-md-auto">
+            <div className="col-auto">
               <button
                 type="button"
                 className="common_button"

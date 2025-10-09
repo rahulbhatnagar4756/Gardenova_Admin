@@ -42,6 +42,7 @@ font-style: normal;
 font-weight: 400;
 line-height: normal;
 font-family: 'Merriweather';
+flex: 1;
 }
 
 .question_options_area

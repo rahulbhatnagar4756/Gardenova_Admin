@@ -1,6 +1,10 @@
 import "./header.css";
 
+
 export const Header = () => {
+  const handleClick = () => {
+    document.body.classList.add('sidebar-expand');
+  };
   return (
     // <header className="header">
     //   <h1 className="header-title">Kasagardem's Control Center</h1>
@@ -17,10 +21,15 @@ export const Header = () => {
     <header className="header_main">
       <div className="inner_header_main">
         <div className="row align-items-center">
-          <div className="col-md">
+          <div className="col-auto d-lg-none pe-0" >
+              <div className="mobile_bars">
+                  <a href="javascript:void(0)" onClick={handleClick}  className="mobile_bars_links"><svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m22 16.75c0-.414-.336-.75-.75-.75h-18.5c-.414 0-.75.336-.75.75s.336.75.75.75h18.5c.414 0 .75-.336.75-.75zm0-5c0-.414-.336-.75-.75-.75h-18.5c-.414 0-.75.336-.75.75s.336.75.75.75h18.5c.414 0 .75-.336.75-.75zm0-5c0-.414-.336-.75-.75-.75h-18.5c-.414 0-.75.336-.75.75s.336.75.75.75h18.5c.414 0 .75-.336.75-.75z" fill-rule="nonzero"/></svg></a>
+              </div>
+          </div>
+          <div className="col">
             <h4 className="welcome_head">Welcome to the <strong>Kasagardem Dashboard</strong></h4>
           </div>
-          <div className="col-md-auto">
+          <div className="col-auto">
             <ul className="name_area">
               <li className="name_box">AM</li>
               <li className="admin_name">Admin</li>
