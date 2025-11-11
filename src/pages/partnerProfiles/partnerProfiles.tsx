@@ -43,6 +43,7 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
   const [loadingCities, setLoadingCities] = useState(false);
   const { showInfo } = useToast();
   const [loadingButton, setLoadingButton] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     companyName: "",
@@ -300,6 +301,14 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
     }
   }, [formData.address.state, formData.address.country]);
 
+  const handleImageClick = (imageUrl: string) => {
+    setSelectedImage(imageUrl);
+  };
+
+  const handleClosePopup = () => {
+    setSelectedImage(null);
+  };
+
   if (loading) return <div className="loading">Loading partners...</div>;
   if (error) return <div className="error">Error: {error}</div>;
 
@@ -360,6 +369,10 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
                           src={partner.projectImageUrl}
                           className="profile_img"
                           alt={partner.companyName || "Profile"}
+                          onClick={() =>
+                            handleImageClick(partner.projectImageUrl!)
+                          }
+                          style={{ cursor: "pointer" }}
                         />
                       ) : (
                         <div className="profile_img no-image">No Image</div>
@@ -469,6 +482,18 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
           )}
         </div>
       </div>
+
+      {/* Image Popup */}
+      {selectedImage && (
+        <div className="image-overlay" onClick={handleClosePopup}>
+          <div className="image-popup" onClick={(e) => e.stopPropagation()}>
+            <button className="close-btn" onClick={handleClosePopup}>
+              &times;
+            </button>
+            <img src={selectedImage} alt="Enlarged" className="popup-img" />
+          </div>
+        </div>
+      )}
 
       {/* Custom Modal */}
       {isModalOpen && (
