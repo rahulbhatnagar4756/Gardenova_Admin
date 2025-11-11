@@ -1,0 +1,55 @@
+.badge.bg-success {
+
+        border: 1px solid rgba(121, 194, 83, 0.30);
+    background: rgba(121, 194, 83, 0.10) !important;
+    color: #66AA42;
+}
+.badge {
+    border-radius: 30px;
+    padding: 5px 15px;
+    display: inline-block;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+.badge.bg-warning {
+color: #0D6EFD !important;
+    border: 1px solid rgba(13, 110, 253, 0.30);
+    background: rgba(13, 110, 253, 0.10) !important;
+}
+.badge.bg-danger {
+    color: #C80037 !important; 
+    border: 1px solid rgba(200, 0, 55, 0.30);
+    background: rgba(200, 0, 55, 0.10 ) !important;
+}
+.badge.bg-secondary {
+    color: #bf9549 !important;
+    border: 1px solid #bf95496b;
+    background: #deb46747 !important;
+}
+.loading-state {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+background-color: #2e3a3029;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.loading {
+    width: 100px;
+    height: 100px;
+    border-radius: 50% !important;
+    animation: loading 1s linear infinite;
+    box-shadow: inset 2px 0 0 #ffffff00, -3px 0 0 #2e3a30;
+    background-color: #e0f2fe00 !important;
+}
+@keyframes loading {
+  to {
+    transform: rotate(360deg);
+  }
+}

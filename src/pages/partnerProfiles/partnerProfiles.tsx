@@ -337,6 +337,13 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
           </div>
         </div>
 
+       {/* spinner loader  */}
+
+        <div class="loading-state">
+         <div class="loading"></div>
+        </div>
+
+
         <div className="mp_table">
           <table className="table mb-0">
             <thead>
