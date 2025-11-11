@@ -1,20 +1,18 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./partnerProfiles.css";
 import { usePartnerProfiles } from "../../hooks/usePartnerProfiles";
 import type {
   PartnerProfileResponse,
   PartnerProfileRequest,
   PartnerAddress,
-} from "../../services/apiCalls/partnerProfileService";
+} from "../../services/apiCalls/partnerProfile";
 import { Pagination } from "../../components/pagination";
+import { stateCityDataService } from "../../services/apiCalls/stateCity";
+import { useToast } from "../../hooks/useToast";
+import StarRating from "../../components/starRating";
 
 interface PartnerProfilesProps {
   limit?: number;
-}
-
-// Extended PartnerProfile type for UI with index-based ID
-interface PartnerProfileWithId extends PartnerProfileResponse {
-  [key: string]: unknown;
 }
 
 export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
@@ -22,17 +20,29 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
     partners,
     loading,
     error,
+    currentPage,
+    totalPages,
+    totalCount,
+    limit: serverLimit,
+    goToPage,
+    setItemsPerPage,
     createPartner,
     updatePartner,
-    deletePartner,
-  } = usePartnerProfiles();
+  } = usePartnerProfiles({
+    initialLimit: limit ?? 5,
+  });
+  const [filteredPartners, setFilteredPartners] = useState(partners);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = limit ?? 5;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingPartner, setEditingPartner] =
     useState<PartnerProfileResponse | null>(null);
+  const [states, setStates] = useState<{ name: string; iso2: string }[]>([]);
+  const [cities, setCities] = useState<{ id: number; name: string }[]>([]);
+  const [loadingStates, setLoadingStates] = useState(false);
+  const [loadingCities, setLoadingCities] = useState(false);
+  const { showInfo } = useToast();
+  const [loadingButton, setLoadingButton] = useState(false);
 
   const [formData, setFormData] = useState({
     companyName: "",
@@ -48,29 +58,24 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
     website: "",
     contactPerson: "",
     mobileNumber: "",
-    profileImage: "",
+    projectImageUrl: "",
     status: "active",
+    specialityText: "",
   });
 
-  const partnersWithId: PartnerProfileWithId[] = partners.map((p, index) => ({
-    ...p,
-    id: index.toString(),
-  }));
+  useEffect(() => {
+    setFilteredPartners(partners);
+  }, [partners]);
 
-  // Calculate pagination
-  const totalItems = partnersWithId.length;
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const displayedPartners = partnersWithId.slice(startIndex, endIndex);
-
-  // Reset to first page if current page exceeds total pages
-  const handlePageChange = (page: number) => {
-    if (page > totalPages) {
-      setCurrentPage(1);
-    } else {
-      setCurrentPage(page);
+  // Update items per page if limit prop changes
+  useEffect(() => {
+    if (limit && limit !== serverLimit) {
+      setItemsPerPage(limit);
     }
+  }, [limit, serverLimit, setItemsPerPage]);
+
+  const handlePageChange = (page: number) => {
+    goToPage(page);
   };
 
   const handleOpenModal = (partner?: PartnerProfileResponse) => {
@@ -90,12 +95,13 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
         website: partner.website || "",
         contactPerson: partner.contactPerson || "",
         mobileNumber: partner.mobileNumber || "",
-        profileImage: partner.profileImage || "",
+        projectImageUrl: partner.projectImageUrl || "",
         status: partner.status || "active",
+        specialityText: "",
       });
 
       // 🔧 FIX: Set imagePreview for existing image
-      setImagePreview(partner.profileImage || null);
+      setImagePreview(partner.projectImageUrl || null);
     } else {
       setEditingPartner(null);
       setFormData({
@@ -112,8 +118,9 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
         website: "",
         contactPerson: "",
         mobileNumber: "",
-        profileImage: "",
+        projectImageUrl: "",
         status: "active",
+        specialityText: "",
       });
 
       // 🔧 FIX: Reset imagePreview for new entry
@@ -139,8 +146,9 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
       website: "",
       contactPerson: "",
       mobileNumber: "",
-      profileImage: "",
+      projectImageUrl: "",
       status: "active",
+      specialityText: "",
     });
 
     // 🔧 FIX: Reset imagePreview when closing modal
@@ -154,35 +162,26 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      // Validate file type
-      if (!file.type.startsWith("image/")) {
-        alert("Please select a valid image file (PNG, JPG, JPEG)");
-        return;
-      }
+    if (!file) return;
 
-      // Validate file size (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        alert("File size should be less than 5MB");
-        return;
-      }
-
-      // Convert file to Base64
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result as string;
-
-        // Set preview
-        setImagePreview(base64String);
-
-        // Update form data with base64 string
-        setFormData((prev) => ({
-          ...prev,
-          profileImage: base64String, // ✅ Save as base64 string
-        }));
-      };
-      reader.readAsDataURL(file);
+    // Validate file type
+    if (!file.type.startsWith("image/")) {
+      alert("Please select a valid image file (PNG, JPG, JPEG)");
+      return;
     }
+
+    // Convert to Base64 only for new uploads
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = reader.result as string;
+      setImagePreview(base64String);
+
+      setFormData((prev) => ({
+        ...prev,
+        projectImageUrl: base64String, // Only new upload as Base64
+      }));
+    };
+    reader.readAsDataURL(file);
   };
 
   const removeImage = () => {
@@ -196,7 +195,9 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
     }
   };
 
-  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAddressChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -212,17 +213,6 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }));
-  };
-
-  const handleSpecialtyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const specialties = e.target.value
-      .split(",")
-      .map((s) => s.trim())
-      .filter((s) => s);
-    setFormData((prev) => ({
-      ...prev,
-      speciality: specialties,
     }));
   };
 
@@ -242,6 +232,16 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
 
   const handleSubmit = async () => {
     try {
+      setLoadingButton(true);
+      showInfo(
+        editingPartner
+          ? "Updating partner details..."
+          : "Saving partner details..."
+      );
+
+      // Determine whether image is already a URL or base64
+      const isBase64Image = formData.projectImageUrl?.startsWith("data:image");
+
       const requestData: PartnerProfileRequest = {
         companyName: formData.companyName,
         email: formData.email,
@@ -250,31 +250,55 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
         website: formData.website,
         contactPerson: formData.contactPerson,
         mobileNumber: formData.mobileNumber,
-        profileImage: formData.profileImage,
+        // ✅ Keep existing URL if not base64
+        projectImageUrl: isBase64Image
+          ? formData.projectImageUrl
+          : formData.projectImageUrl || "",
         status: formData.status as "active" | "inactive",
       };
 
       if (editingPartner) {
-        await updatePartner(editingPartner._id, requestData);
+        await updatePartner(editingPartner.id, requestData);
       } else {
         await createPartner(requestData);
       }
 
-      handleCloseModal(); // This will now properly reset imagePreview
-    } catch (err) {
-      console.error("Failed to save partner:", err);
+      handleCloseModal();
+    } catch (error) {
+      console.error("Failed to save partner:", error);
+    } finally {
+      setLoadingButton(false);
     }
   };
 
-  const handleDelete = async (partnerId: string) => {
-    if (window.confirm("Are you sure you want to delete this partner?")) {
-      try {
-        await deletePartner(partnerId);
-      } catch (err) {
-        console.error("Failed to delete partner:", err);
-      }
+  // Load states when country changes
+  useEffect(() => {
+    if (formData.address.country === "Brazil") {
+      setLoadingStates(true);
+      stateCityDataService
+        .getStatesByCountry()
+        .then((res) => setStates(res.data.states))
+        .catch(console.error)
+        .finally(() => setLoadingStates(false));
+    } else {
+      setStates([]);
+      setCities([]);
     }
-  };
+  }, [formData.address.country]);
+
+  // Load cities when state changes
+  useEffect(() => {
+    if (formData.address.country === "Brazil" && formData.address.state) {
+      setLoadingCities(true);
+      stateCityDataService
+        .getCitiesByState("BR", formData.address.state)
+        .then((res) => setCities(res.data.cities))
+        .catch(console.error)
+        .finally(() => setLoadingCities(false));
+    } else {
+      setCities([]);
+    }
+  }, [formData.address.state, formData.address.country]);
 
   if (loading) return <div className="loading">Loading partners...</div>;
   if (error) return <div className="error">Error: {error}</div>;
@@ -317,21 +341,23 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
           <table className="table mb-0">
             <thead>
               <tr>
-                <th scope="col">Photo</th>
+                <th scope="col">Project Image</th>
                 <th scope="col">Company Name</th>
                 <th scope="col">Specialty</th>
                 <th scope="col">Address</th>
+                <th scope="col">Rating</th>
+                <th scope="col">Status</th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {displayedPartners.length > 0 ? (
-                displayedPartners.map((partner) => (
-                  <tr key={partner._id}>
+              {filteredPartners.length > 0 ? (
+                filteredPartners.map((partner) => (
+                  <tr key={partner.id}>
                     <td scope="row">
-                      {partner.profileImage ? (
+                      {partner.projectImageUrl ? (
                         <img
-                          src={partner.profileImage}
+                          src={partner.projectImageUrl}
                           className="profile_img"
                           alt={partner.companyName || "Profile"}
                         />
@@ -346,6 +372,28 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
                         : "No specialties"}
                     </td>
                     <td>{formatAddress(partner.address)}</td>
+                    <td>
+                      <StarRating rating={Number(partner.rating)} />
+                    </td>
+                    <td>
+                      <span
+                        className={`badge ${
+                          partner.status === "active"
+                            ? "bg-success"
+                            : partner.status === "inactive"
+                            ? "bg-secondary"
+                            : partner.status === "pending"
+                            ? "bg-warning text-dark"
+                            : partner.status === "suspended"
+                            ? "bg-danger"
+                            : "bg-light text-dark"
+                        }`}
+                      >
+                        {partner.status!.charAt(0).toUpperCase() +
+                          partner.status!.slice(1)}
+                      </span>
+                    </td>
+
                     <td>
                       <span className="action_icons">
                         <span
@@ -365,8 +413,8 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
                             />
                           </svg>
                         </span>
-                        <span
-                          onClick={() => handleDelete(partner._id)}
+                        {/* <span
+                          onClick={() => handleDelete(partner.id)}
                           style={{ cursor: "pointer" }}
                         >
                           <svg
@@ -393,7 +441,7 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
                               </clipPath>
                             </defs>
                           </svg>
-                        </span>
+                        </span> */}
                       </span>
                     </td>
                   </tr>
@@ -411,12 +459,12 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
             </tbody>
           </table>
 
-          {totalItems > 0 && (
+          {totalPages > 0 && (
             <Pagination
-              totalItems={totalItems}
-              itemsPerPage={itemsPerPage}
-              currentPage={currentPage}
-              onPageChange={handlePageChange}
+              totalItems={totalCount} // Server total count
+              itemsPerPage={serverLimit} // Server-managed limit
+              currentPage={currentPage} // Server-managed page
+              onPageChange={handlePageChange} // Calls goToPage()
             />
           )}
         </div>
@@ -556,8 +604,18 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
                         type="text"
                         placeholder="Enter specialties (comma separated)"
                         className="form-control"
-                        value={formData.speciality.join(", ")}
-                        onChange={handleSpecialtyChange}
+                        value={formData.specialityText || formData.speciality}
+                        onChange={(e) => {
+                          const text = e.target.value;
+                          setFormData((prev) => ({
+                            ...prev,
+                            specialityText: text,
+                            speciality: text
+                              .split(",")
+                              .map((s) => s.trim())
+                              .filter((s) => s),
+                          }));
+                        }}
                         autoComplete="off"
                       />
                     </div>
@@ -596,60 +654,26 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
                   </div>
 
                   <div className="row">
-                    <div className="col-md-6">
-                      <div className="input_field">
-                        <label htmlFor="city">City</label>
-                        <div className="position-relative">
-                          <input
-                            id="city"
-                            name="city"
-                            type="text"
-                            placeholder="Enter City"
-                            className="form-control"
-                            value={formData.address.city}
-                            onChange={handleAddressChange}
-                            autoComplete="off"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="input_field">
-                        <label htmlFor="state">State</label>
-                        <div className="position-relative">
-                          <input
-                            id="state"
-                            name="state"
-                            type="text"
-                            placeholder="Enter State"
-                            className="form-control"
-                            value={formData.address.state}
-                            onChange={handleAddressChange}
-                            autoComplete="off"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="row">
+                    {/* Country Dropdown */}
                     <div className="col-md-6">
                       <div className="input_field">
                         <label htmlFor="country">Country</label>
                         <div className="position-relative">
-                          <input
+                          <select
                             id="country"
                             name="country"
-                            type="text"
-                            placeholder="Enter Country"
                             className="form-control"
                             value={formData.address.country}
                             onChange={handleAddressChange}
-                            autoComplete="off"
-                          />
+                          >
+                            <option value="">Select Country</option>
+                            <option value="Brazil">Brazil</option>
+                          </select>
                         </div>
                       </div>
                     </div>
+
+                    {/* Zip Code */}
                     <div className="col-md-6">
                       <div className="input_field">
                         <label htmlFor="zipCode">Zip Code</label>
@@ -667,13 +691,73 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
                         </div>
                       </div>
                     </div>
+                  </div>
 
+                  <div className="row">
+                    {/* State Dropdown */}
+                    <div className="col-md-6">
+                      <div className="input_field">
+                        <label htmlFor="state">State</label>
+                        <div className="position-relative">
+                          <select
+                            id="state"
+                            name="state"
+                            className="form-control"
+                            value={formData.address.state}
+                            onChange={handleAddressChange}
+                            disabled={
+                              !formData.address.country || loadingStates
+                            }
+                          >
+                            <option value="">
+                              {loadingStates
+                                ? "Loading states..."
+                                : "Select State"}
+                            </option>
+                            {states.map((state) => (
+                              <option key={state.iso2} value={state.iso2}>
+                                {state.name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* City Dropdown */}
+                    <div className="col-md-6">
+                      <div className="input_field">
+                        <label htmlFor="city">City</label>
+                        <div className="position-relative">
+                          <select
+                            id="city"
+                            name="city"
+                            className="form-control"
+                            value={formData.address.city}
+                            onChange={handleAddressChange}
+                            disabled={!formData.address.state || loadingCities}
+                          >
+                            <option value="">
+                              {loadingCities
+                                ? "Loading cities..."
+                                : "Select City"}
+                            </option>
+                            {cities.map((city) => (
+                              <option key={city.id} value={city.name}>
+                                {city.name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Upload Photo */}
                     <div className="col-md-6">
                       <div className="input_field">
                         <label>Upload Professional Photo *</label>
                         <div className="position-relative">
                           {!imagePreview ? (
-                            // Upload area
                             <div
                               onClick={() => fileInputRef.current?.click()}
                               className="border border-dashed border-secondary rounded p-4 text-center cursor-pointer"
@@ -693,7 +777,6 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
                               <strong>Upload Professional Photo</strong>
                             </div>
                           ) : (
-                            // Image preview
                             <div className="position-relative">
                               <img
                                 src={imagePreview}
@@ -728,8 +811,22 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
                     type="button"
                     onClick={handleSubmit}
                     className="btn common_button mt-3"
+                    disabled={loading}
                   >
-                    {editingPartner ? "Update" : "Save"}
+                    {loadingButton ? (
+                      <>
+                        <span
+                          className="spinner-border spinner-border-sm me-2"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                        {editingPartner
+                          ? "Please wait... Updating"
+                          : "Please wait... Saving"}
+                      </>
+                    ) : (
+                      <>{editingPartner ? "Update" : "Save"}</>
+                    )}
                   </button>
                 </div>
               </div>

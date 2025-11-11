@@ -1,6 +1,6 @@
 import type { ApiResponse } from "../types";
 
-const API_BASE_URL = `http://69.62.81.167:8080`;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
 
 const getToken = (): string | null => {
   return localStorage.getItem("token"); // Or sessionStorage.getItem("token")

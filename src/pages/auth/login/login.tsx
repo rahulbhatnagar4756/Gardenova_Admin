@@ -36,8 +36,7 @@ export const Login: React.FC = () => {
   //#region  CUSTOM HOOKS
   const { login } = useAuth(); // Custom hook for authentication context
   const navigate = useNavigate(); // Hook for navigation
-  const { showSuccess, showError, showWarning, showInfo} =
-    useToast(); // Updated hook using package
+  const { showSuccess, showError, showWarning, showInfo } = useToast(); // Updated hook using package
 
   //#endregion
 
@@ -94,20 +93,16 @@ export const Login: React.FC = () => {
         );
         return; // Stop execution if login fails
       }
-
+      showSuccess("Login successful! Redirecting to dashboard...");
+      navigate(APP_ROUTES.admin.root, { replace: true });
       // Success flow
       login(response.data.token); // Store token in auth context
-      showSuccess("Login successful! Redirecting to dashboard...");
-
       // Reset form fields after successful login
       setFormData({
         email: "",
         password: "",
       });
       setRememberMe(false);
-      // Small delay to show success message before redirect
-
-      navigate(APP_ROUTES.admin.root, { replace: true });
     } catch (error: unknown) {
       const err = error as ApiError;
       const errorMessage = err.message || "Login failed. Please try again.";

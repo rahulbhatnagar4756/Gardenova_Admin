@@ -5,7 +5,7 @@ import type {
   PartnerProfileRequest,
   PartnerAddress,
   PartnerProfileStatus,
-} from "../../services/apiCalls/partnerProfileService";
+} from "../../services/apiCalls/partnerProfile";
 
 interface PartnerFormProps {
   initialData?: PartnerProfileResponse;

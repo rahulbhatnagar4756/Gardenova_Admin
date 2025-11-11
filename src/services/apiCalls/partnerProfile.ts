@@ -24,14 +24,30 @@ export interface PartnerProfileRequest {
   address?: PartnerAddress;
   website?: string;
   contactPerson?: string;
-  profileImage?: string; // Base64 or URL
+  projectImageUrl?: string; // Base64 or URL
   status?: PartnerProfileStatus;
+  rating?: string;
 }
 
 export interface PartnerProfileResponse extends PartnerProfileRequest {
-  _id: string;
+  id: string;
   createdAt?: string;
   updatedAt?: string;
+}
+
+// Pagination parameters interface
+export interface PaginationParams {
+  page?: number;
+  limit?: number;
+}
+
+// Paginated response interface matching your backend
+export interface PaginatedPartnerProfilesResponse {
+  currentPage: number;
+  totalPages: number;
+  totalCount: number;
+  limit: number;
+  profiles: PartnerProfileResponse[];
 }
 
 export const partnerProfileService = {
@@ -42,12 +58,26 @@ export const partnerProfileService = {
     apiService.post<ApiResponse<null>>(API_ROUTES.partnerProfile.create, data),
 
   /**
-   * Get all partner profiles
+   * Get all partner profiles with pagination
+   * @param params - Pagination parameters (page, limit)
    */
-  getAll: () =>
-    apiService.get<ApiResponse<PartnerProfileResponse[]>>(
-      API_ROUTES.partnerProfile.getAll
-    ),
+  /**
+   * Get all partner profiles with pagination
+   */
+  getAll: (
+    params?: PaginationParams
+  ): Promise<ApiResponse<PaginatedPartnerProfilesResponse>> => {
+    const queryParams = new URLSearchParams();
+
+    if (params?.page) queryParams.append("page", params.page.toString());
+    if (params?.limit) queryParams.append("limit", params.limit.toString());
+
+    const url = queryParams.toString()
+      ? `${API_ROUTES.partnerProfile.getAll}?${queryParams}`
+      : API_ROUTES.partnerProfile.getAll;
+
+    return apiService.get<PaginatedPartnerProfilesResponse>(url);
+  },
 
   /**
    * Update a partner profile by ID

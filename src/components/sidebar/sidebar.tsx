@@ -4,13 +4,8 @@ import "./sidebar.css";
 import { APP_ROUTES } from "../../constants/appRoutes";
 import { useAuth } from "../../hooks/useAuth";
 import { jwtDecode } from "jwt-decode";
-
-interface DecodedToken {
-  userEmail: string;
-  role: string;
-  iat: number;
-  exp: number;
-}
+import { decodePayload } from "../../utility/util";
+import type { DecodedToken } from "../../types/auth";
 
 export const Sidebar = () => {
   const { logout } = useAuth();
@@ -22,8 +17,10 @@ export const Sidebar = () => {
     if (!token) return false;
     try {
       const decoded = jwtDecode<DecodedToken>(token);
-      const isExpired = decoded.exp * 1000 < Date.now();
-      return !isExpired && decoded.role === "Admin";
+      // Decode base64 only for string fields
+      const decodedPayload = decodePayload(decoded);
+      const isExpired = decodedPayload.exp * 1000 < Date.now();
+      return !isExpired && decodedPayload.role === "Admin";
     } catch {
       return false;
     }
@@ -44,15 +41,25 @@ export const Sidebar = () => {
     }
   };
 
-   const handleClose = () => {
-    document.body.classList.remove('sidebar-expand');
+  const handleClose = () => {
+    document.body.classList.remove("sidebar-expand");
   };
 
   return (
     <div className="sidebar_main">
-      <div className="close_btn d-lg-none" >
-        <a href="javascript:void(0)"><span onClick={handleClose}><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"><path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z"/></svg></span></a>
-         
+      <div className="close_btn d-lg-none">
+        <a href="javascript:void(0)">
+          <span onClick={handleClose}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+            >
+              <path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z" />
+            </svg>
+          </span>
+        </a>
       </div>
       <div className="dashboard_logo">
         <a>
