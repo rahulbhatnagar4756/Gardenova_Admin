@@ -348,8 +348,8 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
 
        {/* spinner loader  */}
 
-        <div class="loading-state">
-         <div class="loading"></div>
+        <div className="loading-state">
+         <div className="loading"></div>
         </div>
 
 
