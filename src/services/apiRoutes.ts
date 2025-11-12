@@ -31,9 +31,12 @@ export const API_ROUTES = {
   partnerProfile: {
     // Partner Profile routes
     getAll: `${PARTNER_PROFILE_BASE}`,
+    getById: `${PARTNER_PROFILE_BASE}`,
     create: `${PARTNER_PROFILE_BASE}`,
     update: `${PARTNER_PROFILE_BASE}`,
     delete: `${PARTNER_PROFILE_BASE}`,
+    updateRating: `${PARTNER_PROFILE_BASE}/rating`,
+    updateStatus: `${PARTNER_PROFILE_BASE}/status`,
   },
   stateCityData: {
     getStates: `${STATE_CITY_BASE}`,

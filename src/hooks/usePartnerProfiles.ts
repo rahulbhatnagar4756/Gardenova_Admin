@@ -31,6 +31,9 @@ interface UsePartnerProfilesReturn {
   ) => Promise<void>;
   deletePartner: (id: string) => Promise<void>;
   refetch: () => Promise<void>;
+  updatePartnerRating: (partnerId: string, rating: number) => Promise<void>;
+  updatePartnerStatus: (partnerId: string, status: string) => Promise<void>;
+  getPartnerById: (id: string) => Promise<PartnerProfileResponse | null>;
 }
 
 interface UsePartnerProfilesOptions {
@@ -192,6 +195,67 @@ export const usePartnerProfiles = (
     }
   };
 
+  const updatePartnerRating = async (partnerId: string, rating: number) => {
+    try {
+      const response = await partnerProfileService.updateRating({
+        partnerId,
+        rating,
+      });
+
+      if (response?.success) {
+        showSuccess("Partner rating updated successfully!");
+        // ✅ Optionally refresh list if you want to show new rating immediately
+        await refetch();
+      } else {
+        showError(response?.message || "Failed to update partner rating");
+      }
+    } catch (err) {
+      console.error("Update partner rating error:", err);
+      showError("An error occurred while updating rating");
+      throw err;
+    }
+  };
+
+  const updatePartnerStatus = async (partnerId: string, status: string) => {
+    try {
+      const response = await partnerProfileService.updateStatus({
+        partnerId,
+        status: status as "pending" | "approved" | "rejected" | "inactive",
+      });
+
+      if (response?.success) {
+        showSuccess("Partner status updated successfully!");
+        // ✅ Optionally refresh the list to reflect the new status
+        await refetch();
+      } else {
+        showError(response?.message || "Failed to update partner status");
+      }
+    } catch (err) {
+      console.error("Update partner status error:", err);
+      showError("An error occurred while updating status");
+      throw err;
+    }
+  };
+
+  // ✅ New: Get partner by ID
+  const getPartnerById = async (
+    id: string
+  ): Promise<PartnerProfileResponse | null> => {
+    try {
+      const response = await partnerProfileService.getById(id);
+      if (response?.success && response.data) {
+        return response.data;
+      } else {
+        showError(response?.message || "Failed to fetch partner profile");
+        return null;
+      }
+    } catch (err) {
+      console.error("Get partner by ID error:", err);
+      showError("An error occurred while fetching partner profile");
+      return null;
+    }
+  };
+
   // Fetch on mount if autoFetch is enabled
   useEffect(() => {
     if (autoFetch) {
@@ -215,5 +279,8 @@ export const usePartnerProfiles = (
     updatePartner,
     deletePartner,
     refetch,
+    updatePartnerRating,
+    updatePartnerStatus,
+    getPartnerById,
   };
 };

@@ -1,0 +1,36 @@
+.table-loading-cell {
+  text-align: center;
+  background-color: transparent;
+  padding: 0;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  gap: 12px;
+}
+
+/* ✅ Proper spinning circle loader */
+.loading {
+  width: 60px;
+  height: 60px;
+  border: 6px solid #e5e7eb; /* light gray border */
+  border-top-color: #2563eb; /* blue spinner color */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loading-text {
+  font-size: 15px;
+  color: #444;
+  font-weight: 500;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

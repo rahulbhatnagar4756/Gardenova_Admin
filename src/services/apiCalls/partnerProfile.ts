@@ -50,6 +50,16 @@ export interface PaginatedPartnerProfilesResponse {
   profiles: PartnerProfileResponse[];
 }
 
+export interface PartnerRatingUpdateRequest {
+  partnerId: string;
+  rating: number;
+}
+
+export interface PartnerStatusUpdateRequest {
+  partnerId: string;
+  status: "pending" | "approved" | "rejected" | "inactive";
+}
+
 export const partnerProfileService = {
   /**
    * Create a new partner profile
@@ -80,6 +90,16 @@ export const partnerProfileService = {
   },
 
   /**
+   * ✅ Get partner profile by ID
+   * @param id - Unique ID of the partner profile
+   */
+  getById: (id: string): Promise<ApiResponse<PartnerProfileResponse>> => {
+    return apiService.get<PartnerProfileResponse>(
+      `${API_ROUTES.partnerProfile.getById}/${id}`
+    );
+  },
+
+  /**
    * Update a partner profile by ID
    */
   update: (id: string, data: Partial<PartnerProfileRequest>) =>
@@ -94,5 +114,25 @@ export const partnerProfileService = {
   delete: (id: string) =>
     apiService.delete<ApiResponse<null>>(
       `${API_ROUTES.partnerProfile.delete}/${id}`
+    ),
+
+  /**
+   * Update partner rating
+   * @param data - Object containing partnerId and rating
+   */
+  updateRating: (data: PartnerRatingUpdateRequest) =>
+    apiService.patch<ApiResponse<null>>(
+      API_ROUTES.partnerProfile.updateRating,
+      data
+    ),
+
+  /**
+   * Update partner status
+   * @param data - Object containing partnerId and status
+   */
+  updateStatus: (data: PartnerStatusUpdateRequest) =>
+    apiService.patch<ApiResponse<null>>(
+      API_ROUTES.partnerProfile.updateStatus,
+      data
     ),
 };

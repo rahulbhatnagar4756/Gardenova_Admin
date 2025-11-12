@@ -24,7 +24,7 @@
   left: 0;
   width: 100%;
   height: 100%;
- background-color: #2e3a3066;
+  background-color: #2e3a3066;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -33,114 +33,122 @@
 
 /* Popup box */
 .image-popup {
-    position: relative;
-    background: #2e3a30;
-    padding: 60px;
-    border-radius: 10px;
-    max-width: 95% !important;
-    max-height: 96% !important;
+  position: relative;
+  background: #2e3a30;
+  padding: 60px;
+  border-radius: 10px;
+  max-width: 95% !important;
+  max-height: 96% !important;
   width: 827px !important;
-    height: 530px !important;
-    display: flex;
-    box-shadow: 0 0 40px 0 #0000004f;
+  height: 530px !important;
+  display: flex;
+  box-shadow: 0 0 40px 0 #0000004f;
 }
 
 .popup-img {
-    max-width: 100%;
-    max-height: 100%;
-    border-radius: 10px;
-    display: block;
-    margin: auto auto;
-    height: auto;
-    width: auto;
-    object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 10px;
+  display: block;
+  margin: auto auto;
+  height: auto;
+  width: auto;
+  object-fit: contain;
 }
 
 /* Close button */
 .close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: #ffffff00;
-    color: #ffffff;
-    border: none;
-    font-size: 30px;
-    cursor: pointer;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    line-height: 24px;
-    text-align: center;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #ffffff00;
+  color: #ffffff;
+  border: none;
+  font-size: 30px;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  line-height: 24px;
+  text-align: center;
 }
-
-
 
 .badge.bg-success {
-
-        border: 1px solid rgba(121, 194, 83, 0.30);
-    background: rgba(121, 194, 83, 0.10) !important;
-    color: #66AA42;
+  border: 1px solid rgba(121, 194, 83, 0.3);
+  background: rgba(121, 194, 83, 0.1) !important;
+  color: #66aa42;
 }
 .badge {
-    border-radius: 30px;
-    padding: 5px 15px;
-    display: inline-block;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
+  border-radius: 30px;
+  padding: 5px 15px;
+  display: inline-block;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 }
 .badge.bg-warning {
-color: #0D6EFD !important;
-    border: 1px solid rgba(13, 110, 253, 0.30);
-    background: rgba(13, 110, 253, 0.10) !important;
+  color: #0d6efd !important;
+  border: 1px solid rgba(13, 110, 253, 0.3);
+  background: rgba(13, 110, 253, 0.1) !important;
 }
 .badge.bg-danger {
-    color: #C80037 !important; 
-    border: 1px solid rgba(200, 0, 55, 0.30);
-    background: rgba(200, 0, 55, 0.10 ) !important;
+  color: #c80037 !important;
+  border: 1px solid rgba(200, 0, 55, 0.3);
+  background: rgba(200, 0, 55, 0.1) !important;
 }
 .badge.bg-secondary {
-    color: #bf9549 !important;
-    border: 1px solid #bf95496b;
-    background: #deb46747 !important;
-}
-.loading-state {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-background-color: #2e3a3029;
-  z-index: 9999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.loading {
-    width: 100px;
-    height: 100px;
-    border-radius: 50% !important;
-    animation: loading 1s linear infinite;
-    box-shadow: inset 2px 0 0 #ffffff00, -3px 0 0 #2e3a30;
-    background-color: #e0f2fe00 !important;
-}
-@keyframes loading {
-  to {
-    transform: rotate(360deg);
-  }
+  color: #bf9549 !important;
+  border: 1px solid #bf95496b;
+  background: #deb46747 !important;
 }
 
 @media only screen and (max-width: 767.5px) {
-    .image-popup {
+  .image-popup {
     padding: 20px;
     height: 370px !important;
-}
-.close-btn {
+  }
+  .close-btn {
     top: 0px;
     right: 0px;
     width: 37px;
     height: 32px;
+  }
 }
 
+.beautiful-dropdown {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px 40px 10px 12px;
+  font-size: 15px;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%23999' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+}
+
+.beautiful-dropdown:hover {
+  border-color: #888;
+  box-shadow: 0 0 0 3px rgba(100, 150, 250, 0.2);
+}
+
+.beautiful-dropdown:disabled {
+  background-color: #f3f3f3;
+  cursor: not-allowed;
+  color: #aaa;
+}
+
+.input_field label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
 }
