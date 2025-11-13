@@ -8,6 +8,7 @@ import type {
   UpdateQuestionRequest,
 } from "../../services/apiCalls/diagnosticQuestion";
 import { useToast } from "../../hooks/useToast";
+import ConfirmModal from "../../components/confirmModal";
 
 interface DiagnosticQuestionsProps {
   limit?: number;
@@ -47,6 +48,7 @@ export const DiagnosticQuestions = ({
     ...q,
     id: index.toString(),
   }));
+  const [deleteId, setDeleteId] = useState<string | null>(null);
 
   // Modal and form handlers
   const openAddModal = () => {
@@ -67,15 +69,17 @@ export const DiagnosticQuestions = ({
     setIsModalOpen(true);
   };
 
-  const handleDelete = async (id: string) => {
-    if (window.confirm("Are you sure you want to delete this question?")) {
-      try {
-        await deleteQuestion(id);
-        showSuccess("Question deleted successfully!");
-      } catch {
-        showError("Failed to delete question");
-      }
+  const handleDelete = async () => {
+    if (!deleteId) return;
+
+    try {
+      await deleteQuestion(deleteId);
+      showSuccess("Question deleted successfully!");
+    } catch {
+      showError("Failed to delete question");
     }
+
+    setDeleteId(null);
   };
 
   const handleAddOption = () => {
@@ -253,7 +257,7 @@ export const DiagnosticQuestions = ({
                         <li className="question_actions delete_action">
                           <button
                             type="button"
-                            onClick={() => handleDelete(question.question_id)}
+                            onClick={() => setDeleteId(question.question_id)}
                             style={{
                               background: "none",
                               border: "none",
@@ -526,6 +530,17 @@ export const DiagnosticQuestions = ({
           </div>
         </div>
       )}
+
+      {/* Reusable Confirm Modal */}
+      <ConfirmModal
+        open={!!deleteId}
+        title="Delete Question?"
+        message="Are you sure you want to delete this question?"
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={handleDelete}
+        onCancel={() => setDeleteId(null)}
+      />
     </>
   );
 };
