@@ -17,7 +17,7 @@ export const useDiagnosticQuestions = () => {
       const response = await questionService.getAllQuestions();
 
       if (response.success) {
-        setQuestions(response.data.formattedQuestions);
+        setQuestions(response.data.questions);
         setError(null);
       } else {
         setError("Failed to fetch questions");
@@ -36,11 +36,12 @@ export const useDiagnosticQuestions = () => {
   }, []);
 
   const createQuestion = async (data: CreateQuestionRequest) => {
+    debugger;
     try {
       // Optimistic update
       const tempQuestion: Question = {
-        questionId: "",
-        questionText: data.text,
+        question_id: "",
+        question_text: data.question_text,
         options: data.options,
         order: data.order,
       };
@@ -69,9 +70,10 @@ export const useDiagnosticQuestions = () => {
   };
 
   const updateQuestion = async (id: string, data: UpdateQuestionRequest) => {
+    debugger;
     try {
       // Find question by some criteria (since we don't have ID in response)
-      const questionIndex = questions.findIndex((q) => q.questionId === id);
+      const questionIndex = questions.findIndex((q) => q.question_id === id);
 
       if (questionIndex === -1) {
         throw new Error("Question not found");
@@ -79,8 +81,8 @@ export const useDiagnosticQuestions = () => {
 
       // Optimistic update
       const updatedQuestion: Question = {
-        questionId: id,
-        questionText: data.text,
+        question_id: id,
+        question_text: data.question_text,
         options: data.options,
         order: data.order,
       };
@@ -110,6 +112,7 @@ export const useDiagnosticQuestions = () => {
   };
 
   const deleteQuestion = async (id: string) => {
+    debugger;
     // Keep a copy of the current state in case we need to rollback
     const originalQuestions = [...questions];
 
@@ -118,7 +121,7 @@ export const useDiagnosticQuestions = () => {
 
       if (response.success) {
         // Optimistic update - remove question locally
-        setQuestions((prev) => prev.filter((q) => q.questionId !== id));
+        setQuestions((prev) => prev.filter((q) => q.question_id !== id));
         // ✅ On success, state is already updated, nothing else needed
         return response;
       } else {

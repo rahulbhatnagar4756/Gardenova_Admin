@@ -7,7 +7,7 @@ export const APP_ROUTES = {
     root: "/adminPanel",
     dashboard: "/adminPanel",
     diagnosticQuestions: "/adminPanel/diagnostic-questions",
-    rules: "/adminPanel/diagnostic-questions/rules",
+    rules: "/adminPanel/rules",
     partnerProfiles: "/adminPanel/partner-profiles",
     leads: "/adminPanel/leads",
   },

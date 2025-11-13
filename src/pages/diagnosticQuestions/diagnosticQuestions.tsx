@@ -4,6 +4,7 @@ import { useDiagnosticQuestions } from "../../hooks/useDiagnosticQuestions";
 import type {
   CreateQuestionRequest,
   Question,
+  QuestionOption,
   UpdateQuestionRequest,
 } from "../../services/apiCalls/diagnosticQuestion";
 import { useToast } from "../../hooks/useToast";
@@ -39,10 +40,9 @@ export const DiagnosticQuestions = ({
   // Form state for the modal
   const [questionText, setQuestionText] = useState("");
   const [currentOption, setCurrentOption] = useState("");
-  const [options, setOptions] = useState<string[]>([]);
+  const [options, setOptions] = useState<QuestionOption[]>([]);
   const [questionOrder, setQuestionOrder] = useState<number>(1);
   const { showSuccess, showError, showWarning } = useToast();
-
   const questionsWithId: QuestionWithId[] = questions.map((q, index) => ({
     ...q,
     id: index.toString(),
@@ -60,7 +60,7 @@ export const DiagnosticQuestions = ({
 
   const handleEdit = (question: QuestionWithId) => {
     setEditingQuestion(question);
-    setQuestionText(question.questionText);
+    setQuestionText(question.question_text);
     setOptions([...question.options]);
     setCurrentOption("");
     setQuestionOrder(question.order || 1);
@@ -68,6 +68,7 @@ export const DiagnosticQuestions = ({
   };
 
   const handleDelete = async (id: string) => {
+    debugger;
     if (window.confirm("Are you sure you want to delete this question?")) {
       try {
         await deleteQuestion(id);
@@ -79,8 +80,13 @@ export const DiagnosticQuestions = ({
   };
 
   const handleAddOption = () => {
-    if (currentOption.trim() && !options.includes(currentOption.trim())) {
-      setOptions([...options, currentOption.trim()]);
+    if (currentOption.trim()) {
+      const newOption: QuestionOption = {
+        id: "", // or backend can ignore id
+        option_text: currentOption.trim(),
+      };
+
+      setOptions([...options, newOption]);
       setCurrentOption("");
     }
   };
@@ -90,6 +96,7 @@ export const DiagnosticQuestions = ({
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    debugger;
     e.preventDefault();
 
     if (currentOption.trim()) {
@@ -100,7 +107,7 @@ export const DiagnosticQuestions = ({
     }
 
     const questionData = {
-      text: questionText.trim(),
+      question_text: questionText.trim(),
       options: options,
       order: questionOrder,
     };
@@ -109,7 +116,7 @@ export const DiagnosticQuestions = ({
       if (editingQuestion) {
         // Check if nothing changed
         const nothingChanged =
-          editingQuestion.questionText.trim() === questionData.text &&
+          editingQuestion.question_text.trim() === questionData.question_text &&
           JSON.stringify(editingQuestion.options) ===
             JSON.stringify(questionData.options) &&
           editingQuestion.order === questionData.order;
@@ -124,7 +131,7 @@ export const DiagnosticQuestions = ({
           return;
         }
         await updateQuestion(
-          editingQuestion.questionId,
+          editingQuestion.question_id,
           questionData as UpdateQuestionRequest
         );
         showSuccess("Question updated successfully!");
@@ -195,18 +202,25 @@ export const DiagnosticQuestions = ({
         {displayedQuestions.length > 0 && (
           <div className="questions-container">
             {displayedQuestions.map((question, index) => (
-              <div key={question.questionId || index} className="single_question">
+              <div
+                key={question.question_id || index}
+                className="single_question"
+              >
                 <div className="row align-items-end">
                   <div className="col-md">
                     <ul className="question_heading">
                       <li className="question_number">Q.{index + 1}</li>
-                      <li className="question_name">{question.questionText}</li>
+                      <li className="question_name">
+                        {question.question_text}
+                      </li>
                     </ul>
                     <ul className="question_options_area">
                       <li className="question_options_head">Options:</li>
                       {question.options.map((option, optionIndex) => (
                         <li key={optionIndex}>
-                          <span className="question_answer">{option}</span>
+                          <span className="question_answer">
+                            {option.option_text}
+                          </span>
                         </li>
                       ))}
                     </ul>
@@ -241,7 +255,7 @@ export const DiagnosticQuestions = ({
                         <li className="question_actions delete_action">
                           <button
                             type="button"
-                            onClick={() => handleDelete(question.questionId)}
+                            onClick={() => handleDelete(question.question_id)}
                             style={{
                               background: "none",
                               border: "none",
@@ -468,7 +482,9 @@ export const DiagnosticQuestions = ({
                       <ul className="added_list_main">
                         {options.map((option, index) => (
                           <li key={index}>
-                            <span className="added_list">{option}</span>
+                            <span className="added_list">
+                              {option.option_text}
+                            </span>
                             <span className="list_icons">
                               <button
                                 type="button"
@@ -515,9 +531,3 @@ export const DiagnosticQuestions = ({
     </>
   );
 };
-
-
-
-
-
-
