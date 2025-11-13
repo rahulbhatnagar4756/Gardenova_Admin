@@ -86,7 +86,8 @@
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-}
+  user-select: none !important;
+} 
 .badge.bg-warning {
   color: #0d6efd !important;
   border: 1px solid rgba(13, 110, 253, 0.3);
@@ -103,18 +104,7 @@
   background: #deb46747 !important;
 }
 
-@media only screen and (max-width: 767.5px) {
-  .image-popup {
-    padding: 20px;
-    height: 370px !important;
-  }
-  .close-btn {
-    top: 0px;
-    right: 0px;
-    width: 37px;
-    height: 32px;
-  }
-}
+
 
 .beautiful-dropdown {
   appearance: none;
@@ -151,4 +141,134 @@
   font-weight: 600;
   margin-bottom: 6px;
   display: block;
+}
+td.star_rating > div > div:first-child {
+    top: -35px !important;
+}
+td.star_rating > div > div:first-child:after {
+    position: absolute;
+    content: '';
+    bottom: -4px;
+    background: #333333;
+    width: 10px;
+    height: 10px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+
+}
+
+.view_profile > * {
+  color: #f4f4f4 !important;
+}
+.view_profile p {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    word-break: break-word;
+}
+.view_profile strong {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    color: #939393;
+}
+.view_profile h4 {
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+.view_profile img {
+    max-width: 100% !important;
+    width: auto !important;
+    margin: 0 auto !important;
+}
+.modal-content.view_modal{
+    position: relative;
+    background: #2e3a30;
+    border-radius: 10px;
+    max-width: 95% !important;
+    width: 827px !important;
+    display: flex;
+    box-shadow: 0 0 40px 0 #0000004f;
+    border: none !important;
+    min-height: 250px !important;
+    margin: 0 auto !important;
+}
+.modal-dialog:has(.view_modal) {
+    max-width: 840px !important;
+}
+.close-btn.btn-close:hover {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+.custom_select .beautiful-select__control {
+    border-radius: 10px;
+    border: 1px solid rgba(244, 244, 244, 0.1);
+    background: #2d382f;
+    padding: 13px 15px;
+    color: #f4f4f4;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    max-height: 45px !important;
+}
+.custom_select .beautiful-select__value-container {
+    padding: 0 !important;
+}
+.custom_select .beautiful-select__indicator {
+    padding: 0 0 0 5px !important;
+}
+.custom_select .beautiful-select__input-container {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+.custom_select .beautiful-select__indicator-separator {
+    background-color: hsl(0deg 0% 71.8% / 21%) !important;
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+}
+.custom_select .beautiful-select__single-value {
+    color: #f4f4f4 !important;
+    font-size: 14px !important;
+    font-style: normal !important;
+    font-weight: 500 !important;
+    line-height: normal !important;
+    margin-top: -3px !important;
+}
+.custom_select .beautiful-select__control {
+    border-color: rgba(244, 244, 244, 0.1) !important;
+}
+.custom_select .beautiful-select__control:focus,  .custom_select .beautiful-select__control:focus-visible {
+    border-color: rgba(244, 244, 244, 0.3) !important;
+    box-shadow: none !important;
+}
+.custom_select .beautiful-select_control--menu-is-open {
+    border-color: rgba(244, 244, 244, 0.3) !important;
+}
+.modal_view_form .modal-content {
+    position: relative;
+    background: #2e3a30;
+    border-radius: 10px;
+    max-width: 95% !important;
+    width: 827px !important;
+    display: flex;
+    box-shadow: 0 0 40px 0 #0000004f;
+    border: none !important;
+}
+
+@media only screen and (max-width: 767.5px) {
+  .image-popup {
+    padding: 20px;
+    height: 370px !important;
+  }
+  .close-btn {
+    top: 0px;
+    right: 0px;
+    width: 37px;
+    height: 32px;
+  }
 }

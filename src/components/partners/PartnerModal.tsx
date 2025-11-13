@@ -452,51 +452,20 @@ export const PartnerModal = ({
 
   return (
     <div
-      className="modal fade show"
-      style={{ display: "block", backgroundColor: "rgba(0,0,0,0.5)" }}
+      className="modal fade show modal_view_form"
+      style={{ display: "block", backgroundColor: "rgba(46, 58, 48, 0.4)" }}
     >
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <button
             type="button"
-            className="btn-close"
+            className="btn-close close-btn"
             onClick={onClose}
             aria-label="Close"
           >
-            <svg width={27} height={27} viewBox="0 0 27 27" fill="none">
-              <rect
-                width={27}
-                height={27}
-                rx="13.5"
-                fill="url(#paint0_linear_790_3208)"
-              />
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M18.2908 18.2908C18.5697 18.0118 18.5697 17.5596 18.2908 17.2806L9.71936 8.70921C9.44042 8.43026 8.98816 8.43026 8.70921 8.70921C8.43026 8.98816 8.43026 9.44042 8.70921 9.71936L17.2806 18.2908C17.5596 18.5697 18.0118 18.5697 18.2908 18.2908Z"
-                fill="#F4F4F4"
-              />
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M8.70921 18.2908C8.98816 18.5697 9.44042 18.5697 9.71936 18.2908L18.2908 9.71936C18.5697 9.44042 18.5697 8.98815 18.2908 8.70921C18.0118 8.43026 17.5596 8.43026 17.2806 8.70921L8.70921 17.2806C8.43026 17.5596 8.43026 18.0118 8.70921 18.2908Z"
-                fill="#F4F4F4"
-              />
-              <defs>
-                <linearGradient
-                  id="paint0_linear_790_3208"
-                  x1="13.5"
-                  y1={0}
-                  x2="13.5"
-                  y2={27}
-                  gradientUnits="userSpaceOnUse"
-                >
-                  <stop stopColor="#E0B669" />
-                  <stop offset={1} stopColor="#B48A3E" />
-                </linearGradient>
-              </defs>
-            </svg>
+             ×
           </button>
+      
 
           <div className="modal-body">
             <div className="head_area">
@@ -729,7 +698,7 @@ export const PartnerModal = ({
 
               <div className="row">
                 <div className="col-md-6">
-                  <div className="input_field">
+                  <div className="input_field custom_select">
                     <label htmlFor="country">
                       Country <span className="text-danger">*</span>
                     </label>
@@ -795,7 +764,7 @@ export const PartnerModal = ({
 
               <div className="row">
                 <div className="col-md-6">
-                  <div className="input_field">
+                  <div className="input_field custom_select">
                     <label htmlFor="state">
                       State <span className="text-danger">*</span>
                     </label>
@@ -837,7 +806,7 @@ export const PartnerModal = ({
                 </div>
 
                 <div className="col-md-6">
-                  <div className="input_field">
+                  <div className="input_field custom_select">
                     <label htmlFor="city">
                       City <span className="text-danger">*</span>
                     </label>

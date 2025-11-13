@@ -246,7 +246,7 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
                         : "No specialties"}
                     </td>
                     <td>{formatAddress(partner.address)}</td>
-                    <td>
+                    <td className="star_rating">
                       <StarRating
                         rating={Number(partner.rating)}
                         onChange={async (newRating) => {
