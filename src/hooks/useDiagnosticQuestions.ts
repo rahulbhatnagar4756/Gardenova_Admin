@@ -36,7 +36,6 @@ export const useDiagnosticQuestions = () => {
   }, []);
 
   const createQuestion = async (data: CreateQuestionRequest) => {
-    debugger;
     try {
       // Optimistic update
       const tempQuestion: Question = {
@@ -70,7 +69,6 @@ export const useDiagnosticQuestions = () => {
   };
 
   const updateQuestion = async (id: string, data: UpdateQuestionRequest) => {
-    debugger;
     try {
       // Find question by some criteria (since we don't have ID in response)
       const questionIndex = questions.findIndex((q) => q.question_id === id);
@@ -112,7 +110,6 @@ export const useDiagnosticQuestions = () => {
   };
 
   const deleteQuestion = async (id: string) => {
-    debugger;
     // Keep a copy of the current state in case we need to rollback
     const originalQuestions = [...questions];
 

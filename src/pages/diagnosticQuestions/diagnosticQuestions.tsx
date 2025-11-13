@@ -68,7 +68,6 @@ export const DiagnosticQuestions = ({
   };
 
   const handleDelete = async (id: string) => {
-    debugger;
     if (window.confirm("Are you sure you want to delete this question?")) {
       try {
         await deleteQuestion(id);
@@ -96,7 +95,6 @@ export const DiagnosticQuestions = ({
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    debugger;
     e.preventDefault();
 
     if (currentOption.trim()) {
