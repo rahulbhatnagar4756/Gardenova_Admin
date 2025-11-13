@@ -266,8 +266,8 @@ td.star_rating > div > div:first-child:after {
 }
 .modal_view_form .modal-dialog {
     max-width: 860px !important;
-    margin: 0 auto !important;
-    height: 100%;
+   
+   
 }
 .image_upload .input_field >:nth-child(2) {
     border-radius: 10px;

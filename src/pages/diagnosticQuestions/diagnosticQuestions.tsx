@@ -120,7 +120,7 @@ export const DiagnosticQuestions = ({
         const nothingChanged =
           editingQuestion.question_text.trim() === questionData.question_text &&
           JSON.stringify(editingQuestion.options) ===
-            JSON.stringify(questionData.options) &&
+          JSON.stringify(questionData.options) &&
           editingQuestion.order === questionData.order;
 
         if (nothingChanged) {
@@ -304,8 +304,8 @@ export const DiagnosticQuestions = ({
       {/* Modal */}
       {isModalOpen && (
         <div
-          className="modal fade show"
-          style={{ display: "block", backgroundColor: "rgba(0,0,0,0.5)" }}
+          className="modal fade show question_modal"
+          style={{ display: "block", backgroundColor: "rgba(46, 58, 48, 0.4)" }}
           tabIndex={-1}
           aria-labelledby="exampleModalLabel"
           aria-hidden="false"
@@ -314,49 +314,11 @@ export const DiagnosticQuestions = ({
             <div className="modal-content">
               <button
                 type="button"
-                className="btn-close"
+                className="btn-close close-btn"
                 onClick={handleModalClose}
                 aria-label="Close"
               >
-                <svg
-                  width={27}
-                  height={27}
-                  viewBox="0 0 27 27"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <rect
-                    width={27}
-                    height={27}
-                    rx="13.5"
-                    fill="url(#paint0_linear_790_3208)"
-                  />
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M18.2908 18.2908C18.5697 18.0118 18.5697 17.5596 18.2908 17.2806L9.71936 8.70921C9.44042 8.43026 8.98816 8.43026 8.70921 8.70921C8.43026 8.98816 8.43026 9.44042 8.70921 9.71936L17.2806 18.2908C17.5596 18.5697 18.0118 18.5697 18.2908 18.2908Z"
-                    fill="#F4F4F4"
-                  />
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M8.70921 18.2908C8.98816 18.5697 9.44042 18.5697 9.71936 18.2908L18.2908 9.71936C18.5697 9.44042 18.5697 8.98815 18.2908 8.70921C18.0118 8.43026 17.5596 8.43026 17.2806 8.70921L8.70921 17.2806C8.43026 17.5596 8.43026 18.0118 8.70921 18.2908Z"
-                    fill="#F4F4F4"
-                  />
-                  <defs>
-                    <linearGradient
-                      id="paint0_linear_790_3208"
-                      x1="13.5"
-                      y1={0}
-                      x2="13.5"
-                      y2={27}
-                      gradientUnits="userSpaceOnUse"
-                    >
-                      <stop stopColor="#E0B669" />
-                      <stop offset={1} stopColor="#B48A3E" />
-                    </linearGradient>
-                  </defs>
-                </svg>
+                ×
               </button>
               <div className="modal-body">
                 <form onSubmit={handleSubmit}>
@@ -510,7 +472,40 @@ export const DiagnosticQuestions = ({
                                   />
                                 </svg>
                               </button>
+                            
+
                             </span>
+
+                           <span className="list_icons">
+                              <button
+                                type="button"
+                                className="bg_icon_et"
+                                onClick={() => handleRemoveOption(index)}
+                                style={{
+                                  border: "none",
+                                  background: "transparent",
+                                }}
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 20 20" fill="none"><path d="M17.8585 5.69049L14.5068 2.33949C14.2255 2.05829 13.844 1.90031 13.4463 1.90031C13.0485 1.90031 12.6671 2.05829 12.3858 2.33949L3.13677 11.5877C2.99701 11.7267 2.88619 11.8919 2.81075 12.074C2.73531 12.256 2.69674 12.4512 2.69727 12.6482V16C2.69727 16.3978 2.85531 16.7794 3.13661 17.0607C3.41792 17.342 3.79945 17.5 4.19727 17.5H16.7973C17.036 17.5 17.2649 17.4052 17.4337 17.2364C17.6025 17.0676 17.6973 16.8387 17.6973 16.6C17.6973 16.3613 17.6025 16.1324 17.4337 15.9636C17.2649 15.7948 17.036 15.7 16.7973 15.7H9.97227L17.8585 7.81224C17.9979 7.67295 18.1084 7.50756 18.1838 7.32553C18.2593 7.14351 18.2981 6.9484 18.2981 6.75137C18.2981 6.55434 18.2593 6.35923 18.1838 6.1772C18.1084 5.99518 17.9979 5.82979 17.8585 5.69049ZM7.42227 15.7H4.49727V12.775L10.7973 6.47499L13.7223 9.39999L7.42227 15.7ZM14.9973 8.12499L12.0723 5.19999L13.4478 3.82449L16.3728 6.74949L14.9973 8.12499Z" fill="#f4f4f4"></path></svg>
+                              </button>
+                           </span>
+
+                           <span className="list_icons hide_option">
+                            <button
+                                type="button"
+                                className="bg_icon_et"
+                                onClick={() => handleRemoveOption(index)}
+                                style={{
+                                  border: "none",
+                                  background: "transparent",
+                                }}
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 70 52" fill="none">
+  <path d="M62.8549 0.605471C62.4525 0.203131 61.9447 0 61.4408 0C60.9368 0 60.4291 0.10156 60.0267 0.50391L22.8547 35.1519L9.01467 21.0109C8.30764 20.3039 7.09667 20.3039 6.38967 21.0109L0.530272 26.6671C-0.176758 27.3741 -0.176758 28.5851 0.530272 29.2921L21.4403 50.9091C21.8426 51.3115 22.3504 51.5146 22.8544 51.5146C23.3583 51.5146 23.8661 51.3115 24.0653 51.0107L68.7103 9.29167C69.4173 8.58464 69.4173 7.37367 68.7103 6.66667L62.8549 0.605471Z" fill="#F4F4F4"/>
+</svg>
+                              </button>
+                           </span>
+
                           </li>
                         ))}
                       </ul>

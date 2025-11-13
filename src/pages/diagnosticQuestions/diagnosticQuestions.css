@@ -92,8 +92,9 @@ text-transform: capitalize;
     transform: translateY(-50%);
     z-index: 1;
     cursor: pointer;
-    opacity: 0.6;
-    
+    opacity: 1;
+        background: transparent;
+    border: unset;
 }
 
 .add_options:hover
@@ -189,4 +190,26 @@ background: linear-gradient(180deg, #E0B669 0%, #B48A3E 100%), var(--Burnt-Gold,
     display: flex;
     flex-direction: column;
     grid-gap: 10px;
+}
+.question_modal .modal-content {
+      position: relative;
+    background: #2e3a30;
+    border-radius: 10px;
+    max-width: 95% !important;
+    width: 100% !important;
+    display: flex;
+    box-shadow: 0 0 40px 0 #0000004f;
+    border: none !important;
+    margin: 0 auto;
+}
+.hide_option {
+    display: none;
+}
+
+@media only screen and (max-width: 500px){
+  span.added_list {
+    width: 100% !important;
+    max-width: 100%;
+    flex: unset !important;
+}
 }

@@ -49,7 +49,7 @@ export const ImageUpload = ({ imageUrl, onImageChange }: ImageUploadProps) => {
         {!preview ? (
           <div
             onClick={() => fileInputRef.current?.click()}
-            className="border border-dashed border-secondary rounded p-4 text-center cursor-pointer"
+            className=" p-4 text-center cursor-pointer"
             style={{
               minHeight: "120px",
               display: "flex",

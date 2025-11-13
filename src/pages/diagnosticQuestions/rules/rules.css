@@ -256,3 +256,18 @@
 #accordionCondition .accordion-item .accordion-body .form-select:last-child {
     margin-bottom: 0 !important;
 }
+.modal_add_rules .modal-content {
+      position: relative;
+    background: #2e3a30;
+    border-radius: 10px;
+    max-width: 95% !important;
+    width: 100% !important;
+    display: flex;
+    box-shadow: 0 0 40px 0 #0000004f;
+    border: none !important;
+    margin: 0 auto;
+}
+.modal-backdrop {
+  background: rgba(46, 58, 48, 0.4) !important;
+  backdrop-filter: unset !important;
+}
