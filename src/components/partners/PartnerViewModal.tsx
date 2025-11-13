@@ -57,10 +57,10 @@ export const PartnerViewModal: React.FC<PartnerViewModalProps> = ({
                 <h4 className="mb-4 fw-semibold">Partner Details</h4>
 
                 <div className="row g-3 text-start">
-                  <div className="col-md-6">
+                  {/* <div className="col-md-6">
                     <strong>ID:</strong>
                     <p className="lock_field">{partner.id || "N/A"}</p>
-                  </div>
+                  </div> */}
 
                   <div className="col-md-6">
                     <strong>Company Name:</strong>
@@ -99,7 +99,7 @@ export const PartnerViewModal: React.FC<PartnerViewModalProps> = ({
                     <p className="lock_field">{partner.rating ?? "N/A"}</p>
                   </div>
 
-                  <div className="col-md-12">
+                  <div className="col-md-6">
                     <strong>Specialties:</strong>
                     <p className="lock_field">
                       {partner.speciality?.length
@@ -128,7 +128,7 @@ export const PartnerViewModal: React.FC<PartnerViewModalProps> = ({
                           className="img-fluid rounded shadow-sm"
                           onLoad={() => setImageLoaded(true)}
                           style={{
-                            maxHeight: "250px",
+                            maxHeight: "180px",
                             width: "100%",
                             objectFit: "cover",
                             opacity: imageLoaded ? 1 : 0,

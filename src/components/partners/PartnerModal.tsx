@@ -679,7 +679,7 @@ export const PartnerModal = ({
 
 
 
-              <div className="col-md-12">
+              <div className="col-md-6">
                 <div className="input_field ">
                   <label htmlFor="street">
                     Street Address <span className="text-danger">*</span>
@@ -709,35 +709,6 @@ export const PartnerModal = ({
                   )}
                 </div>
               </div>
-  <div className="col-md-6">
-                  <div className="input_field custom_select">
-                    <label htmlFor="country">
-                      Country <span className="text-danger">*</span>
-                    </label>
-                    <Select<DropdownOption, false>
-                      id="country"
-                      name="country"
-                      placeholder="Select Country"
-                      value={
-                        formData.address.country
-                          ? {
-                            value: formData.address.country,
-                            label: formData.address.country,
-                          }
-                          : null
-                      }
-                      options={[{ value: "Brazil", label: "Brazil" }]}
-                      onChange={handleCountryChange}
-                      classNamePrefix="beautiful-select"
-                      styles={selectStyles}
-                    />
-                    {touched.has("country") && errors.country && (
-                      <div className="text-danger small mt-1">
-                        {errors.country}
-                      </div>
-                    )}
-                  </div>
-                </div>
 
                 <div className="col-md-6">
                   <div className="input_field">
@@ -771,7 +742,40 @@ export const PartnerModal = ({
                     )}
                   </div>
                 </div>
- <div className="col-md-6">
+
+
+  <div className="col-md-4">
+                  <div className="input_field custom_select">
+                    <label htmlFor="country">
+                      Country <span className="text-danger">*</span>
+                    </label>
+                    <Select<DropdownOption, false>
+                      id="country"
+                      name="country"
+                      placeholder="Select Country"
+                      value={
+                        formData.address.country
+                          ? {
+                            value: formData.address.country,
+                            label: formData.address.country,
+                          }
+                          : null
+                      }
+                      options={[{ value: "Brazil", label: "Brazil" }]}
+                      onChange={handleCountryChange}
+                      classNamePrefix="beautiful-select"
+                      styles={selectStyles}
+                    />
+                    {touched.has("country") && errors.country && (
+                      <div className="text-danger small mt-1">
+                        {errors.country}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+              
+ <div className="col-md-4">
                   <div className="input_field custom_select">
                     <label htmlFor="state">
                       State <span className="text-danger">*</span>
@@ -813,7 +817,7 @@ export const PartnerModal = ({
                   </div>
                 </div>
 
-                <div className="col-md-6">
+                <div className="col-md-4">
                   <div className="input_field custom_select">
                     <label htmlFor="city">
                       City <span className="text-danger">*</span>
@@ -852,7 +856,7 @@ export const PartnerModal = ({
                   </div>
                 </div>
 
-                <div className="col-md-6">
+                <div className="col-md-12 image_upload">
                   <ImageUpload
                     imageUrl={formData.projectImageUrl}
                     onImageChange={(url) =>
