@@ -104,8 +104,6 @@
   background: #deb46747 !important;
 }
 
-
-
 .beautiful-dropdown {
   appearance: none;
   -webkit-appearance: none;
@@ -160,12 +158,18 @@ td.star_rating > div > div:first-child:after {
 .view_profile > * {
   color: #f4f4f4 !important;
 }
-.view_profile p {
+.view_profile .row > div .lock_field{
+    word-break: break-word;
+    margin-top: 4px;
+    border-radius: 10px;
+    border: 1px solid rgba(244, 244, 244, 0.1);
+    background: #2d382f;
+    padding: 13px 15px;
+    color: #f4f4f4;
     font-size: 14px;
     font-style: normal;
-    font-weight: 300;
+    font-weight: 500;
     line-height: normal;
-    word-break: break-word;
 }
 .view_profile strong {
     font-size: 14px;
@@ -254,10 +258,16 @@ td.star_rating > div > div:first-child:after {
     background: #2e3a30;
     border-radius: 10px;
     max-width: 95% !important;
-    width: 827px !important;
+    width: 100% !important;
     display: flex;
     box-shadow: 0 0 40px 0 #0000004f;
     border: none !important;
+    margin: 0 auto;
+}
+.modal_view_form .modal-dialog {
+    max-width: 860px !important;
+    margin: 0 auto !important;
+    height: 100%;
 }
 
 @media only screen and (max-width: 767.5px) {

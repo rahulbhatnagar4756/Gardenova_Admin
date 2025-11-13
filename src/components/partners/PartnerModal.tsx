@@ -463,9 +463,9 @@ export const PartnerModal = ({
             onClick={onClose}
             aria-label="Close"
           >
-             ×
+            ×
           </button>
-      
+
 
           <div className="modal-body">
             <div className="head_area">
@@ -475,229 +475,241 @@ export const PartnerModal = ({
               <p className="sub_head">Enter the details and save</p>
             </div>
 
-            <div>
-              <div className="input_field">
-                <label htmlFor="companyName">
-                  Company Name <span className="text-danger">*</span>
-                </label>
-                <input
-                  id="companyName"
-                  name="companyName"
-                  type="text"
-                  placeholder="Enter Company Name"
-                  className={`form-control ${
-                    touched.has("companyName") && errors.companyName
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  value={formData.companyName}
-                  onChange={(e) =>
-                    dispatchForm({
-                      type: "SET_FIELD",
-                      field: "companyName",
-                      value: e.target.value,
-                    })
-                  }
-                  onBlur={() => handleBlur("companyName")}
-                  autoComplete="off"
-                />
-                {touched.has("companyName") && errors.companyName && (
-                  <div className="invalid-feedback d-block">
-                    {errors.companyName}
-                  </div>
-                )}
+            <div className="row">
+              <div className="col-md-6">
+                <div className="input_field ">
+                  <label htmlFor="companyName">
+                    Company Name <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    id="companyName"
+                    name="companyName"
+                    type="text"
+                    placeholder="Enter Company Name"
+                    className={`form-control ${touched.has("companyName") && errors.companyName
+                        ? "is-invalid"
+                        : ""
+                      }`}
+                    value={formData.companyName}
+                    onChange={(e) =>
+                      dispatchForm({
+                        type: "SET_FIELD",
+                        field: "companyName",
+                        value: e.target.value,
+                      })
+                    }
+                    onBlur={() => handleBlur("companyName")}
+                    autoComplete="off"
+                  />
+                  {touched.has("companyName") && errors.companyName && (
+                    <div className="invalid-feedback d-block">
+                      {errors.companyName}
+                    </div>
+                  )}
+                </div>
               </div>
 
-              <div className="input_field">
-                <label htmlFor="email">
-                  Email <span className="text-danger">*</span>
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="Enter Email"
-                  className={`form-control ${
-                    touched.has("email") && errors.email ? "is-invalid" : ""
-                  }`}
-                  value={formData.email}
-                  onChange={(e) =>
-                    dispatchForm({
-                      type: "SET_FIELD",
-                      field: "email",
-                      value: e.target.value,
-                    })
-                  }
-                  onBlur={() => handleBlur("email")}
-                  autoComplete="off"
-                />
-                {touched.has("email") && errors.email && (
-                  <div className="invalid-feedback d-block">{errors.email}</div>
-                )}
+              <div className="col-md-6">
+                <div className="input_field ">
+                  <label htmlFor="email">
+                    Email <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="Enter Email"
+                    className={`form-control ${touched.has("email") && errors.email ? "is-invalid" : ""
+                      }`}
+                    value={formData.email}
+                    onChange={(e) =>
+                      dispatchForm({
+                        type: "SET_FIELD",
+                        field: "email",
+                        value: e.target.value,
+                      })
+                    }
+                    onBlur={() => handleBlur("email")}
+                    autoComplete="off"
+                  />
+                  {touched.has("email") && errors.email && (
+                    <div className="invalid-feedback d-block">{errors.email}</div>
+                  )}
+                </div>
               </div>
 
-              <div className="input_field">
-                <label htmlFor="contactPerson">
-                  Contact Person <span className="text-danger">*</span>
-                </label>
-                <input
-                  id="contactPerson"
-                  name="contactPerson"
-                  type="text"
-                  placeholder="Enter Contact Person"
-                  className={`form-control ${
-                    touched.has("contactPerson") && errors.contactPerson
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  value={formData.contactPerson}
-                  onChange={(e) =>
-                    dispatchForm({
-                      type: "SET_FIELD",
-                      field: "contactPerson",
-                      value: e.target.value,
-                    })
-                  }
-                  onBlur={() => handleBlur("contactPerson")}
-                  autoComplete="off"
-                />
-                {touched.has("contactPerson") && errors.contactPerson && (
-                  <div className="invalid-feedback d-block">
-                    {errors.contactPerson}
-                  </div>
-                )}
+
+              <div className="col-md-6">
+                <div className="input_field ">
+                  <label htmlFor="contactPerson">
+                    Contact Person <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    id="contactPerson"
+                    name="contactPerson"
+                    type="text"
+                    placeholder="Enter Contact Person"
+                    className={`form-control ${touched.has("contactPerson") && errors.contactPerson
+                        ? "is-invalid"
+                        : ""
+                      }`}
+                    value={formData.contactPerson}
+                    onChange={(e) =>
+                      dispatchForm({
+                        type: "SET_FIELD",
+                        field: "contactPerson",
+                        value: e.target.value,
+                      })
+                    }
+                    onBlur={() => handleBlur("contactPerson")}
+                    autoComplete="off"
+                  />
+                  {touched.has("contactPerson") && errors.contactPerson && (
+                    <div className="invalid-feedback d-block">
+                      {errors.contactPerson}
+                    </div>
+                  )}
+                </div>
               </div>
 
-              <div className="input_field">
-                <label htmlFor="mobileNumber">
-                  Mobile Number <span className="text-danger">*</span>
-                </label>
-                <input
-                  id="mobileNumber"
-                  name="mobileNumber"
-                  type="tel"
-                  placeholder="Enter Mobile Number"
-                  className={`form-control ${
-                    touched.has("mobileNumber") && errors.mobileNumber
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  value={formData.mobileNumber}
-                  onChange={(e) =>
-                    dispatchForm({
-                      type: "SET_FIELD",
-                      field: "mobileNumber",
-                      value: e.target.value,
-                    })
-                  }
-                  onBlur={() => handleBlur("mobileNumber")}
-                  autoComplete="off"
-                />
-                {touched.has("mobileNumber") && errors.mobileNumber && (
-                  <div className="invalid-feedback d-block">
-                    {errors.mobileNumber}
-                  </div>
-                )}
+
+              <div className="col-md-6">
+                <div className="input_field ">
+                  <label htmlFor="mobileNumber">
+                    Mobile Number <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    id="mobileNumber"
+                    name="mobileNumber"
+                    type="tel"
+                    placeholder="Enter Mobile Number"
+                    className={`form-control ${touched.has("mobileNumber") && errors.mobileNumber
+                        ? "is-invalid"
+                        : ""
+                      }`}
+                    value={formData.mobileNumber}
+                    onChange={(e) =>
+                      dispatchForm({
+                        type: "SET_FIELD",
+                        field: "mobileNumber",
+                        value: e.target.value,
+                      })
+                    }
+                    onBlur={() => handleBlur("mobileNumber")}
+                    autoComplete="off"
+                  />
+                  {touched.has("mobileNumber") && errors.mobileNumber && (
+                    <div className="invalid-feedback d-block">
+                      {errors.mobileNumber}
+                    </div>
+                  )}
+                </div>
               </div>
 
-              <div className="input_field">
-                <label htmlFor="speciality">
-                  Specialty <span className="text-danger">*</span>
-                </label>
-                <input
-                  id="speciality"
-                  name="speciality"
-                  type="text"
-                  placeholder="Enter specialties (comma separated)"
-                  className={`form-control ${
-                    touched.has("speciality") && errors.speciality
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  value={
-                    formData.specialityText || formData.speciality.join(", ")
-                  }
-                  onChange={(e) => {
-                    const text = e.target.value;
-                    dispatchForm({
-                      type: "SET_SPECIALITY",
-                      text,
-                      array: text
-                        .split(",")
-                        .map((s) => s.trim())
-                        .filter((s) => s),
-                    });
-                  }}
-                  onBlur={() => handleBlur("speciality")}
-                  autoComplete="off"
-                />
-                {touched.has("speciality") && errors.speciality && (
-                  <div className="invalid-feedback d-block">
-                    {errors.speciality}
-                  </div>
-                )}
+
+              <div className="col-md-6">
+                <div className="input_field ">
+                  <label htmlFor="speciality">
+                    Specialty <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    id="speciality"
+                    name="speciality"
+                    type="text"
+                    placeholder="Enter specialties (comma separated)"
+                    className={`form-control ${touched.has("speciality") && errors.speciality
+                        ? "is-invalid"
+                        : ""
+                      }`}
+                    value={
+                      formData.specialityText || formData.speciality.join(", ")
+                    }
+                    onChange={(e) => {
+                      const text = e.target.value;
+                      dispatchForm({
+                        type: "SET_SPECIALITY",
+                        text,
+                        array: text
+                          .split(",")
+                          .map((s) => s.trim())
+                          .filter((s) => s),
+                      });
+                    }}
+                    onBlur={() => handleBlur("speciality")}
+                    autoComplete="off"
+                  />
+                  {touched.has("speciality") && errors.speciality && (
+                    <div className="invalid-feedback d-block">
+                      {errors.speciality}
+                    </div>
+                  )}
+                </div>
               </div>
 
-              <div className="input_field">
-                <label htmlFor="website">Website</label>
-                <input
-                  id="website"
-                  name="website"
-                  type="url"
-                  placeholder="Enter Website URL"
-                  className={`form-control ${
-                    touched.has("website") && errors.website ? "is-invalid" : ""
-                  }`}
-                  value={formData.website}
-                  onChange={(e) =>
-                    dispatchForm({
-                      type: "SET_FIELD",
-                      field: "website",
-                      value: e.target.value,
-                    })
-                  }
-                  onBlur={() => handleBlur("website")}
-                  autoComplete="off"
-                />
-                {touched.has("website") && errors.website && (
-                  <div className="invalid-feedback d-block">
-                    {errors.website}
-                  </div>
-                )}
+
+
+              <div className="col-md-6">
+                <div className="input_field ">
+                  <label htmlFor="website">Website</label>
+                  <input
+                    id="website"
+                    name="website"
+                    type="url"
+                    placeholder="Enter Website URL"
+                    className={`form-control ${touched.has("website") && errors.website ? "is-invalid" : ""
+                      }`}
+                    value={formData.website}
+                    onChange={(e) =>
+                      dispatchForm({
+                        type: "SET_FIELD",
+                        field: "website",
+                        value: e.target.value,
+                      })
+                    }
+                    onBlur={() => handleBlur("website")}
+                    autoComplete="off"
+                  />
+                  {touched.has("website") && errors.website && (
+                    <div className="invalid-feedback d-block">
+                      {errors.website}
+                    </div>
+                  )}
+                </div>
               </div>
 
-              <div className="input_field">
-                <label htmlFor="street">
-                  Street Address <span className="text-danger">*</span>
-                </label>
-                <input
-                  id="street"
-                  name="street"
-                  type="text"
-                  placeholder="Enter Street Address"
-                  className={`form-control ${
-                    touched.has("street") && errors.street ? "is-invalid" : ""
-                  }`}
-                  value={formData.address.street}
-                  onChange={(e) =>
-                    dispatchForm({
-                      type: "SET_ADDRESS_FIELD",
-                      field: "street",
-                      value: e.target.value,
-                    })
-                  }
-                  onBlur={() => handleBlur("street")}
-                  autoComplete="off"
-                />
-                {touched.has("street") && errors.street && (
-                  <div className="invalid-feedback d-block">
-                    {errors.street}
-                  </div>
-                )}
-              </div>
 
-              <div className="row">
-                <div className="col-md-6">
+
+              <div className="col-md-12">
+                <div className="input_field ">
+                  <label htmlFor="street">
+                    Street Address <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    id="street"
+                    name="street"
+                    type="text"
+                    placeholder="Enter Street Address"
+                    className={`form-control ${touched.has("street") && errors.street ? "is-invalid" : ""
+                      }`}
+                    value={formData.address.street}
+                    onChange={(e) =>
+                      dispatchForm({
+                        type: "SET_ADDRESS_FIELD",
+                        field: "street",
+                        value: e.target.value,
+                      })
+                    }
+                    onBlur={() => handleBlur("street")}
+                    autoComplete="off"
+                  />
+                  {touched.has("street") && errors.street && (
+                    <div className="invalid-feedback d-block">
+                      {errors.street}
+                    </div>
+                  )}
+                </div>
+              </div>
+  <div className="col-md-6">
                   <div className="input_field custom_select">
                     <label htmlFor="country">
                       Country <span className="text-danger">*</span>
@@ -709,9 +721,9 @@ export const PartnerModal = ({
                       value={
                         formData.address.country
                           ? {
-                              value: formData.address.country,
-                              label: formData.address.country,
-                            }
+                            value: formData.address.country,
+                            label: formData.address.country,
+                          }
                           : null
                       }
                       options={[{ value: "Brazil", label: "Brazil" }]}
@@ -737,11 +749,10 @@ export const PartnerModal = ({
                       name="zipCode"
                       type="text"
                       placeholder="Enter Zip Code"
-                      className={`form-control ${
-                        touched.has("zipCode") && errors.zipCode
+                      className={`form-control ${touched.has("zipCode") && errors.zipCode
                           ? "is-invalid"
                           : ""
-                      }`}
+                        }`}
                       value={formData.address.zipCode}
                       onChange={(e) =>
                         dispatchForm({
@@ -760,10 +771,7 @@ export const PartnerModal = ({
                     )}
                   </div>
                 </div>
-              </div>
-
-              <div className="row">
-                <div className="col-md-6">
+ <div className="col-md-6">
                   <div className="input_field custom_select">
                     <label htmlFor="state">
                       State <span className="text-danger">*</span>
@@ -781,12 +789,12 @@ export const PartnerModal = ({
                       value={
                         formData.address.state
                           ? {
-                              value: formData.address.state,
-                              label:
-                                locationData.states.find(
-                                  (s) => s.iso2 === formData.address.state
-                                )?.name || formData.address.state,
-                            }
+                            value: formData.address.state,
+                            label:
+                              locationData.states.find(
+                                (s) => s.iso2 === formData.address.state
+                              )?.name || formData.address.state,
+                          }
                           : null
                       }
                       options={locationData.states.map((state) => ({
@@ -823,9 +831,9 @@ export const PartnerModal = ({
                       value={
                         formData.address.city
                           ? {
-                              value: formData.address.city,
-                              label: formData.address.city,
-                            }
+                            value: formData.address.city,
+                            label: formData.address.city,
+                          }
                           : null
                       }
                       options={locationData.cities.map((city) => ({
@@ -856,7 +864,9 @@ export const PartnerModal = ({
                     }
                   />
                 </div>
-              </div>
+             
+
+             
 
               <button
                 type="button"

@@ -59,49 +59,49 @@ export const PartnerViewModal: React.FC<PartnerViewModalProps> = ({
                 <div className="row g-3 text-start">
                   <div className="col-md-6">
                     <strong>ID:</strong>
-                    <p>{partner.id || "N/A"}</p>
+                    <p className="lock_field">{partner.id || "N/A"}</p>
                   </div>
 
                   <div className="col-md-6">
                     <strong>Company Name:</strong>
-                    <p>{partner.companyName || "N/A"}</p>
+                    <p className="lock_field">{partner.companyName || "N/A"}</p>
                   </div>
 
                   <div className="col-md-6">
                     <strong>Email:</strong>
-                    <p>{partner.email || "N/A"}</p>
+                    <p className="lock_field">{partner.email || "N/A"}</p>
                   </div>
 
                   <div className="col-md-6">
                     <strong>Contact Person:</strong>
-                    <p>{partner.contactPerson || "N/A"}</p>
+                    <p className="lock_field">{partner.contactPerson || "N/A"}</p>
                   </div>
 
                   <div className="col-md-6">
                     <strong>Mobile Number:</strong>
-                    <p>{partner.mobileNumber || "N/A"}</p>
+                    <p className="lock_field">{partner.mobileNumber || "N/A"}</p>
                   </div>
 
                   <div className="col-md-6">
                     <strong>Website:</strong>
-                    <p>{partner.website || "N/A"}</p>
+                    <p className="lock_field">{partner.website || "N/A"}</p>
                   </div>
 
                   <div className="col-md-6">
                     <strong>Status:</strong>
-                    <p className="text-capitalize">
+                    <p className="text-capitalize lock_field">
                       {partner.status || "Pending"}
                     </p>
                   </div>
 
                   <div className="col-md-6">
                     <strong>Rating:</strong>
-                    <p>{partner.rating ?? "N/A"}</p>
+                    <p className="lock_field">{partner.rating ?? "N/A"}</p>
                   </div>
 
                   <div className="col-md-12">
                     <strong>Specialties:</strong>
-                    <p>
+                    <p className="lock_field">
                       {partner.speciality?.length
                         ? partner.speciality.join(", ")
                         : "N/A"}
@@ -110,7 +110,7 @@ export const PartnerViewModal: React.FC<PartnerViewModalProps> = ({
 
                   <div className="col-md-12">
                     <strong>Address:</strong>
-                    <p>{address}</p>
+                    <p className="lock_field">{address}</p>
                   </div>
 
                   {partner.projectImageUrl && (

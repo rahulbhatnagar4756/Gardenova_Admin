@@ -57,8 +57,9 @@ background-color: #2e3a3029;
     height: 100px;
     border-radius: 50% !important;
     animation: loading 1s linear infinite;
-    box-shadow: inset 2px 0 0 #ffffff00, -3px 0 0 #2e3a30;
+    /* box-shadow: inset 2px 0 0 #ffffff00, -3px 0 0 #2e3a30; */
     background-color: #e0f2fe00 !important;
+    box-shadow: inset 2px 0 0 rgb(224, 182, 105), -3px 0 0 rgb(180, 138, 62) ;
 }
 @keyframes loading {
   to {
