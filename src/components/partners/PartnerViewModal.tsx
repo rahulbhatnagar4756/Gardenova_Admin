@@ -2,8 +2,7 @@
 import React, { useState } from "react";
 import type { PartnerProfileResponse } from "../../services/apiCalls/partnerProfile";
 import "../../styles/global.css";
-import TableLoader from "../loader";
-import { Columns } from "lucide-react";
+import { Loader } from "../loader";
 
 interface PartnerViewModalProps {
   isOpen: boolean;
@@ -48,20 +47,15 @@ export const PartnerViewModal: React.FC<PartnerViewModalProps> = ({
           </button>
 
           {/* === Modal Body === */}
-          <div className="modal-body text-center p-4 view_profile" >
+          <div className="modal-body text-center p-4 view_profile">
             {!partner ? (
               // 🔹 Modal loader while fetching data
-              <TableLoader text="Loading partner profiles..." />
+              <Loader text="Loading partner profiles..." />
             ) : (
               <>
                 <h4 className="mb-4 fw-semibold">Partner Details</h4>
 
                 <div className="row g-3 text-start">
-                  {/* <div className="col-md-6">
-                    <strong>ID:</strong>
-                    <p className="lock_field">{partner.id || "N/A"}</p>
-                  </div> */}
-
                   <div className="col-md-6">
                     <strong>Company Name:</strong>
                     <p className="lock_field">{partner.companyName || "N/A"}</p>
@@ -74,12 +68,16 @@ export const PartnerViewModal: React.FC<PartnerViewModalProps> = ({
 
                   <div className="col-md-6">
                     <strong>Contact Person:</strong>
-                    <p className="lock_field">{partner.contactPerson || "N/A"}</p>
+                    <p className="lock_field">
+                      {partner.contactPerson || "N/A"}
+                    </p>
                   </div>
 
                   <div className="col-md-6">
                     <strong>Mobile Number:</strong>
-                    <p className="lock_field">{partner.mobileNumber || "N/A"}</p>
+                    <p className="lock_field">
+                      {partner.mobileNumber || "N/A"}
+                    </p>
                   </div>
 
                   <div className="col-md-6">
@@ -118,8 +116,8 @@ export const PartnerViewModal: React.FC<PartnerViewModalProps> = ({
                       <strong>Project Image:</strong>
                       <div className="position-relative mt-2">
                         {!imageLoaded && (
-                          // 🔹 Image loader spinner
-                          <TableLoader text="Loading project image." />
+                          // Image loader spinner
+                          <Loader text="Loading project image." />
                         )}
 
                         <img

@@ -13,7 +13,7 @@ import { formatAddress } from "../../utility/util";
 import { ImagePopup } from "../../components/partners/ImagePopup";
 import { PartnerModal } from "../../components/partners/PartnerModal";
 import { PartnerViewModal } from "../../components/partners/PartnerViewModal";
-import TableLoader from "../../components/loader";
+import { TableLoader } from "../../components/loader";
 
 interface PartnerProfilesProps {
   limit?: number;
@@ -218,9 +218,7 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
             </thead>
             <tbody>
               {loading ? (
-                <tr>
-                  <TableLoader />
-                </tr>
+                <TableLoader />
               ) : partners.length > 0 ? (
                 partners.map((partner) => (
                   <tr key={partner.id}>

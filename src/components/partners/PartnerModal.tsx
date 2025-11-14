@@ -391,12 +391,17 @@ export const PartnerModal = ({
       );
 
       const isBase64Image = formData.projectImageUrl?.startsWith("data:image");
-
+      const selectedState = locationData.states.find(
+        (s) => s.iso2 === formData.address.state
+      );
       const requestData: PartnerProfileRequest = {
         companyName: formData.companyName,
         email: formData.email,
         speciality: formData.speciality,
-        address: formData.address,
+        address: {
+          ...formData.address,
+          state: selectedState ? selectedState.name : formData.address.state,
+        },
         website: formData.website,
         contactPerson: formData.contactPerson,
         mobileNumber: formData.mobileNumber,
@@ -466,7 +471,6 @@ export const PartnerModal = ({
             ×
           </button>
 
-
           <div className="modal-body">
             <div className="head_area">
               <h4 className="head_modal">
@@ -486,10 +490,11 @@ export const PartnerModal = ({
                     name="companyName"
                     type="text"
                     placeholder="Enter Company Name"
-                    className={`form-control ${touched.has("companyName") && errors.companyName
+                    className={`form-control ${
+                      touched.has("companyName") && errors.companyName
                         ? "is-invalid"
                         : ""
-                      }`}
+                    }`}
                     value={formData.companyName}
                     onChange={(e) =>
                       dispatchForm({
@@ -519,8 +524,9 @@ export const PartnerModal = ({
                     name="email"
                     type="email"
                     placeholder="Enter Email"
-                    className={`form-control ${touched.has("email") && errors.email ? "is-invalid" : ""
-                      }`}
+                    className={`form-control ${
+                      touched.has("email") && errors.email ? "is-invalid" : ""
+                    }`}
                     value={formData.email}
                     onChange={(e) =>
                       dispatchForm({
@@ -533,11 +539,12 @@ export const PartnerModal = ({
                     autoComplete="off"
                   />
                   {touched.has("email") && errors.email && (
-                    <div className="invalid-feedback d-block">{errors.email}</div>
+                    <div className="invalid-feedback d-block">
+                      {errors.email}
+                    </div>
                   )}
                 </div>
               </div>
-
 
               <div className="col-md-6">
                 <div className="input_field ">
@@ -549,10 +556,11 @@ export const PartnerModal = ({
                     name="contactPerson"
                     type="text"
                     placeholder="Enter Contact Person"
-                    className={`form-control ${touched.has("contactPerson") && errors.contactPerson
+                    className={`form-control ${
+                      touched.has("contactPerson") && errors.contactPerson
                         ? "is-invalid"
                         : ""
-                      }`}
+                    }`}
                     value={formData.contactPerson}
                     onChange={(e) =>
                       dispatchForm({
@@ -572,7 +580,6 @@ export const PartnerModal = ({
                 </div>
               </div>
 
-
               <div className="col-md-6">
                 <div className="input_field ">
                   <label htmlFor="mobileNumber">
@@ -583,10 +590,11 @@ export const PartnerModal = ({
                     name="mobileNumber"
                     type="tel"
                     placeholder="Enter Mobile Number"
-                    className={`form-control ${touched.has("mobileNumber") && errors.mobileNumber
+                    className={`form-control ${
+                      touched.has("mobileNumber") && errors.mobileNumber
                         ? "is-invalid"
                         : ""
-                      }`}
+                    }`}
                     value={formData.mobileNumber}
                     onChange={(e) =>
                       dispatchForm({
@@ -606,7 +614,6 @@ export const PartnerModal = ({
                 </div>
               </div>
 
-
               <div className="col-md-6">
                 <div className="input_field ">
                   <label htmlFor="speciality">
@@ -617,10 +624,11 @@ export const PartnerModal = ({
                     name="speciality"
                     type="text"
                     placeholder="Enter specialties (comma separated)"
-                    className={`form-control ${touched.has("speciality") && errors.speciality
+                    className={`form-control ${
+                      touched.has("speciality") && errors.speciality
                         ? "is-invalid"
                         : ""
-                      }`}
+                    }`}
                     value={
                       formData.specialityText || formData.speciality.join(", ")
                     }
@@ -646,8 +654,6 @@ export const PartnerModal = ({
                 </div>
               </div>
 
-
-
               <div className="col-md-6">
                 <div className="input_field ">
                   <label htmlFor="website">Website</label>
@@ -656,8 +662,11 @@ export const PartnerModal = ({
                     name="website"
                     type="url"
                     placeholder="Enter Website URL"
-                    className={`form-control ${touched.has("website") && errors.website ? "is-invalid" : ""
-                      }`}
+                    className={`form-control ${
+                      touched.has("website") && errors.website
+                        ? "is-invalid"
+                        : ""
+                    }`}
                     value={formData.website}
                     onChange={(e) =>
                       dispatchForm({
@@ -677,8 +686,6 @@ export const PartnerModal = ({
                 </div>
               </div>
 
-
-
               <div className="col-md-6">
                 <div className="input_field ">
                   <label htmlFor="street">
@@ -689,8 +696,9 @@ export const PartnerModal = ({
                     name="street"
                     type="text"
                     placeholder="Enter Street Address"
-                    className={`form-control ${touched.has("street") && errors.street ? "is-invalid" : ""
-                      }`}
+                    className={`form-control ${
+                      touched.has("street") && errors.street ? "is-invalid" : ""
+                    }`}
                     value={formData.address.street}
                     onChange={(e) =>
                       dispatchForm({
@@ -710,167 +718,159 @@ export const PartnerModal = ({
                 </div>
               </div>
 
-                <div className="col-md-6">
-                  <div className="input_field">
-                    <label htmlFor="zipCode">
-                      Zip Code <span className="text-danger">*</span>
-                    </label>
-                    <input
-                      id="zipCode"
-                      name="zipCode"
-                      type="text"
-                      placeholder="Enter Zip Code"
-                      className={`form-control ${touched.has("zipCode") && errors.zipCode
-                          ? "is-invalid"
-                          : ""
-                        }`}
-                      value={formData.address.zipCode}
-                      onChange={(e) =>
-                        dispatchForm({
-                          type: "SET_ADDRESS_FIELD",
-                          field: "zipCode",
-                          value: e.target.value,
-                        })
-                      }
-                      onBlur={() => handleBlur("zipCode")}
-                      autoComplete="off"
-                    />
-                    {touched.has("zipCode") && errors.zipCode && (
-                      <div className="invalid-feedback d-block">
-                        {errors.zipCode}
-                      </div>
-                    )}
-                  </div>
+              <div className="col-md-6">
+                <div className="input_field">
+                  <label htmlFor="zipCode">
+                    Zip Code <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    id="zipCode"
+                    name="zipCode"
+                    type="text"
+                    placeholder="Enter Zip Code"
+                    className={`form-control ${
+                      touched.has("zipCode") && errors.zipCode
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    value={formData.address.zipCode}
+                    onChange={(e) =>
+                      dispatchForm({
+                        type: "SET_ADDRESS_FIELD",
+                        field: "zipCode",
+                        value: e.target.value,
+                      })
+                    }
+                    onBlur={() => handleBlur("zipCode")}
+                    autoComplete="off"
+                  />
+                  {touched.has("zipCode") && errors.zipCode && (
+                    <div className="invalid-feedback d-block">
+                      {errors.zipCode}
+                    </div>
+                  )}
                 </div>
+              </div>
 
-
-  <div className="col-md-4">
-                  <div className="input_field custom_select">
-                    <label htmlFor="country">
-                      Country <span className="text-danger">*</span>
-                    </label>
-                    <Select<DropdownOption, false>
-                      id="country"
-                      name="country"
-                      placeholder="Select Country"
-                      value={
-                        formData.address.country
-                          ? {
+              <div className="col-md-4">
+                <div className="input_field custom_select">
+                  <label htmlFor="country">
+                    Country <span className="text-danger">*</span>
+                  </label>
+                  <Select<DropdownOption, false>
+                    id="country"
+                    name="country"
+                    placeholder="Select Country"
+                    value={
+                      formData.address.country
+                        ? {
                             value: formData.address.country,
                             label: formData.address.country,
                           }
-                          : null
-                      }
-                      options={[{ value: "Brazil", label: "Brazil" }]}
-                      onChange={handleCountryChange}
-                      classNamePrefix="beautiful-select"
-                      styles={selectStyles}
-                    />
-                    {touched.has("country") && errors.country && (
-                      <div className="text-danger small mt-1">
-                        {errors.country}
-                      </div>
-                    )}
-                  </div>
+                        : null
+                    }
+                    options={[{ value: "Brazil", label: "Brazil" }]}
+                    onChange={handleCountryChange}
+                    classNamePrefix="beautiful-select"
+                    styles={selectStyles}
+                  />
+                  {touched.has("country") && errors.country && (
+                    <div className="text-danger small mt-1">
+                      {errors.country}
+                    </div>
+                  )}
                 </div>
+              </div>
 
-              
- <div className="col-md-4">
-                  <div className="input_field custom_select">
-                    <label htmlFor="state">
-                      State <span className="text-danger">*</span>
-                    </label>
-                    <Select<DropdownOption, false>
-                      id="state"
-                      name="state"
-                      isDisabled={
-                        !formData.address.country || locationData.loadingStates
-                      }
-                      isLoading={locationData.loadingStates}
-                      placeholder={
-                        locationData.loadingStates ? "Fetching" : "Select State"
-                      }
-                      value={
-                        formData.address.state
-                          ? {
+              <div className="col-md-4">
+                <div className="input_field custom_select">
+                  <label htmlFor="state">
+                    State <span className="text-danger">*</span>
+                  </label>
+                  <Select<DropdownOption, false>
+                    id="state"
+                    name="state"
+                    isDisabled={
+                      !formData.address.country || locationData.loadingStates
+                    }
+                    isLoading={locationData.loadingStates}
+                    placeholder={
+                      locationData.loadingStates ? "Fetching" : "Select State"
+                    }
+                    value={
+                      formData.address.state
+                        ? {
                             value: formData.address.state,
                             label:
                               locationData.states.find(
                                 (s) => s.iso2 === formData.address.state
                               )?.name || formData.address.state,
                           }
-                          : null
-                      }
-                      options={locationData.states.map((state) => ({
-                        value: state.iso2,
-                        label: state.name,
-                      }))}
-                      onChange={handleStateChange}
-                      classNamePrefix="beautiful-select"
-                      styles={selectStyles}
-                    />
-                    {touched.has("state") && errors.state && (
-                      <div className="text-danger small mt-1">
-                        {errors.state}
-                      </div>
-                    )}
-                  </div>
+                        : null
+                    }
+                    options={locationData.states.map((state) => ({
+                      value: state.iso2,
+                      label: state.name,
+                    }))}
+                    onChange={handleStateChange}
+                    classNamePrefix="beautiful-select"
+                    styles={selectStyles}
+                  />
+                  {touched.has("state") && errors.state && (
+                    <div className="text-danger small mt-1">{errors.state}</div>
+                  )}
                 </div>
+              </div>
 
-                <div className="col-md-4">
-                  <div className="input_field custom_select">
-                    <label htmlFor="city">
-                      City <span className="text-danger">*</span>
-                    </label>
-                    <Select<DropdownOption, false>
-                      id="city"
-                      name="city"
-                      isDisabled={
-                        !formData.address.state || locationData.loadingCities
-                      }
-                      isLoading={locationData.loadingCities}
-                      placeholder={
-                        locationData.loadingCities ? "Fetching" : "Select City"
-                      }
-                      value={
-                        formData.address.city
-                          ? {
+              <div className="col-md-4">
+                <div className="input_field custom_select">
+                  <label htmlFor="city">
+                    City <span className="text-danger">*</span>
+                  </label>
+                  <Select<DropdownOption, false>
+                    id="city"
+                    name="city"
+                    isDisabled={
+                      !formData.address.state || locationData.loadingCities
+                    }
+                    isLoading={locationData.loadingCities}
+                    placeholder={
+                      locationData.loadingCities ? "Fetching" : "Select City"
+                    }
+                    value={
+                      formData.address.city
+                        ? {
                             value: formData.address.city,
                             label: formData.address.city,
                           }
-                          : null
-                      }
-                      options={locationData.cities.map((city) => ({
-                        value: city.name,
-                        label: city.name,
-                      }))}
-                      onChange={handleCityChange}
-                      classNamePrefix="beautiful-select"
-                      styles={selectStyles}
-                    />
-                    {touched.has("city") && errors.city && (
-                      <div className="text-danger small mt-1">
-                        {errors.city}
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="col-md-12 image_upload">
-                  <ImageUpload
-                    imageUrl={formData.projectImageUrl}
-                    onImageChange={(url) =>
-                      dispatchForm({
-                        type: "SET_FIELD",
-                        field: "projectImageUrl",
-                        value: url,
-                      })
+                        : null
                     }
+                    options={locationData.cities.map((city) => ({
+                      value: city.name,
+                      label: city.name,
+                    }))}
+                    onChange={handleCityChange}
+                    classNamePrefix="beautiful-select"
+                    styles={selectStyles}
                   />
+                  {touched.has("city") && errors.city && (
+                    <div className="text-danger small mt-1">{errors.city}</div>
+                  )}
                 </div>
-             
+              </div>
 
-             
+              <div className="col-md-12 image_upload">
+                <ImageUpload
+                  imageUrl={formData.projectImageUrl}
+                  onImageChange={(url) =>
+                    dispatchForm({
+                      type: "SET_FIELD",
+                      field: "projectImageUrl",
+                      value: url,
+                    })
+                  }
+                />
+              </div>
 
               <button
                 type="button"

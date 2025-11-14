@@ -1,15 +1,15 @@
 import React from "react";
 import "./index.css";
 
-interface TableLoaderProps {
+interface LoaderProps {
   text?: string;
 }
 
-const TableLoader: React.FC<TableLoaderProps> = ({ text }) => {
+export const TableLoader: React.FC<LoaderProps> = ({ text }) => {
   return (
     <tr>
       <td colSpan={7} className="table-loading-cell">
-        <div className="loading-container" style={{ minHeight: "200px" }}>
+        <div className="loading-container">
           <div className="loading"></div>
           {text && <p className="loading-text">{text}</p>}
         </div>
@@ -18,4 +18,11 @@ const TableLoader: React.FC<TableLoaderProps> = ({ text }) => {
   );
 };
 
-export default TableLoader;
+export const Loader: React.FC<LoaderProps> = ({ text }) => {
+  return (
+    <div className="loading-container">
+      <div className="loading"></div>
+      {text && <p className="loading-text-visible">{text}</p>}
+    </div>
+  );
+};
