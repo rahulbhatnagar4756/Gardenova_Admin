@@ -1,0 +1,31 @@
+.table-loading-cell {
+  text-align: center;
+  background-color: transparent;
+  padding: 0;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  gap: 12px;
+}
+
+.loading-text {
+  font-size: 0 !important;
+}
+.loading {
+  width: 100px;
+  height: 100px;
+  border-radius: 50% !important;
+  animation: loading 1s linear infinite;
+  background-color: #e0f2fe00 !important;
+  box-shadow: inset 2px 0 0 rgb(224, 182, 105), -3px 0 0 rgb(180, 138, 62);
+}
+@keyframes loading {
+  to {
+    transform: rotate(360deg);
+  }
+}

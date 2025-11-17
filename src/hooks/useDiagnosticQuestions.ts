@@ -39,8 +39,8 @@ export const useDiagnosticQuestions = () => {
     try {
       // Optimistic update
       const tempQuestion: Question = {
-        _id: "",
-        questionText: data.text,
+        question_id: "",
+        question_text: data.question_text,
         options: data.options,
         order: data.order,
       };
@@ -71,7 +71,7 @@ export const useDiagnosticQuestions = () => {
   const updateQuestion = async (id: string, data: UpdateQuestionRequest) => {
     try {
       // Find question by some criteria (since we don't have ID in response)
-      const questionIndex = questions.findIndex((q) => q._id === id);
+      const questionIndex = questions.findIndex((q) => q.question_id === id);
 
       if (questionIndex === -1) {
         throw new Error("Question not found");
@@ -79,8 +79,8 @@ export const useDiagnosticQuestions = () => {
 
       // Optimistic update
       const updatedQuestion: Question = {
-        _id: id,
-        questionText: data.text,
+        question_id: id,
+        question_text: data.question_text,
         options: data.options,
         order: data.order,
       };
@@ -110,25 +110,25 @@ export const useDiagnosticQuestions = () => {
   };
 
   const deleteQuestion = async (id: string) => {
-    try {
-      // Optimistic update - remove question from local state
-      const originalQuestions = [...questions];
-      setQuestions((prev) =>
-        prev.filter((_, index) => index.toString() !== id)
-      );
+    // Keep a copy of the current state in case we need to rollback
+    const originalQuestions = [...questions];
 
+    try {
       const response = await questionService.deleteQuestion(id);
 
       if (response.success) {
+        // Optimistic update - remove question locally
+        setQuestions((prev) => prev.filter((q) => q.question_id !== id));
+        // ✅ On success, state is already updated, nothing else needed
         return response;
       } else {
-        // Rollback optimistic update
+        // Rollback if API fails
         setQuestions(originalQuestions);
         throw new Error("Failed to delete question");
       }
     } catch (err) {
-      // Rollback optimistic update
-      setQuestions(() => [...questions]);
+      // Rollback in case of error
+      setQuestions(originalQuestions);
       setError(
         err instanceof Error ? err.message : "Failed to delete question"
       );

@@ -4,21 +4,26 @@ import { API_ROUTES } from "../apiRoutes";
 
 // Types for Question operations
 export interface Question {
-  _id: string;
-  questionText: string;
-  options: string[];
+  question_id: string;
+  question_text: string;
+  options: QuestionOption[];
   order: number;
 }
 
+export interface QuestionOption {
+  id: string;
+  option_text: string;
+}
+
 export interface CreateQuestionRequest {
-  text: string;
-  options: string[];
+  question_text: string;
+  options: QuestionOption[];
   order: number;
 }
 
 export interface UpdateQuestionRequest {
-  text: string;
-  options: string[];
+  question_text: string;
+  options: QuestionOption[];
   order: number;
 }
 

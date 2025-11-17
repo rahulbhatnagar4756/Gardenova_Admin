@@ -49,6 +49,28 @@
   color: #1e293b;
 }
 
+/*popup css*/
+
+.professt_pop_width {
+    max-width: 1010px;
+    width: 100%;
+}
+.professtional_pop_table .mp_table {
+    border:1px solid rgba(244, 244, 244, 0.10);
+    border-radius: 15px;
+}
+.professtional_pop_table .mp_table td, .professtional_pop_table .mp_table th{
+  border-bottom:1px solid rgba(244, 244, 244, 0.10);
+}
+
+.professtional_pop_table tr th, .professtional_pop_table tr td {
+    color: #F4F4F4;
+}
+
+
+
+/*popup css close*/
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .leads-header {

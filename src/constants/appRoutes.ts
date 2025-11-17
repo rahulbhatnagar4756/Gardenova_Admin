@@ -1,13 +1,13 @@
 export const APP_ROUTES = {
   auth: {
     login: "/login",
-    forgotPassword: "/forgot-password",
+    forgotPassword: "/forgotpassword",
   },
   admin: {
     root: "/adminPanel",
     dashboard: "/adminPanel",
     diagnosticQuestions: "/adminPanel/diagnostic-questions",
-    rules: "/adminPanel/diagnostic-questions/rules",
+    rules: "/adminPanel/rules",
     partnerProfiles: "/adminPanel/partner-profiles",
     leads: "/adminPanel/leads",
   },

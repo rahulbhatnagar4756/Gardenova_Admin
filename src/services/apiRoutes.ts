@@ -2,6 +2,7 @@
 const AUTH_BASE = "/api/v1/auth";
 const ADMIN_BASE = "/api/v1/admin";
 const PARTNER_PROFILE_BASE = "/api/v1/partnerProfile";
+const STATE_CITY_BASE = "/api/v1/stateCityData/countries";
 
 // apiRoutes.ts
 export const API_ROUTES = {
@@ -30,9 +31,16 @@ export const API_ROUTES = {
   partnerProfile: {
     // Partner Profile routes
     getAll: `${PARTNER_PROFILE_BASE}`,
+    getById: `${PARTNER_PROFILE_BASE}`,
     create: `${PARTNER_PROFILE_BASE}`,
-    update: `${PARTNER_PROFILE_BASE}/`,
-    delete: `${PARTNER_PROFILE_BASE}/`,
+    update: `${PARTNER_PROFILE_BASE}`,
+    delete: `${PARTNER_PROFILE_BASE}`,
+    updateRating: `${PARTNER_PROFILE_BASE}/rating`,
+    updateStatus: `${PARTNER_PROFILE_BASE}/status`,
+  },
+  stateCityData: {
+    getStates: `${STATE_CITY_BASE}`,
+    getStateCities: `${STATE_CITY_BASE}/{iso2}/states/{stateIso2}/cities`,
   },
 } as const;
 
