@@ -1,0 +1,88 @@
+/* Background overlay */
+.pro-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(3, 33, 28, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+/* Modal container */
+.pro-modal-container {
+  width: 90%;
+  max-width: 900px;
+  background: #1f312d;
+  border: 1px solid #2f4c47;
+  padding: 30px;
+  border-radius: 14px;
+  color: #fff;
+  position: relative;
+}
+
+/* Modal Header */
+.pro-modal-header h3 {
+  font-size: 28px;
+  margin: 0;
+  color: #fff;
+  font-weight: 600;
+}
+
+.pro-modal-header p {
+  margin-top: 4px;
+  margin-bottom: 20px;
+  color: #cfd8d6;
+  font-size: 14px;
+}
+
+/* Close button */
+.pro-close-btn {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  background: #d4a017;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* Table */
+.pro-table-wrapper {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.pro-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.pro-table th {
+  padding: 12px;
+  text-align: left;
+  background: #243f39;
+  color: #d9e5e2;
+  font-weight: 500;
+}
+
+.pro-table td {
+  padding: 14px 10px;
+  border-bottom: 1px solid #2f4c47;
+  color: #fff;
+}
+
+.pro-photo {
+  width: 55px;
+  height: 55px;
+  border-radius: 6px;
+  object-fit: cover;
+}

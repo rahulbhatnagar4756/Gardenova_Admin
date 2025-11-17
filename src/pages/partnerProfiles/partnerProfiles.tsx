@@ -14,6 +14,7 @@ import { ImagePopup } from "../../components/partners/ImagePopup";
 import { PartnerModal } from "../../components/partners/PartnerModal";
 import { PartnerViewModal } from "../../components/partners/PartnerViewModal";
 import { TableLoader } from "../../components/loader";
+import { useDebouncedBatchUpdater } from "../../hooks/useDebouncedBatchUpdater";
 
 interface PartnerProfilesProps {
   limit?: number;
@@ -64,13 +65,14 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
   });
 
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  // ✅ state for pending status updates (debounced)
-  const [pendingUpdates, setPendingUpdates] = useState<
-    Record<string, PartnerProfileStatus>
-  >({});
-  const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | null>(
-    null
-  );
+
+  const { triggerUpdate: triggerStatusUpdate, pendingUpdates } =
+    useDebouncedBatchUpdater<PartnerProfileStatus>(
+      updatePartnerStatus,
+      2000, // debounce delay
+      () => showSuccess("Partner statuses updated successfully!"),
+      (failed) => showError(`${failed} status updates failed!`)
+    );
 
   // ✅ new state for View modal
   const [viewModal, setViewModal] = useState<{
@@ -111,40 +113,6 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
     },
     [goToPage]
   );
-
-  // ✅ Debounced save logic
-  const triggerDebouncedUpdate = (
-    partnerId: string,
-    nextStatus: PartnerProfileStatus
-  ) => {
-    // store new update
-    setPendingUpdates((prev) => ({
-      ...prev,
-      [partnerId]: nextStatus,
-    }));
-
-    // clear previous timer
-    if (debounceTimer) clearTimeout(debounceTimer);
-
-    // set new timer
-    const newTimer = setTimeout(async () => {
-      const updates = { ...pendingUpdates, [partnerId]: nextStatus };
-      const promises = Object.entries(updates).map(async ([id, status]) => {
-        try {
-          await updatePartnerStatus(id, status);
-          return { id, success: true };
-        } catch (err) {
-          console.error(`Failed to update status for ${id}:`, err);
-          return { id, success: false };
-        }
-      });
-      await Promise.all(promises);
-      showSuccess("Partner statuses updated successfully!");
-      setPendingUpdates({});
-    }, 2000);
-
-    setDebounceTimer(newTimer);
-  };
 
   // ✅ handle opening View Modal
   const handleViewPartner = async (partnerId: string) => {
@@ -281,7 +249,7 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
                             partner.status as PartnerProfileStatus
                           );
                           partner.status = nextStatus;
-                          triggerDebouncedUpdate(partner.id, nextStatus);
+                          triggerStatusUpdate(partner.id, nextStatus);
                         }}
                       >
                         {partner.status

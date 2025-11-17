@@ -1,11 +1,11 @@
 import { useState } from "react";
 import "./rules.css";
-import { useRules } from "../../../hooks/useRules";
+import { useRules } from "../../hooks/useRules";
 import type {
   CreateRuleRequest,
   Rule,
   UpdateRuleRequest,
-} from "../../../services/apiCalls/rules";
+} from "../../services/apiCalls/rules";
 
 interface RulesProps {
   limit?: number;
@@ -58,7 +58,7 @@ export const Rules = ({ limit, isActionShow = true }: RulesProps) => {
           name: formData.name,
           conditions: formData.conditions,
         };
-        await updateRule(editingRule._id, updateData);
+        await updateRule(editingRule.id, updateData);
       } else {
         await createRule(formData);
       }
@@ -146,7 +146,7 @@ export const Rules = ({ limit, isActionShow = true }: RulesProps) => {
             </div>
           ) : (
             displayRules.map((rule, index) => (
-              <div className="col-xl-6" key={rule._id || index}>
+              <div className="col-xl-6" key={rule.id || index}>
                 <div className="single_question">
                   <div className="row align-items-end">
                     <div className="col">
@@ -180,7 +180,7 @@ export const Rules = ({ limit, isActionShow = true }: RulesProps) => {
                           <li className="question_actions delete_action">
                             <button
                               type="button"
-                              onClick={() => handleDelete(rule._id)}
+                              onClick={() => handleDelete(rule.id)}
                             >
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -225,7 +225,7 @@ export const Rules = ({ limit, isActionShow = true }: RulesProps) => {
                 onClick={handleCloseModal}
                 aria-label="Close"
               >
-               ×
+                ×
               </button>
               <div className="modal-body">
                 <div className="head_area">

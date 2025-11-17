@@ -6,9 +6,9 @@ import { PartnerProfiles } from "../pages/partnerProfiles/partnerProfiles";
 import { Leads } from "../pages/leads/leads";
 import { Login } from "../pages/auth/login/login";
 import { APP_ROUTES } from "../constants/appRoutes";
-import { Rules } from "../pages/diagnosticQuestions/rules/rules";
 import { ForgotPassword } from "../pages/auth/forgotPassword/forgotPassword";
 import { ProtectedRoute } from "./ProtectedRoute";
+import { Rules } from "../pages/rules/rules";
 
 export const AppRoutes = () => {
   return (
