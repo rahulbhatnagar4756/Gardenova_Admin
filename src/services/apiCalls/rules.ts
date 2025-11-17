@@ -11,7 +11,7 @@ export interface RuleCondition {
 }
 
 export interface Rule {
-  _id: string;
+  id: string;
   name: string;
   conditions: RuleCondition[];
 }
