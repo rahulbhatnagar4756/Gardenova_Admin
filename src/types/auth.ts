@@ -13,6 +13,7 @@ export interface LoginCredentials {
 
 export interface ForgotPasswordData {
   email: string;
+  isResend: boolean;
 }
 
 export interface AuthResponse {
