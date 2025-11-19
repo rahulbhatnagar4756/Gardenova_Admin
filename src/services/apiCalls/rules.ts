@@ -2,38 +2,42 @@ import { apiService } from "..";
 import type { ApiResponse } from "../../types";
 import { API_ROUTES } from "../apiRoutes";
 
-// Types for Rule operations
+// ---------- Condition (Backend Response Shape) ----------
 export interface RuleCondition {
-  questionId: string; // send ID from frontend
-  operator: "equals" | "in" | "and" | "or";
-  values: string[];
-  questionText?: string; // comes from backend in getAllRules
+  questionId: string;
+  questionText?: string;
+  operator: string; // backend returns "é igual", "ou", etc.
+  value: string; // backend returns string, not array
 }
 
+// ---------- Rule ----------
 export interface Rule {
   id: string;
   name: string;
   conditions: RuleCondition[];
 }
 
+// ---------- Create Rule ----------
 export interface CreateRuleRequest {
   name: string;
   conditions: {
     questionId: string;
-    operator: "equals" | "in" | "and" | "or";
-    values: string[];
+    operator: "equal" | "and" | "or"; // frontend sends English operators
+    value: string; // value must be string
   }[];
 }
 
+// ---------- Update Rule ----------
 export interface UpdateRuleRequest {
   name: string;
   conditions: {
     questionId: string;
-    operator: "equals" | "in" | "and" | "or";
-    values: string[];
+    operator: "equal" | "and" | "or";
+    value: string;
   }[];
 }
 
+// ---------- Response Wrapper ----------
 export interface RulesResponse {
   rules: Rule[];
 }
