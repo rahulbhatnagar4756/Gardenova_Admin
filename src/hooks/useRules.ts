@@ -25,22 +25,18 @@ export const useRules = (): UseRulesReturn => {
     try {
       setLoading(true);
       setError(null);
+
       const response = await ruleService.getAllRules();
 
       if (response.success && response.data) {
-        // Handle both array and object with rules array
-        const rulesData = Array.isArray(response.data)
-          ? response.data
-          : response.data.rules || [];
-        setRules(rulesData);
+        // response.data = { rules: [...] }
+        setRules(response.data.rules || []);
       } else {
         setError(response.message || "Failed to fetch rules");
       }
     } catch (err) {
       console.error("Error fetching rules:", err);
-      setError(
-        err instanceof Error ? err.message : "An unknown error occurred"
-      );
+      setError(err instanceof Error ? err.message : "Unknown error");
     } finally {
       setLoading(false);
     }

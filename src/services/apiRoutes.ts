@@ -4,6 +4,7 @@ const ADMIN_BASE = "/api/v1/admin";
 const PARTNER_PROFILE_BASE = "/api/v1/partnerProfile";
 const STATE_CITY_BASE = "/api/v1/stateCityData/countries";
 const LEADS = "/api/v1/admin/leads";
+const DASHBOARD = "/api/v1/admin/dashboard";
 
 // apiRoutes.ts
 export const API_ROUTES = {
@@ -11,7 +12,7 @@ export const API_ROUTES = {
     // Authenticate login routes
     login: `${AUTH_BASE}/login`,
     register: `${AUTH_BASE}/register`,
-    forgotPassword: `${AUTH_BASE}/sendVerificationToken`,
+    forgotPassword: `${AUTH_BASE}/passwordResetToken`,
     resetPassword: `${AUTH_BASE}/resetPassword`,
     verifyToken: `${AUTH_BASE}/verifyToken`,
   },
@@ -46,6 +47,9 @@ export const API_ROUTES = {
   leads: {
     getAll: `${LEADS}`,
     updateStatus: `${LEADS}/`,
+  },
+  admin: {
+    dashboard: `${DASHBOARD}`,
   },
 } as const;
 

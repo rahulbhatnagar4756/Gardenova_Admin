@@ -59,7 +59,10 @@ export const ForgotPassword: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const response = await authService.forgotPassword({ email });
+      const response = await authService.forgotPassword({
+        email,
+        isResend: false,
+      });
       if (!response.success) {
         showError(response.message || "Failed to send verification code.");
         return;
@@ -68,7 +71,7 @@ export const ForgotPassword: React.FC = () => {
         response.message || "6-digit verification code sent to your email."
       );
       setCurrentStep(ForgotPasswordStep.VERIFY_TOKEN);
-      setTimeLeft(60);
+      setTimeLeft(60 * 5);
       setCanResend(false);
     } catch (error: unknown) {
       const err = error as ApiError;
@@ -143,13 +146,16 @@ export const ForgotPassword: React.FC = () => {
   const handleResendToken = async () => {
     setIsLoading(true);
     try {
-      const response = await authService.forgotPassword({ email });
+      const response = await authService.forgotPassword({
+        email,
+        isResend: true,
+      });
       if (!response.success) {
         showError(response.message || "Failed to resend verification code.");
         return;
       }
       showInfo(response.message || "New verification code sent to your email.");
-      setTimeLeft(60);
+      setTimeLeft(60 * 5);
       setCanResend(false);
       setTokenDigits(["", "", "", "", "", ""]);
     } catch (error: unknown) {

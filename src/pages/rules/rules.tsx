@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./rules.css";
 import { useRules } from "../../hooks/useRules";
 import type {
@@ -6,104 +6,150 @@ import type {
   Rule,
   UpdateRuleRequest,
 } from "../../services/apiCalls/rules";
+import { useToast } from "../../hooks/useToast";
+import { RuleModal } from "../../components/rule/RuleModal";
+import { Loader } from "../../components/loader";
+import { useDiagnosticQuestions } from "../../hooks/useDiagnosticQuestions";
+import ConfirmModal from "../../components/confirmModal";
 
 interface RulesProps {
   limit?: number;
   isActionShow?: boolean;
 }
 
-interface RuleWithId extends Rule {
-  [key: string]: unknown;
+type LocalCondition = {
+  questionId: string;
+  operator: "equal" | "and" | "or";
+  value: string;
+  questionText?: string;
+};
+
+type LocalFormData = {
+  name: string;
+  conditions: LocalCondition[];
+};
+
+// Simplified interface for editing - only needs id and name
+interface EditingRule {
+  id: string;
+  name: string;
 }
+
+const INITIAL_FORM_DATA: LocalFormData = {
+  name: "",
+  conditions: [
+    { questionId: "", operator: "equal", value: "" },
+    { questionId: "", operator: "equal", value: "" },
+  ],
+};
 
 export const Rules = ({ limit, isActionShow = true }: RulesProps) => {
   const { rules, loading, error, createRule, updateRule, deleteRule } =
     useRules();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingRule, setEditingRule] = useState<RuleWithId | null>(null);
-  const [formData, setFormData] = useState<CreateRuleRequest>({
-    name: "",
-    conditions: [
-      { questionId: "", operator: "equals", values: [""] },
-      { questionId: "", operator: "equals", values: [""] },
-    ],
-  });
+  const { questions } = useDiagnosticQuestions();
 
-  const handleEdit = (rule: RuleWithId) => {
-    setEditingRule(rule);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingRule, setEditingRule] = useState<EditingRule | null>(null);
+  const [formData, setFormData] = useState<LocalFormData>(INITIAL_FORM_DATA);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const { showError, showSuccess } = useToast();
+
+  const normalizeOperator = (op: string): "equal" | "and" | "or" => {
+    if (op === "equal" || op === "and" || op === "or") return op;
+    return "equal";
+  };
+
+  // ---------------------------
+  // OPEN EDIT MODAL
+  // ---------------------------
+  const handleEdit = (rule: Rule) => {
+    setEditingRule({ id: rule.id, name: rule.name });
+
+    const formattedConditions: LocalCondition[] = rule.conditions.map(
+      (condition) => ({
+        questionId: condition.questionId,
+        operator: normalizeOperator(condition.operator),
+        value: condition.value,
+        questionText: condition.questionText ?? "",
+      })
+    );
+
     setFormData({
-      name: rule.name || "",
-      conditions: rule.conditions || [
-        { questionId: "", operator: "equals", values: [""] },
-        { questionId: "", operator: "equals", values: [""] },
-      ],
+      name: rule.name,
+      conditions: formattedConditions,
     });
+
     setIsModalOpen(true);
   };
 
-  const handleDelete = async (id: string) => {
-    if (window.confirm("Are you sure you want to delete this rule?")) {
-      try {
-        await deleteRule(id);
-      } catch (error) {
-        console.error("Failed to delete rule:", error);
-      }
-    }
-  };
+  // ---------------------------
+  // DELETE RULE
+  // ---------------------------
+  const handleDelete = async () => {
+    if (!deleteId) return;
 
-  const handleSubmit = async () => {
     try {
-      if (editingRule) {
-        const updateData: UpdateRuleRequest = {
-          name: formData.name,
-          conditions: formData.conditions,
-        };
-        await updateRule(editingRule.id, updateData);
-      } else {
-        await createRule(formData);
-      }
-      setIsModalOpen(false);
-      setEditingRule(null);
-      setFormData({
-        name: "",
-        conditions: [
-          { questionId: "", operator: "equals", values: [""] },
-          { questionId: "", operator: "equals", values: [""] },
-        ],
-      });
-    } catch (error) {
-      console.error("Failed to save rule:", error);
+      await deleteRule(deleteId);
+      setDeleteId(null); // close modal
+    } catch {
+      showError("Something went wrong while deleting rule.");
     }
   };
 
+  // ---------------------------
+  // CREATE or UPDATE RULE
+  // ---------------------------
+  const handleSubmit = async (formData: LocalFormData) => {
+    // Backend does NOT accept questionText → remove it
+    const payloadConditions = formData.conditions.map((c) => ({
+      questionId: c.questionId,
+      operator: c.operator,
+      value: Array.isArray(c.value) ? c.value.join(",") : c.value,
+    }));
+
+    if (editingRule) {
+      const updateData: UpdateRuleRequest = {
+        name: formData.name,
+        conditions: payloadConditions,
+      };
+      await updateRule(editingRule.id, updateData);
+      showSuccess("Rule Updated Successfully");
+    } else {
+      const createData: CreateRuleRequest = {
+        name: formData.name,
+        conditions: payloadConditions,
+      };
+      await createRule(createData);
+      showSuccess("New Rule Added Successfully");
+    }
+  };
+
+  // ---------------------------
+  // OPEN EMPTY MODAL
+  // ---------------------------
   const handleOpenModal = () => {
     setEditingRule(null);
-    setFormData({
-      name: "",
-      conditions: [
-        { questionId: "", operator: "equals", values: [""] },
-        { questionId: "", operator: "equals", values: [""] },
-      ],
-    });
+    setFormData(INITIAL_FORM_DATA);
     setIsModalOpen(true);
   };
 
+  // ---------------------------
+  // CLOSE MODAL
+  // ---------------------------
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setEditingRule(null);
-    setFormData({
-      name: "",
-      conditions: [
-        { questionId: "", operator: "equals", values: [""] },
-        { questionId: "", operator: "equals", values: [""] },
-      ],
-    });
+    setFormData(INITIAL_FORM_DATA);
   };
 
   const displayRules = limit ? rules.slice(0, limit) : rules;
 
-  if (loading) return <div className="loading">Loading rules...</div>;
-  if (error) return <div className="error">Error: {error}</div>;
+  // Show toast error from hook
+  useEffect(() => {
+    if (error) showError(`Error: ${error}`);
+  }, [error, showError]);
+
+  if (loading) return <Loader text="Loading rules..." />;
 
   return (
     <div className="rules-page bg-none">
@@ -112,6 +158,7 @@ export const Rules = ({ limit, isActionShow = true }: RulesProps) => {
           <div className="col">
             <h4 className="page_heading">Create Rules</h4>
           </div>
+
           <div className="col-auto">
             <button
               onClick={handleOpenModal}
@@ -138,6 +185,7 @@ export const Rules = ({ limit, isActionShow = true }: RulesProps) => {
         </div>
       </div>
 
+      {/* RULE LIST */}
       <div className="create_rule_container">
         <div className="row">
           {displayRules.length === 0 ? (
@@ -155,13 +203,14 @@ export const Rules = ({ limit, isActionShow = true }: RulesProps) => {
                         <li className="question_name">{rule.name}</li>
                       </ul>
                     </div>
+
                     {isActionShow && (
                       <div className="col-auto">
                         <ul className="question_options_area mt-0">
                           <li className="ms-auto question_actions">
                             <button
                               type="button"
-                              onClick={() => handleEdit(rule as RuleWithId)}
+                              onClick={() => handleEdit(rule)}
                             >
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -180,7 +229,7 @@ export const Rules = ({ limit, isActionShow = true }: RulesProps) => {
                           <li className="question_actions delete_action">
                             <button
                               type="button"
-                              onClick={() => handleDelete(rule.id)}
+                              onClick={() => setDeleteId(rule.id)}
                             >
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -207,153 +256,25 @@ export const Rules = ({ limit, isActionShow = true }: RulesProps) => {
         </div>
       </div>
 
-      {isModalOpen && (
-        <div
-          className="modal modal_add_rules fade show"
-          style={{ display: "block" }}
-          data-bs-backdrop="static"
-          data-bs-keyboard="false"
-          aria-labelledby="exampleModalLabel"
-          aria-modal="true"
-          role="dialog"
-        >
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <button
-                type="button"
-                className="btn-close close-btn"
-                onClick={handleCloseModal}
-                aria-label="Close"
-              >
-                ×
-              </button>
-              <div className="modal-body">
-                <div className="head_area">
-                  <h4 className="head_modal">
-                    {editingRule ? "Edit Rule" : "Add New Rule"}
-                  </h4>
-                  <p className="sub_head">Enter The details and marked</p>
-                </div>
+      {/* MODAL */}
+      <RuleModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onSubmit={handleSubmit}
+        editingRule={editingRule}
+        initialFormData={formData}
+        questions={{ questions }}
+      />
 
-                <div className="input_field">
-                  <label htmlFor="ruleName">Rule Name *</label>
-                  <div className="position-relative">
-                    <input
-                      id="ruleName"
-                      placeholder="Enter Rule Name"
-                      className="form-control"
-                      autoComplete="off"
-                      type="text"
-                      name="ruleName"
-                      value={formData.name}
-                      onChange={(e) =>
-                        setFormData({ ...formData, name: e.target.value })
-                      }
-                    />
-                  </div>
-                </div>
-
-                <div
-                  className="accordion accordion-flush"
-                  id="accordionCondition"
-                >
-                  {formData.conditions.map((condition, idx) => (
-                    <div className="accordion-item" key={idx}>
-                      <h2 className="accordion-header">
-                        <button
-                          className="accordion-button collapsed"
-                          type="button"
-                          data-bs-toggle="collapse"
-                          data-bs-target={`#flush-collapse${idx}`}
-                          aria-expanded="false"
-                          aria-controls={`flush-collapse${idx}`}
-                        >
-                          Condition {idx + 1} *
-                        </button>
-                      </h2>
-                      <div
-                        id={`flush-collapse${idx}`}
-                        className="accordion-collapse collapse"
-                        data-bs-parent="#accordionCondition"
-                      >
-                        <div className="accordion-body">
-                          <select
-                            className="form-select"
-                            value={condition.questionId}
-                            onChange={(e) => {
-                              const newConditions = [...formData.conditions];
-                              newConditions[idx].questionId = e.target.value;
-                              setFormData({
-                                ...formData,
-                                conditions: newConditions,
-                              });
-                            }}
-                          >
-                            <option value="">Select Question</option>
-                            <option value="question1">Question 1</option>
-                            <option value="question2">Question 2</option>
-                            <option value="question3">Question 3</option>
-                          </select>
-
-                          <select
-                            className="form-select"
-                            value={condition.operator}
-                            onChange={(e) => {
-                              const newConditions = [...formData.conditions];
-                              newConditions[idx].operator = e.target.value as
-                                | "equals"
-                                | "in"
-                                | "and"
-                                | "or";
-                              setFormData({
-                                ...formData,
-                                conditions: newConditions,
-                              });
-                            }}
-                          >
-                            <option value="">Choose Operator</option>
-                            <option value="equals">Equals</option>
-                            <option value="in">In</option>
-                            <option value="and">And</option>
-                            <option value="or">Or</option>
-                          </select>
-
-                          <select
-                            className="form-select"
-                            value={condition.values[0]}
-                            onChange={(e) => {
-                              const newConditions = [...formData.conditions];
-                              newConditions[idx].values = [e.target.value];
-                              setFormData({
-                                ...formData,
-                                conditions: newConditions,
-                              });
-                            }}
-                          >
-                            <option value="">Select Values</option>
-                            <option value="value1">Value 1</option>
-                            <option value="value2">Value 2</option>
-                            <option value="value3">Value 3</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <button
-                  type="button"
-                  className="btn common_button mt-3"
-                  onClick={handleSubmit}
-                >
-                  {editingRule ? "Update Rule" : "Create Rule"}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-      {isModalOpen && <div className="modal-backdrop fade show"></div>}
+      <ConfirmModal
+        open={!!deleteId}
+        title="Delete Rule?"
+        message="Are you sure you want to delete this rule?"
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={handleDelete} // no need to pass id here
+        onCancel={() => setDeleteId(null)}
+      />
     </div>
   );
 };

@@ -7,6 +7,7 @@ import { useAuth } from "../../../hooks/useAuth";
 import "../auth.css";
 import { APP_ROUTES } from "../../../constants/appRoutes";
 import { useToast } from "../../../hooks/useToast";
+import logo from "../../../images/logo.png";
 
 /**
  * Login Component
@@ -119,7 +120,7 @@ export const Login: React.FC = () => {
     <>
       <section className="bl_section">
         <div className="bf_wrapper">
-          <img src="./src/images/logo.png" className="k_logo" alt="Logo" />
+          <img src={logo} className="k_logo" alt="Logo" />
           <h1 className="bl_head">Welcome!</h1>
           <p className="bl_sub_head">Log In to your account.</p>
 

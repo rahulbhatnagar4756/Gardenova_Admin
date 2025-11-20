@@ -1,32 +1,48 @@
-import { useState, useEffect } from "react";
-import { mockService } from "../services/mockService";
-import type { DashboardData } from "../types";
+import { useEffect, useState } from "react";
+import {
+  dashboardService,
+  type DashboardResponse,
+} from "../services/apiCalls/dashboard";
 
-export const useDashboard = () => {
-  const [dashboardData, setDashboardData] = useState<DashboardData | null>(
-    null
-  );
+export const useDashboardData = () => {
+  const [dashboard, setDashboard] = useState<DashboardResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchDashboardData = async () => {
-      try {
-        setLoading(true);
-        const data = await mockService.getDashboardData();
-        setDashboardData(data);
-        setError(null);
-      } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Failed to fetch dashboard data"
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchDashboard = async () => {
+    try {
+      setLoading(true);
 
-    fetchDashboardData();
+      const response = await dashboardService.getDashboardStats();
+
+      if (response.success) {
+        setDashboard(response.data);
+        setError(null);
+      } else {
+        setError("Failed to fetch dashboard data");
+      }
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Failed to fetch dashboard data"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDashboard();
   }, []);
 
-  return { dashboardData, loading, error };
+  const refetch = () => fetchDashboard();
+
+  const clearError = () => setError(null);
+
+  return {
+    dashboard,
+    loading,
+    error,
+    refetch,
+    clearError,
+  };
 };
