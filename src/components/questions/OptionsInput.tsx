@@ -1,8 +1,4 @@
-interface OptionsInputProps {
-  currentOption: string;
-  onOptionChange: (value: string) => void;
-  onAddOption: () => void;
-}
+import type { OptionsInputProps } from "../../types/diagnosticQuestion";
 
 const OptionsInput = ({
   currentOption,

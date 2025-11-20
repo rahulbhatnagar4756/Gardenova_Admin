@@ -1,3 +1,5 @@
+import type { ForgotPasswordSteps } from "../constants";
+
 // types/auth.ts
 export interface User {
   id: string;
@@ -29,3 +31,19 @@ export interface DecodedToken {
   iat: number;
   exp: number;
 }
+
+export interface VerifyResetTokenData {
+  email: string;
+  token: string;
+}
+
+export interface AuthContextType {
+  token: string | null;
+  login: (token: string) => void;
+  logout: () => void;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+}
+
+export type ForgotPasswordStep =
+  (typeof ForgotPasswordSteps)[keyof typeof ForgotPasswordSteps];

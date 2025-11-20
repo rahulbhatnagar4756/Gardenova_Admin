@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-import {
-  dashboardService,
-  type DashboardResponse,
-} from "../services/apiCalls/dashboard";
+import { dashboardService } from "../services/apiCalls/dashboard";
+import type { DashboardResponse } from "../types/dashboard";
 
 export const useDashboardData = () => {
   const [dashboard, setDashboard] = useState<DashboardResponse | null>(null);

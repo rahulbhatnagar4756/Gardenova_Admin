@@ -2,23 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../auth.css";
 import { authService } from "../../../services/apiCalls/authentication";
-import type { ApiError } from "../../../types";
 import { APP_ROUTES } from "../../../constants/appRoutes";
 import { useToast } from "../../../hooks/useToast";
-
-export const ForgotPasswordStep = {
-  EMAIL: "email",
-  VERIFY_TOKEN: "verify_token",
-  RESET_PASSWORD: "reset_password",
-  SUCCESS: "success",
-} as const;
-
-export type ForgotPasswordStep =
-  (typeof ForgotPasswordStep)[keyof typeof ForgotPasswordStep];
+import type { ApiError } from "../../../types/apiResponse";
+import type { ForgotPasswordStep } from "../../../types/auth";
+import { ForgotPasswordSteps } from "../../../constants";
 
 export const ForgotPassword: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<ForgotPasswordStep>(
-    ForgotPasswordStep.EMAIL
+    ForgotPasswordSteps.EMAIL
   );
   const [email, setEmail] = useState<string>("");
   const [token, setToken] = useState<string>("");
@@ -46,7 +38,7 @@ export const ForgotPassword: React.FC = () => {
     if (timeLeft > 0) {
       timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
     } else if (
-      currentStep === ForgotPasswordStep.VERIFY_TOKEN &&
+      currentStep === ForgotPasswordSteps.VERIFY_TOKEN &&
       timeLeft === 0
     ) {
       setCanResend(true);
@@ -70,7 +62,7 @@ export const ForgotPassword: React.FC = () => {
       showSuccess(
         response.message || "6-digit verification code sent to your email."
       );
-      setCurrentStep(ForgotPasswordStep.VERIFY_TOKEN);
+      setCurrentStep(ForgotPasswordSteps.VERIFY_TOKEN);
       setTimeLeft(60 * 5);
       setCanResend(false);
     } catch (error: unknown) {
@@ -100,7 +92,7 @@ export const ForgotPassword: React.FC = () => {
       }
       setToken(fullToken);
       showSuccess("Token verified successfully. Please set your new password.");
-      setCurrentStep(ForgotPasswordStep.RESET_PASSWORD);
+      setCurrentStep(ForgotPasswordSteps.RESET_PASSWORD);
     } catch (error: unknown) {
       const err = error as ApiError;
       showError(err.message || "Invalid verification code. Please try again.");
@@ -134,7 +126,7 @@ export const ForgotPassword: React.FC = () => {
         return;
       }
       showSuccess("Password reset successful!");
-      setCurrentStep(ForgotPasswordStep.SUCCESS);
+      setCurrentStep(ForgotPasswordSteps.SUCCESS);
     } catch (error: unknown) {
       const err = error as ApiError;
       showError(err.message || "Failed to reset password. Please try again.");
@@ -536,13 +528,13 @@ export const ForgotPassword: React.FC = () => {
 
   // Main render logic
   switch (currentStep) {
-    case ForgotPasswordStep.EMAIL:
+    case ForgotPasswordSteps.EMAIL:
       return renderEmailStep();
-    case ForgotPasswordStep.VERIFY_TOKEN:
+    case ForgotPasswordSteps.VERIFY_TOKEN:
       return renderTokenStep();
-    case ForgotPasswordStep.RESET_PASSWORD:
+    case ForgotPasswordSteps.RESET_PASSWORD:
       return renderPasswordStep();
-    case ForgotPasswordStep.SUCCESS:
+    case ForgotPasswordSteps.SUCCESS:
       return renderSuccessStep();
     default:
       return renderEmailStep();

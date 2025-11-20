@@ -1,9 +1,6 @@
 import React from "react";
 import "./index.css";
-
-interface LoaderProps {
-  text?: string;
-}
+import type { LoaderProps } from "../../types";
 
 export const TableLoader: React.FC<LoaderProps> = ({ text }) => {
   return (

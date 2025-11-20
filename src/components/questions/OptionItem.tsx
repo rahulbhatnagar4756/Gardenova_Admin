@@ -1,15 +1,5 @@
 import { useState, useEffect } from "react";
-import type { QuestionOption } from "../../services/apiCalls/diagnosticQuestion";
-
-interface OptionItemProps {
-  option: QuestionOption;
-  index: number;
-  isEditing: boolean;
-  onEditStart: (index: number) => void;
-  onEditSave: (index: number, text: string) => void;
-  onEditCancel: () => void;
-  onRemove: (index: number) => void;
-}
+import type { OptionItemProps } from "../../types/rules";
 
 const OptionItem = ({
   option,

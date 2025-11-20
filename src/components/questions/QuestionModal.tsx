@@ -1,28 +1,11 @@
 import { useState, useEffect } from "react";
-import type {
-  CreateQuestionRequest,
-  Question,
-  QuestionOption,
-  UpdateQuestionRequest,
-} from "../../services/apiCalls/diagnosticQuestion";
 import { useToast } from "../../hooks/useToast";
 import OptionsList from "./OptionsList";
 import OptionsInput from "./OptionsInput";
-
-interface QuestionWithId extends Question {
-  [key: string]: unknown;
-}
-
-interface QuestionModalProps {
-  isOpen: boolean;
-  editingQuestion: QuestionWithId | null;
-  questionsCount: number;
-  onClose: () => void;
-  onSave: (
-    data: CreateQuestionRequest | UpdateQuestionRequest,
-    isEditing: boolean
-  ) => Promise<void>;
-}
+import type {
+  QuestionModalProps,
+  QuestionOption,
+} from "../../types/diagnosticQuestion";
 
 const QuestionModal = ({
   isOpen,

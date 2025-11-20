@@ -1,42 +1,11 @@
 import { useState, useEffect } from "react";
 import "./index.css";
 import { useToast } from "../../hooks/useToast";
-
-type LocalCondition = {
-  questionId: string;
-  operator: "equal" | "and" | "or";
-  value: string;
-  questionText?: string;
-};
-
-type LocalFormData = {
-  name: string;
-  conditions: LocalCondition[];
-};
-
-type Option = {
-  id: string;
-  option_text: string;
-};
-
-type Question = {
-  question_id: string;
-  question_text: string;
-  options?: Option[];
-};
-
-type QuestionsData = {
-  questions: Question[];
-};
-
-interface RuleModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSubmit: (formData: LocalFormData) => Promise<void>;
-  editingRule: { id: string; name: string } | null;
-  initialFormData: LocalFormData;
-  questions: QuestionsData;
-}
+import type {
+  LocalCondition,
+  LocalFormData,
+  RuleModalProps,
+} from "../../types/rules";
 
 export const RuleModal = ({
   isOpen,
@@ -49,7 +18,7 @@ export const RuleModal = ({
   const [formData, setFormData] = useState<LocalFormData>(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const { showWarning } = useToast();
+  const { showWarning, showError } = useToast();
 
   useEffect(() => {
     // If adding new rule (not editing), ensure only 1 condition by default
@@ -107,8 +76,8 @@ export const RuleModal = ({
     try {
       await onSubmit(formData);
       onClose();
-    } catch (err) {
-      console.error("Failed to submit:", err);
+    } catch {
+      showError("Failed to submit or Something went wrong ...");
     } finally {
       setIsSubmitting(false);
     }

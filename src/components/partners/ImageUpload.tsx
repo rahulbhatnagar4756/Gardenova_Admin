@@ -1,14 +1,12 @@
 // components/ImageUpload.tsx
 import { useRef, useState, useEffect } from "react";
-
-interface ImageUploadProps {
-  imageUrl: string;
-  onImageChange: (imageUrl: string) => void;
-}
+import type { ImageUploadProps } from "../../types";
+import { useToast } from "../../hooks/useToast";
 
 export const ImageUpload = ({ imageUrl, onImageChange }: ImageUploadProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const { showWarning } = useToast();
 
   useEffect(() => {
     setPreview(imageUrl || null);
@@ -19,7 +17,7 @@ export const ImageUpload = ({ imageUrl, onImageChange }: ImageUploadProps) => {
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
-      alert("Please select a valid image file (PNG, JPG, JPEG)");
+      showWarning("Please select a valid image file (PNG, JPG, JPEG)");
       return;
     }
 

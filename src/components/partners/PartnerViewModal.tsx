@@ -1,14 +1,8 @@
 // components/partners/PartnerViewModal.tsx
 import React, { useState } from "react";
-import type { PartnerProfileResponse } from "../../services/apiCalls/partnerProfile";
 import "../../styles/global.css";
 import { Loader } from "../loader";
-
-interface PartnerViewModalProps {
-  isOpen: boolean;
-  partner: PartnerProfileResponse | null;
-  onClose: () => void;
-}
+import type { PartnerViewModalProps } from "../../types/partnerProfile";
 
 export const PartnerViewModal: React.FC<PartnerViewModalProps> = ({
   isOpen,

@@ -1,10 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
-import {
-  leadService,
-  type RawLead,
-  type LeadsResponse,
-  type Lead,
-} from "../services/apiCalls/leadService";
+import { leadService } from "../services/apiCalls/leadService";
+import type { Lead, LeadsResponse, RawLead } from "../types/lead";
 
 export const useLeads = () => {
   const [leads, setLeads] = useState<Lead[]>([]);

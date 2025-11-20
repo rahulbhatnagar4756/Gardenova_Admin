@@ -1,25 +1,17 @@
 import { useEffect, useState } from "react";
 import "./diagnosticQuestions.css";
 import { useDiagnosticQuestions } from "../../hooks/useDiagnosticQuestions";
-import type {
-  CreateQuestionRequest,
-  Question,
-  UpdateQuestionRequest,
-} from "../../services/apiCalls/diagnosticQuestion";
 import { useToast } from "../../hooks/useToast";
 import ConfirmModal from "../../components/confirmModal";
 import PageHeader from "../../components/questions/PageHeader";
 import QuestionsList from "../../components/questions/QuestionsList";
 import QuestionModal from "../../components/questions/QuestionModal";
-
-interface DiagnosticQuestionsProps {
-  limit?: number;
-  isActionShow?: boolean;
-}
-
-interface QuestionWithId extends Question {
-  [key: string]: unknown;
-}
+import type {
+  CreateQuestionRequest,
+  DiagnosticQuestionsProps,
+  QuestionWithId,
+  UpdateQuestionRequest,
+} from "../../types/diagnosticQuestion";
 
 export const DiagnosticQuestions = ({
   limit,

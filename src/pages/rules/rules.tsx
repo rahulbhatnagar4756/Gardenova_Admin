@@ -1,39 +1,20 @@
 import { useEffect, useState } from "react";
 import "./rules.css";
 import { useRules } from "../../hooks/useRules";
-import type {
-  CreateRuleRequest,
-  Rule,
-  UpdateRuleRequest,
-} from "../../services/apiCalls/rules";
 import { useToast } from "../../hooks/useToast";
 import { RuleModal } from "../../components/rule/RuleModal";
 import { Loader } from "../../components/loader";
 import { useDiagnosticQuestions } from "../../hooks/useDiagnosticQuestions";
 import ConfirmModal from "../../components/confirmModal";
-
-interface RulesProps {
-  limit?: number;
-  isActionShow?: boolean;
-}
-
-type LocalCondition = {
-  questionId: string;
-  operator: "equal" | "and" | "or";
-  value: string;
-  questionText?: string;
-};
-
-type LocalFormData = {
-  name: string;
-  conditions: LocalCondition[];
-};
-
-// Simplified interface for editing - only needs id and name
-interface EditingRule {
-  id: string;
-  name: string;
-}
+import type {
+  CreateRuleRequest,
+  EditingRule,
+  LocalCondition,
+  LocalFormData,
+  Rule,
+  RulesProps,
+  UpdateRuleRequest,
+} from "../../types/rules";
 
 const INITIAL_FORM_DATA: LocalFormData = {
   name: "",

@@ -1,13 +1,7 @@
 import { useState } from "react";
 import { useToast } from "../../hooks/useToast";
-import type { QuestionOption } from "../../services/apiCalls/diagnosticQuestion";
 import OptionItem from "./OptionItem";
-
-interface OptionsListProps {
-  options: QuestionOption[];
-  onRemove: (index: number) => void;
-  onUpdate: (index: number, text: string) => void;
-}
+import type { OptionsListProps } from "../../types/diagnosticQuestion";
 
 const OptionsList = ({ options, onRemove, onUpdate }: OptionsListProps) => {
   const [editIndex, setEditIndex] = useState<number | null>(null);

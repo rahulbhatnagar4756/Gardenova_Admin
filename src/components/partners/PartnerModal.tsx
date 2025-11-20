@@ -2,66 +2,18 @@
 import { useEffect, useReducer, useState } from "react";
 import Select, { type SingleValue, type StylesConfig } from "react-select";
 import { ImageUpload } from "./ImageUpload";
-import type {
-  PartnerProfileRequest,
-  PartnerProfileResponse,
-} from "../../services/apiCalls/partnerProfile";
 import { useToast } from "../../hooks/useToast";
 import { stateCityDataService } from "../../services/apiCalls/stateCity";
-
-interface PartnerModalProps {
-  isOpen: boolean;
-  editingPartner: PartnerProfileResponse | null;
-  onClose: () => void;
-  onSave: (data: PartnerProfileRequest) => Promise<void>;
-}
-
-type DropdownOption = {
-  value: string;
-  label: string;
-};
-
-// Validation errors type
-type ValidationErrors = {
-  companyName?: string;
-  email?: string;
-  contactPerson?: string;
-  mobileNumber?: string;
-  speciality?: string;
-  website?: string;
-  street?: string;
-  country?: string;
-  state?: string;
-  city?: string;
-  zipCode?: string;
-};
-
-// Reducer for form state management
-type FormState = {
-  companyName: string;
-  email: string;
-  speciality: string[];
-  address: {
-    street: string;
-    city: string;
-    state: string;
-    country: string;
-    zipCode: string;
-  };
-  website: string;
-  contactPerson: string;
-  mobileNumber: string;
-  projectImageUrl: string;
-  status: string;
-  specialityText: string;
-};
-
-type FormAction =
-  | { type: "SET_FIELD"; field: keyof FormState; value: unknown }
-  | { type: "SET_ADDRESS_FIELD"; field: string; value: string }
-  | { type: "SET_SPECIALITY"; text: string; array: string[] }
-  | { type: "RESET" }
-  | { type: "LOAD_PARTNER"; partner: PartnerProfileResponse };
+import type {
+  DropdownOption,
+  FormAction,
+  FormState,
+  LocationAction,
+  LocationState,
+  PartnerModalProps,
+  PartnerProfileRequest,
+  ValidationErrors,
+} from "../../types/partnerProfile";
 
 const initialFormState: FormState = {
   companyName: "",
@@ -122,21 +74,6 @@ function formReducer(state: FormState, action: FormAction): FormState {
       return state;
   }
 }
-
-// Reducer for location data
-type LocationState = {
-  states: { name: string; iso2: string }[];
-  cities: { id: number; name: string }[];
-  loadingStates: boolean;
-  loadingCities: boolean;
-};
-
-type LocationAction =
-  | { type: "SET_STATES"; states: { name: string; iso2: string }[] }
-  | { type: "SET_CITIES"; cities: { id: number; name: string }[] }
-  | { type: "SET_LOADING_STATES"; loading: boolean }
-  | { type: "SET_LOADING_CITIES"; loading: boolean }
-  | { type: "RESET_LOCATION" };
 
 const initialLocationState: LocationState = {
   states: [],
@@ -412,8 +349,7 @@ export const PartnerModal = ({
       };
 
       await onSave(requestData);
-    } catch (error) {
-      console.error("Failed to save partner:", error);
+    } catch {
       showError("Failed to save partner");
     } finally {
       setLoadingButton();

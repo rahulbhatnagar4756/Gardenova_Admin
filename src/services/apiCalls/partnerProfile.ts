@@ -1,64 +1,14 @@
 import { apiService } from "..";
-import type { ApiResponse } from "../../types";
+import type { ApiResponse } from "../../types/apiResponse";
+import type {
+  PaginatedPartnerProfilesResponse,
+  PaginationParams,
+  PartnerProfileRequest,
+  PartnerProfileResponse,
+  PartnerRatingUpdateRequest,
+  PartnerStatusUpdateRequest,
+} from "../../types/partnerProfile";
 import { API_ROUTES } from "../apiRoutes";
-
-export type PartnerProfileStatus =
-  | "active"
-  | "inactive"
-  | "pending"
-  | "suspended";
-
-export interface PartnerAddress {
-  street?: string;
-  city?: string;
-  state?: string;
-  country?: string;
-  zipCode?: string;
-}
-
-export interface PartnerProfileRequest {
-  email: string; // Partner's email
-  mobileNumber?: string;
-  companyName?: string;
-  speciality?: string[]; // Array of specializations
-  address?: PartnerAddress;
-  website?: string;
-  contactPerson?: string;
-  projectImageUrl?: string; // Base64 or URL
-  status?: PartnerProfileStatus;
-  rating?: string;
-}
-
-export interface PartnerProfileResponse extends PartnerProfileRequest {
-  id: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
-
-// Pagination parameters interface
-export interface PaginationParams {
-  page?: number;
-  limit?: number;
-}
-
-// Paginated response interface matching your backend
-export interface PaginatedPartnerProfilesResponse {
-  currentPage: number;
-  totalPages: number;
-  totalCount: number;
-  limit: number;
-  profiles: PartnerProfileResponse[];
-}
-
-export interface PartnerRatingUpdateRequest {
-  partnerId: string;
-  rating: number;
-}
-
-export interface PartnerStatusUpdateRequest {
-  partnerId: string;
-  status: "pending" | "approved" | "rejected" | "inactive";
-}
 
 export const partnerProfileService = {
   /**

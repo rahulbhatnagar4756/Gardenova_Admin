@@ -1,6 +1,4 @@
-interface PageHeaderProps {
-  onAddClick: () => void;
-}
+import type { PageHeaderProps } from "../../types";
 
 const PageHeader = ({ onAddClick }: PageHeaderProps) => {
   return (

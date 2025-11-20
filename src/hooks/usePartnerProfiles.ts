@@ -1,46 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import { partnerProfileService } from "../services/apiCalls/partnerProfile";
-import type {
-  PartnerProfileResponse,
-  PartnerProfileRequest,
-  PaginatedPartnerProfilesResponse,
-} from "../services/apiCalls/partnerProfile";
 import { useToast } from "./useToast";
-
-interface PaginationParams {
-  page?: number;
-  limit?: number;
-}
-
-interface UsePartnerProfilesReturn {
-  partners: PartnerProfileResponse[];
-  loading: boolean;
-  error: string | null;
-  currentPage: number;
-  totalPages: number;
-  totalCount: number;
-  limit: number;
-  goToPage: (page: number) => void;
-  nextPage: () => void;
-  previousPage: () => void;
-  setItemsPerPage: (limit: number) => void;
-  createPartner: (data: PartnerProfileRequest) => Promise<void>;
-  updatePartner: (
-    id: string,
-    data: Partial<PartnerProfileRequest>
-  ) => Promise<void>;
-  deletePartner: (id: string) => Promise<void>;
-  refetch: () => Promise<void>;
-  updatePartnerRating: (partnerId: string, rating: number) => Promise<void>;
-  updatePartnerStatus: (partnerId: string, status: string) => Promise<void>;
-  getPartnerById: (id: string) => Promise<PartnerProfileResponse | null>;
-}
-
-interface UsePartnerProfilesOptions {
-  initialPage?: number;
-  initialLimit?: number;
-  autoFetch?: boolean;
-}
+import type {
+  PaginatedPartnerProfilesResponse,
+  PaginationParams,
+  PartnerProfileRequest,
+  PartnerProfileResponse,
+  UsePartnerProfilesOptions,
+  UsePartnerProfilesReturn,
+} from "../types/partnerProfile";
 
 export const usePartnerProfiles = (
   options: UsePartnerProfilesOptions = {}

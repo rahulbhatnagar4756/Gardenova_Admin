@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { type Toast, type ToastType, ToastContext } from "./ToastContext";
+import { ToastContext } from "./ToastContext";
+import type { Toast, ToastType } from "../types/toast";
 
 let counter = 0;
 

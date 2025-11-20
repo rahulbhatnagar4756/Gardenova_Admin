@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { authService } from "../../../services/apiCalls/authentication";
 import type { LoginCredentials } from "../../../types/auth";
-import type { ApiError } from "../../../types";
 import { useAuth } from "../../../hooks/useAuth";
 import "../auth.css";
 import { APP_ROUTES } from "../../../constants/appRoutes";
 import { useToast } from "../../../hooks/useToast";
 import logo from "../../../images/logo.png";
+import type { ApiError } from "../../../types/apiResponse";
 
 /**
  * Login Component

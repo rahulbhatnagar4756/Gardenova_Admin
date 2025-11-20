@@ -1,12 +1,8 @@
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import type { DoughnutMiniChartProps } from "../../types";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
-
-interface DoughnutMiniChartProps {
-  total: number;
-  today: number;
-}
 
 export const DoughnutMiniChart = ({ total, today }: DoughnutMiniChartProps) => {
   const remaining = Math.max(total - today, 0);

@@ -6,11 +6,15 @@ import { useAuth } from "../../hooks/useAuth";
 import { jwtDecode } from "jwt-decode";
 import { decodePayload } from "../../utility/util";
 import type { DecodedToken } from "../../types/auth";
+import { useToast } from "../../hooks/useToast";
+import { useState } from "react";
 
 export const Sidebar = () => {
   const { logout } = useAuth();
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
+  const { showWarning, showSuccess, showError } = useToast();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   // Token validation (same as in AuthProvider)
   const isTokenValid = () => {
@@ -26,9 +30,19 @@ export const Sidebar = () => {
     }
   };
 
-  const handleLogout = () => {
-    logout();
-    navigate(APP_ROUTES.auth.login, { replace: true });
+  const handleLogout = async (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    setIsLoggingOut(true);
+
+    try {
+      logout();
+      showSuccess("You are successfully Logged Out");
+      navigate(APP_ROUTES.auth.login, { replace: true });
+    } catch {
+      showError("Something Went Wrong...");
+    } finally {
+      setIsLoggingOut(false);
+    }
   };
 
   // Handle navigation with token validation
@@ -36,7 +50,7 @@ export const Sidebar = () => {
     if (!isTokenValid()) {
       e.preventDefault();
       logout();
-      alert("Your session has expired or you're not authorized.");
+      showWarning("Your session has expired or you're not authorized.");
       navigate(APP_ROUTES.auth.login, { replace: true });
     }
   };
@@ -176,8 +190,21 @@ export const Sidebar = () => {
       </ul>
 
       <div className="logout_btn text-center">
-        <a href="" onClick={handleLogout}>
-          <span>Log Out</span>
+        <a
+          href=""
+          onClick={handleLogout}
+          style={{ pointerEvents: isLoggingOut ? "none" : "auto" }}
+        >
+          <span>
+            {isLoggingOut ? (
+              <div
+                className="spinner-border spinner-border-sm text-light"
+                role="status"
+              ></div>
+            ) : (
+              "Log Out"
+            )}
+          </span>
         </a>
       </div>
     </div>

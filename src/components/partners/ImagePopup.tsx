@@ -1,8 +1,4 @@
-// components/ImagePopup.tsx
-interface ImagePopupProps {
-  imageUrl: string | null;
-  onClose: () => void;
-}
+import type { ImagePopupProps } from "../../types";
 
 export const ImagePopup = ({ imageUrl, onClose }: ImagePopupProps) => {
   if (!imageUrl) return null;

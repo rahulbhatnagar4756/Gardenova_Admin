@@ -9,7 +9,7 @@ import {
 } from "chart.js";
 
 import { Line } from "react-chartjs-2";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 ChartJS.register(
   CategoryScale,
@@ -48,25 +48,28 @@ export const DashboardLineChart = ({ data }: DashboardLineChartProps) => {
       (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
     );
 
-  const filterRange = (arr: TrendPoint[]) => {
-    switch (filter) {
-      case "monthly":
-        return sortByDate(arr).slice(-30);
+  const filterRange = useCallback(
+    (arr: TrendPoint[]) => {
+      switch (filter) {
+        case "monthly":
+          return sortByDate(arr).slice(-30);
 
-      case "yearly":
-        return sortByDate(arr).slice(-12);
+        case "yearly":
+          return sortByDate(arr).slice(-12);
 
-      case "custom":
-        if (!customStart || !customEnd) return sortByDate(arr);
-        return sortByDate(arr).filter((d) => {
-          const dt = new Date(d.date);
-          return dt >= new Date(customStart) && dt <= new Date(customEnd);
-        });
+        case "custom":
+          if (!customStart || !customEnd) return sortByDate(arr);
+          return sortByDate(arr).filter((d) => {
+            const dt = new Date(d.date);
+            return dt >= new Date(customStart) && dt <= new Date(customEnd);
+          });
 
-      default:
-        return sortByDate(arr);
-    }
-  };
+        default:
+          return sortByDate(arr);
+      }
+    },
+    [filter, customStart, customEnd]
+  );
 
   const filtered = useMemo(() => {
     if (!data) return null;
@@ -77,7 +80,7 @@ export const DashboardLineChart = ({ data }: DashboardLineChartProps) => {
       closed: filterRange(data.closed),
       contacted: filterRange(data.contacted),
     };
-  }, [data, filter, customStart, customEnd]);
+  }, [data, filterRange]);
 
   if (!filtered || !filtered.all.length) return null;
 
