@@ -103,6 +103,5 @@ export interface OptionItemProps {
   isEditing: boolean;
   onEditStart: (index: number) => void;
   onEditSave: (index: number, text: string) => void;
-  onEditCancel: () => void;
   onRemove: (index: number) => void;
 }

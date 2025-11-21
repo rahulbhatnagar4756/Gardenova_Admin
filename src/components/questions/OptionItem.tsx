@@ -15,10 +15,11 @@ const OptionItem = ({
     if (isEditing) {
       setEditText(option.option_text);
     }
-  }, [isEditing, option.option_text]);
+  }, [isEditing]);
 
   const handleSave = () => {
-    onEditSave(index, editText);
+    if (editText.trim() === "") return;
+    onEditSave(index, editText.trim());
   };
 
   return (
@@ -28,19 +29,22 @@ const OptionItem = ({
           className="edit_mode"
           style={{ display: "flex", alignItems: "center" }}
         >
-          <span
-            contentEditable
-            suppressContentEditableWarning={true}
+          <input
             className="added_list editable_span"
+            type="text"
+            value={editText}
+            autoFocus
+            onChange={(e) => setEditText(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSave()}
             style={{
               width: "100%",
-              display: "inline-flex",
-              alignItems: "center",
+              padding: "6px 10px",
+              borderRadius: "4px",
+              fontSize: "14px",
+              border: "1px solid #ccc",
+              outline: "none",
             }}
-            onInput={(e) => setEditText(e.currentTarget.textContent || "")}
-          >
-            {editText}
-          </span>
+          />
 
           <button
             type="button"

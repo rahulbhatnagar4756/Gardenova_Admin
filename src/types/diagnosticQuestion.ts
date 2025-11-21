@@ -1,3 +1,5 @@
+import type { Dispatch, SetStateAction } from "react";
+
 export interface DiagnosticQuestion {
   id: string;
   question: string;
@@ -77,6 +79,8 @@ export interface OptionsListProps {
   options: QuestionOption[];
   onRemove: (index: number) => void;
   onUpdate: (index: number, text: string) => void;
+  editingOptionIndex?: number | null;
+  setEditingOptionIndex: Dispatch<SetStateAction<number | null>>;
 }
 
 export interface OptionsInputProps {

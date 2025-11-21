@@ -7,6 +7,12 @@ import type {
   QuestionOption,
 } from "../../types/diagnosticQuestion";
 
+type OriginalQuestionState = {
+  question_text: string;
+  options: QuestionOption[];
+  order: number;
+};
+
 const QuestionModal = ({
   isOpen,
   editingQuestion,
@@ -14,12 +20,17 @@ const QuestionModal = ({
   onClose,
   onSave,
 }: QuestionModalProps) => {
-  const [questionText, setQuestionText] = useState("");
   const [currentOption, setCurrentOption] = useState("");
+  const [questionText, setQuestionText] = useState("");
   const [options, setOptions] = useState<QuestionOption[]>([]);
   const [questionOrder, setQuestionOrder] = useState<number>(1);
   const { showWarning } = useToast();
   const [isSaving, setIsSaving] = useState(false);
+  const [originalData, setOriginalData] =
+    useState<OriginalQuestionState | null>(null);
+  const [editingOptionIndex, setEditingOptionIndex] = useState<number | null>(
+    null
+  );
 
   useEffect(() => {
     if (isOpen) {
@@ -27,10 +38,17 @@ const QuestionModal = ({
         setQuestionText(editingQuestion.question_text);
         setOptions([...editingQuestion.options]);
         setQuestionOrder(editingQuestion.order || 1);
+
+        setOriginalData({
+          question_text: editingQuestion.question_text.trim(),
+          options: JSON.parse(JSON.stringify(editingQuestion.options)),
+          order: editingQuestion.order,
+        });
       } else {
         setQuestionText("");
         setOptions([]);
         setQuestionOrder(questionsCount + 1);
+        setOriginalData(null);
       }
       setCurrentOption("");
     }
@@ -60,6 +78,13 @@ const QuestionModal = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (editingOptionIndex !== null) {
+      showWarning(
+        "Please save the option you are editing before saving the question."
+      );
+      return;
+    }
+
     if (currentOption.trim()) {
       showWarning(
         "You have an option typed but not added. Please add or clear it before saving."
@@ -73,12 +98,12 @@ const QuestionModal = ({
       order: questionOrder,
     };
 
-    if (editingQuestion) {
+    if (editingQuestion && originalData) {
       const nothingChanged =
-        editingQuestion.question_text.trim() === questionData.question_text &&
-        JSON.stringify(editingQuestion.options) ===
+        originalData.question_text === questionData.question_text &&
+        JSON.stringify(originalData.options) ===
           JSON.stringify(questionData.options) &&
-        editingQuestion.order === questionData.order;
+        originalData.order === questionData.order;
 
       if (nothingChanged) {
         showWarning("No changes detected. Nothing to update.");
@@ -150,13 +175,19 @@ const QuestionModal = ({
                   options={options}
                   onRemove={handleRemoveOption}
                   onUpdate={handleUpdateOption}
+                  editingOptionIndex={editingOptionIndex}
+                  setEditingOptionIndex={setEditingOptionIndex}
                 />
               )}
 
               <button
                 type="submit"
                 className="btn common_button mt-3"
-                disabled={!questionText.trim() || isSaving}
+                disabled={
+                  !questionText.trim() ||
+                  isSaving ||
+                  editingOptionIndex !== null // disable when editing
+                }
               >
                 {isSaving && (
                   <>

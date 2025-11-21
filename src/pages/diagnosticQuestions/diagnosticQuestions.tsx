@@ -12,6 +12,7 @@ import type {
   QuestionWithId,
   UpdateQuestionRequest,
 } from "../../types/diagnosticQuestion";
+import { Loader } from "../../components/loader";
 
 export const DiagnosticQuestions = ({
   limit,
@@ -54,7 +55,8 @@ export const DiagnosticQuestions = ({
   };
 
   const handleEdit = (question: QuestionWithId) => {
-    setEditingQuestion(question);
+    const cloned = JSON.parse(JSON.stringify(question)); // deep clone
+    setEditingQuestion(cloned);
     setIsModalOpen(true);
   };
 
@@ -95,6 +97,7 @@ export const DiagnosticQuestions = ({
     }
   };
 
+  if (loading) return <Loader text="Loading your questions..." />;
   return (
     <>
       <div className="main_page">
