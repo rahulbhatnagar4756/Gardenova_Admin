@@ -192,6 +192,25 @@
 .hide_option {
   display: none;
 }
+.edit_mode .bg_icon_et {
+    display: flex;
+    flex-wrap: wrap;
+    grid-gap: 7px;
+    padding: 5px;
+    border-radius: 5px;
+    background: linear-gradient(180deg, #e0b669 0%, #b48a3e 100%), var(--Burnt-Gold, #b48a3e) !important;
+    width: 34px;
+    height: 33px;
+    align-items: center;
+    justify-content: center;
+}
+.edit_mode .bg_icon_et:hover {
+    opacity: 0.8;
+}
+.edit_mode {
+    flex: 1;
+}
+
 
 @media only screen and (max-width: 500px) {
   span.added_list {

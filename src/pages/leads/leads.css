@@ -48,6 +48,13 @@
   font-weight: 700;
   color: #1e293b;
 }
+.mp_table th:last-child, .mp_table td:last-child {
+    text-align: right;
+}
+.mp_table td {
+    padding: 11px 20px;
+}
+
 
 /*popup css*/
 
@@ -70,6 +77,15 @@
 }
 
 /*popup css close*/
+
+.mp_table td .text-success {
+    color: #313131 !important;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 3px;
+}
+
+
+
 
 /* Responsive Design */
 @media (max-width: 768px) {

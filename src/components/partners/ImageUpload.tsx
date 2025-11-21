@@ -55,9 +55,9 @@ export const ImageUpload = ({ imageUrl, onImageChange }: ImageUploadProps) => {
               justifyContent: "center",
             }}
           >
-            <div className="mb-2">
+            {/* <div className="mb-2">
               <i className="fas fa-cloud-upload-alt fa-2x text-warning"></i>
-            </div>
+            </div> */}
             <small className="text-muted">
               File should be .png, .jpg format.
             </small>

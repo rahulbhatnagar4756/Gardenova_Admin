@@ -807,28 +807,29 @@ export const PartnerModal = ({
                   }
                 />
               </div>
-
-              <button
-                type="button"
-                onClick={handleSubmit}
-                className="btn common_button mt-3"
-                disabled={loadingButton}
-              >
-                {loadingButton ? (
-                  <>
-                    <span
-                      className="spinner-border spinner-border-sm me-2"
-                      role="status"
-                      aria-hidden="true"
-                    ></span>
-                    {editingPartner
-                      ? "Please wait... Updating"
-                      : "Please wait... Saving"}
-                  </>
-                ) : (
-                  <>{editingPartner ? "Update" : "Save"}</>
-                )}
-              </button>
+              <div className="col-md-12">
+                <button
+                  type="button"
+                  onClick={handleSubmit}
+                  className="btn common_button mt-3"
+                  disabled={loadingButton}
+                >
+                  {loadingButton ? (
+                    <>
+                      <span
+                        className="spinner-border spinner-border-sm me-2"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                      {editingPartner
+                        ? "Please wait... Updating"
+                        : "Please wait... Saving"}
+                    </>
+                  ) : (
+                    <>{editingPartner ? "Update" : "Save"}</>
+                  )}
+                </button>
+              </div>
             </div>
           </div>
         </div>

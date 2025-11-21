@@ -286,6 +286,78 @@ td.star_rating > div > div:first-child:after {
     margin: 0 auto !important;
     max-height: 130px !important;
 }
+.image_upload .input_field >:nth-child(2) .text-muted {
+    color: #F4F4F4 !important;
+    font-size: 9px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+.forgot-link {
+    color: #F4F4F4;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-decoration: none;
+    margin: 10px auto 0;
+    display: table;
+}
+.image_upload .cursor-pointer {
+    justify-self: center;
+    text-align: left !important;
+    position: relative;
+    padding-left: 48px !important;
+}
+.image_upload .input_field >:nth-child(2)  strong {
+    color: #F4F4F4;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-top: 1px;
+}
+
+.image_upload .cursor-pointer:after {
+    content: '';
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='27' viewBox='0 0 36 27' fill='none'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M11.2623 9.71845C10.2834 9.46857 9.26256 9.42972 8.26752 9.60448C7.27247 9.77924 6.32597 10.1636 5.49081 10.7321C4.65565 11.3006 3.95093 12.0401 3.42341 12.9018C2.8959 13.7634 2.55765 14.7273 2.43111 15.7296C2.30457 16.732 2.39263 17.7497 2.68946 18.7154C2.98628 19.6811 3.48507 20.5726 4.15274 21.3308C4.82041 22.089 5.64169 22.6966 6.56209 23.1132C7.48221 23.5296 8.48036 23.7457 9.49034 23.7471C9.49063 23.7471 9.49092 23.7471 9.49121 23.7471L15.4272 23.7471C16.0831 23.7471 16.6147 24.2787 16.6147 24.9346C16.6147 25.5904 16.0831 26.1221 15.4272 26.1221L9.48828 26.1221C8.14125 26.1204 6.80997 25.8323 5.58278 25.2769C4.35559 24.7214 3.26055 23.9114 2.37033 22.9004C1.4801 21.8895 0.815039 20.7008 0.419276 19.4132C0.0235121 18.1256 -0.0939051 16.7686 0.0748147 15.4322C0.243534 14.0957 0.694534 12.8105 1.39789 11.6617C2.10124 10.5128 3.04086 9.52672 4.15441 8.76875C5.26795 8.01078 6.52996 7.49829 7.85669 7.26528C9.18342 7.03227 10.5445 7.08407 11.8497 7.41724C12.4852 7.57946 12.8688 8.2261 12.7066 8.86156C12.5444 9.49702 11.8977 9.88066 11.2623 9.71845Z' fill='%23B48A3E'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.5255 12.2199C20.9893 11.7561 21.7412 11.7561 22.2049 12.2199L26.9549 16.9699C27.4187 17.4336 27.4187 18.1855 26.9549 18.6493C26.4912 19.113 25.7393 19.113 25.2755 18.6493L21.3652 14.7389L17.4549 18.6493C16.9912 19.113 16.2393 19.113 15.7755 18.6493C15.3118 18.1855 15.3118 17.4336 15.7755 16.9699L20.5255 12.2199Z' fill='%23B48A3E'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M21.3652 11.8721C22.0211 11.8721 22.5527 12.4037 22.5527 13.0596V24.9346C22.5527 25.5904 22.0211 26.1221 21.3652 26.1221C20.7094 26.1221 20.1777 25.5904 20.1777 24.9346V13.0596C20.1777 12.4037 20.7094 11.8721 21.3652 11.8721Z' fill='%23B48A3E'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M23.0034 2.38451C21.0783 2.30327 19.1672 2.74393 17.4721 3.65988C15.7769 4.57582 14.361 5.93298 13.374 7.58772C12.387 9.24247 11.8657 11.1333 11.8652 13.06C11.8651 13.7158 11.3333 14.2474 10.6775 14.2472C10.0216 14.2471 9.49008 13.7153 9.49023 13.0594C9.49079 10.7045 10.1279 8.39357 11.3343 6.3711C12.5406 4.34864 14.2712 2.6899 16.343 1.57041C18.4148 0.450919 20.7507 -0.0876753 23.1035 0.0116192C25.4563 0.110914 27.7385 0.844404 29.7086 2.13447C31.6788 3.42454 33.2635 5.2232 34.2951 7.34011C35.3267 9.45702 35.7669 11.8134 35.569 14.16C35.3712 16.5066 34.5426 18.7561 33.1711 20.6703C31.7996 22.5846 29.936 24.0925 27.7777 25.0345C27.1766 25.2968 26.4767 25.0222 26.2144 24.4211C25.952 23.82 26.2266 23.1201 26.8277 22.8578C28.5936 22.0871 30.1183 20.8533 31.2405 19.2871C32.3627 17.7209 33.0406 15.8804 33.2024 13.9605C33.3643 12.0405 33.0042 10.1126 32.1601 8.38054C31.3161 6.64852 30.0195 5.17689 28.4076 4.12139C26.7957 3.06588 24.9284 2.46575 23.0034 2.38451Z' fill='%23B48A3E'/%3E%3C/svg%3E");
+    width: 36px;
+    height: 27px;
+    display: block;
+    position: absolute;
+    left: 0;
+}
+.image_upload .input_field >:nth-child(2) .btn {
+    right: 0px !important;
+    top: 0px !important;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    font-size: 18px;
+    background: linear-gradient(180deg, #E0B669 0%, #B48A3E 100%);
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 20px;
+}
+.modal_view_form .btn-close.close-btn {
+    position: absolute;
+    right: -15px;
+    top: -15px;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    cursor: pointer;
+    font-size: 18px;
+    background: linear-gradient(180deg, #E0B669 0%, #B48A3E 100%);
+    padding: 0;
+}
 
 @media only screen and (max-width: 767.5px) {
   .image-popup {

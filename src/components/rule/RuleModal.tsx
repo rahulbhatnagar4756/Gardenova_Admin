@@ -136,7 +136,7 @@ export const RuleModal = ({
               aria-label="Close"
               disabled={isSubmitting}
             >
-              ×
+              ✕
             </button>
 
             <div className="modal-body">
@@ -166,7 +166,16 @@ export const RuleModal = ({
                   />
                 </div>
               </div>
-
+                    <span className={`btn_condition w-100 ${
+                        isSubmitting ? "disabled-text" : ""
+                      }`}
+                      onClick={() => {
+                        if (isSubmitting) return; // ❌ Stop click when disabled
+                        addCondition();
+                      }}
+                    >
+                      + Add More Condition
+                  </span>
               {/* CONDITIONS */}
               <div
                 className="accordion accordion-flush"
@@ -395,7 +404,7 @@ export const RuleModal = ({
                 ))}
               </div>
 
-              <span
+              {/* <span
                 className={`btn-text w-100 mt-3 ${
                   isSubmitting ? "disabled-text" : ""
                 }`}
@@ -405,7 +414,7 @@ export const RuleModal = ({
                 }}
               >
                 + Add More Condition
-              </span>
+              </span> */}
 
               {/* SUBMIT BUTTON */}
               <button

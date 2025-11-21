@@ -303,6 +303,47 @@
   font-weight: 700;
   line-height: 131.9%; /* 18.466px */
 }
+.dashboard-chart > div > div {
+    justify-content: flex-end !important;
+    grid-gap: 10px !important;
+}
+
+.dashboard-chart > div > div select {
+    appearance: unset;
+    border-radius: 10px !important;
+    border: 1px solid rgba(46, 58, 48, 0.15) !important;
+    background: #F4F4F4;
+    min-width: 165px;
+    outline: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7' fill='none'%3E%3Cpath d='M0.749962 0.75L4.96281 4.96285C5.46034 5.46038 6.27448 5.46038 6.77201 4.96285L10.9849 0.75' stroke='%23888888' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center right 10px;
+    padding-right: 25px !important;
+    color: #313131 !important;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    min-height: 40px;
+}
+.dashboard-chart > div > div  input[type="date"] {
+    border-radius: 10px !important;
+    border: 1px solid rgba(46, 58, 48, 0.15) !important;
+    background: #F4F4F4;
+    min-width: 165px;
+    outline: none;
+    background-repeat: no-repeat;
+    background-position: center right 10px;
+    color: #313131 !important;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    min-height: 40px;
+}
+/* .dashboard-chart {
+    max-height: 340px;
+} */
 
 /* Responsive */
 
