@@ -181,18 +181,18 @@
 .question_modal .modal-content {
   position: relative;
   background: #2e3a30;
-  border-radius: 10px;
   max-width: 95% !important;
   width: 100% !important;
   display: flex;
   box-shadow: 0 0 40px 0 #0000004f;
-  border: none !important;
   margin: 0 auto;
+  border-radius: 30px;
+  border: 5px solid rgba(244, 244, 244, 0.10) !important;
 }
 .hide_option {
   display: none;
 }
-.edit_mode .bg_icon_et {
+.edit_mode .bg_icon_et{
     display: flex;
     flex-wrap: wrap;
     grid-gap: 7px;
@@ -210,6 +210,22 @@
 .edit_mode {
     flex: 1;
 }
+
+.question_modal .modal-content .close-btn{
+    position: absolute;
+    right: -15px;
+    top: -15px;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    cursor: pointer;
+    font-size: 18px;
+    background: linear-gradient(180deg, #E0B669 0%, #B48A3E 100%);
+    padding: 0;
+}
+
 
 
 @media only screen and (max-width: 500px) {

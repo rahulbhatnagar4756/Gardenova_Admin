@@ -113,7 +113,7 @@ const QuestionModal = ({
             onClick={onClose}
             aria-label="Close"
           >
-            ×
+            ✕
           </button>
           <div className="modal-body">
             <form onSubmit={handleSubmit}>

@@ -24,7 +24,7 @@ export const PartnerViewModal: React.FC<PartnerViewModalProps> = ({
 
   return (
     <div
-      className="modal fade show"
+      className="modal fade show partner_details"
       style={{ display: "block", backgroundColor: "#2e3a3066" }}
     >
       <div className="modal-dialog modal-dialog-centered modal-lg">
@@ -37,18 +37,19 @@ export const PartnerViewModal: React.FC<PartnerViewModalProps> = ({
             aria-label="Close"
             style={{ background: "none", border: "none" }}
           >
-            ×
+            ✕
           </button>
 
           {/* === Modal Body === */}
-          <div className="modal-body text-center p-4 view_profile">
+          <div className="modal-body view_profile">
             {!partner ? (
               // 🔹 Modal loader while fetching data
               <Loader text="Loading partner profiles..." />
             ) : (
               <>
-                <h4 className="mb-4 fw-semibold">Partner Details</h4>
-
+              <div className="head_area">
+                <h4 className="head_modal">Partner Details</h4>
+                </div>
                 <div className="row g-3 text-start">
                   <div className="col-md-6">
                     <strong>Company Name:</strong>

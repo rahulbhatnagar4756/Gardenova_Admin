@@ -55,7 +55,7 @@
   border: 1px solid var(--Burnt-Gold, #b48a3e);
   color: var(--Off-White, #f4f4f4);
   text-align: center;
-  font-size: 13px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
@@ -65,6 +65,7 @@
   display: inline-flex;
   justify-content: center;
   transition: 0.3s;
+  grid-gap: 5px;
 }
 
 .logout_btn a:hover {

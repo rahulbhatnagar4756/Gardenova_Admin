@@ -117,3 +117,33 @@
     border-bottom: 1px solid rgba(239, 239, 239, 0.10);
 }
 
+
+.partner_details .close-btn {
+    position: absolute;
+    right: -15px;
+    top: -15px;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    cursor: pointer;
+    font-size: 18px;
+    background: linear-gradient(180deg, #E0B669 0%, #B48A3E 100%) !important;
+    padding: 0;
+}
+
+.head_modal {
+    color: var(--Off-White, #f4f4f4);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-transform: capitalize;
+}
+.head_area {
+    margin-bottom: 30px;
+}
+.modal-body {
+    padding: 50px 30px 30px 30px;
+}

@@ -243,7 +243,11 @@ export const ForgotPassword: React.FC = () => {
 
           <div className="forgot-footer">
             <Link to={APP_ROUTES.auth.login} className="forgot-link">
-              Back to Sign In
+             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
+              <path fill="#f4f4f4" d="M7 16a1 1 0 0 0-1 1v3a3 3 0 0 0 3 3h7a3 3 0 0 0 3-3V4a3 3 0 0 0-3-3H9a3 3 0 0 0-3 3v3a1 1 0 1 0 2 0V4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1Z"/>
+              <path fill="#f4f4f4" d="M12.586 11H3a1 1 0 1 0 0 2h9.586l-2.293 2.293a1 1 0 1 0 1.414 1.414l4-4a1 1 0 0 0 0-1.414l-4-4a1 1 0 1 0-1.414 1.414L12.586 11Z"/>
+            </svg> 
+            Back to Sign In
             </Link>
           </div>
         </div>
@@ -317,7 +321,11 @@ export const ForgotPassword: React.FC = () => {
 
           <div className="forgot-footer">
             <Link to={APP_ROUTES.auth.login} className="forgot-link">
-              Back to Sign In
+             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
+  <path fill="#f4f4f4" d="M7 16a1 1 0 0 0-1 1v3a3 3 0 0 0 3 3h7a3 3 0 0 0 3-3V4a3 3 0 0 0-3-3H9a3 3 0 0 0-3 3v3a1 1 0 1 0 2 0V4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1Z"/>
+  <path fill="#f4f4f4" d="M12.586 11H3a1 1 0 1 0 0 2h9.586l-2.293 2.293a1 1 0 1 0 1.414 1.414l4-4a1 1 0 0 0 0-1.414l-4-4a1 1 0 1 0-1.414 1.414L12.586 11Z"/>
+</svg> 
+Back to Sign In
             </Link>
           </div>
         </div>
@@ -495,7 +503,11 @@ export const ForgotPassword: React.FC = () => {
 
             <div className="forgot-footer">
               <Link to={APP_ROUTES.auth.login} className="forgot-link">
-                Back to Sign In
+               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
+  <path fill="#f4f4f4" d="M7 16a1 1 0 0 0-1 1v3a3 3 0 0 0 3 3h7a3 3 0 0 0 3-3V4a3 3 0 0 0-3-3H9a3 3 0 0 0-3 3v3a1 1 0 1 0 2 0V4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1Z"/>
+  <path fill="#f4f4f4" d="M12.586 11H3a1 1 0 1 0 0 2h9.586l-2.293 2.293a1 1 0 1 0 1.414 1.414l4-4a1 1 0 0 0 0-1.414l-4-4a1 1 0 1 0-1.414 1.414L12.586 11Z"/>
+</svg> 
+Back to Sign In
               </Link>
             </div>
           </div>

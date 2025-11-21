@@ -172,14 +172,14 @@ td.star_rating > div > div:first-child:after {
     line-height: normal;
 }
 .view_profile strong {
-    font-size: 14px;
+    font-size: 13px;
     font-style: normal;
     font-weight: 500;
     line-height: normal;
-    color: #939393;
+    /* color: #939393; */
 }
 .view_profile h4 {
-    font-size: 18px;
+    /* font-size: 18px; */
     font-style: normal;
     font-weight: 500;
     line-height: normal;
@@ -192,14 +192,14 @@ td.star_rating > div > div:first-child:after {
 .modal-content.view_modal{
     position: relative;
     background: #2e3a30;
-    border-radius: 10px;
     max-width: 95% !important;
     width: 827px !important;
     display: flex;
     box-shadow: 0 0 40px 0 #0000004f;
-    border: none !important;
     min-height: 250px !important;
     margin: 0 auto !important;
+    border-radius: 30px;
+    border: 5px solid rgba(244, 244, 244, 0.10) !important;
 }
 .modal-dialog:has(.view_modal) {
     max-width: 840px !important;
@@ -263,6 +263,8 @@ td.star_rating > div > div:first-child:after {
     box-shadow: 0 0 40px 0 #0000004f;
     border: none !important;
     margin: 0 auto;
+    border-radius: 30px;
+    border: 5px solid rgba(244, 244, 244, 0.10) !important;
 }
 .modal_view_form .modal-dialog {
     max-width: 860px !important;
@@ -301,7 +303,10 @@ td.star_rating > div > div:first-child:after {
     line-height: normal;
     text-decoration: none;
     margin: 10px auto 0;
-    display: table;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-gap: 4px;
 }
 .image_upload .cursor-pointer {
     justify-self: center;

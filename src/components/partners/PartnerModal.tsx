@@ -404,7 +404,7 @@ export const PartnerModal = ({
             onClick={onClose}
             aria-label="Close"
           >
-            ×
+            ✕
           </button>
 
           <div className="modal-body">
