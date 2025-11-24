@@ -1,35 +1,29 @@
-import { useState } from "react";
 import { useToast } from "../../hooks/useToast";
-import type { QuestionOption } from "../../services/apiCalls/diagnosticQuestion";
 import OptionItem from "./OptionItem";
+import type { OptionsListProps } from "../../types/diagnosticQuestion";
 
-interface OptionsListProps {
-  options: QuestionOption[];
-  onRemove: (index: number) => void;
-  onUpdate: (index: number, text: string) => void;
-}
-
-const OptionsList = ({ options, onRemove, onUpdate }: OptionsListProps) => {
-  const [editIndex, setEditIndex] = useState<number | null>(null);
+const OptionsList = ({
+  options,
+  onRemove,
+  onUpdate,
+  editingOptionIndex,
+  setEditingOptionIndex,
+}: OptionsListProps) => {
   const { showWarning } = useToast();
 
   const handleEditStart = (index: number) => {
-    if (editIndex !== null && editIndex !== index) {
+    if (editingOptionIndex !== null && editingOptionIndex !== index) {
       showWarning(
         "Please save the current edit before editing another option."
       );
       return;
     }
-    setEditIndex(index);
+    setEditingOptionIndex(index);
   };
 
   const handleEditSave = (index: number, text: string) => {
     onUpdate(index, text);
-    setEditIndex(null);
-  };
-
-  const handleEditCancel = () => {
-    setEditIndex(null);
+    setEditingOptionIndex(null);
   };
 
   return (
@@ -77,10 +71,9 @@ const OptionsList = ({ options, onRemove, onUpdate }: OptionsListProps) => {
             key={index}
             option={option}
             index={index}
-            isEditing={editIndex === index}
+            isEditing={editingOptionIndex === index}
             onEditStart={handleEditStart}
             onEditSave={handleEditSave}
-            onEditCancel={handleEditCancel}
             onRemove={onRemove}
           />
         ))}

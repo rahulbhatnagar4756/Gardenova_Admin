@@ -1,35 +1,12 @@
 import { apiService } from "..";
-import type { ApiResponse } from "../../types";
+import type { ApiResponse } from "../../types/apiResponse";
+import type {
+  CreateQuestionRequest,
+  Question,
+  QuestionsResponse,
+  UpdateQuestionRequest,
+} from "../../types/diagnosticQuestion";
 import { API_ROUTES } from "../apiRoutes";
-
-// Types for Question operations
-export interface Question {
-  question_id: string;
-  question_text: string;
-  options: QuestionOption[];
-  order: number;
-}
-
-export interface QuestionOption {
-  id: string;
-  option_text: string;
-}
-
-export interface CreateQuestionRequest {
-  question_text: string;
-  options: QuestionOption[];
-  order: number;
-}
-
-export interface UpdateQuestionRequest {
-  question_text: string;
-  options: QuestionOption[];
-  order: number;
-}
-
-export interface QuestionsResponse {
-  questions: Question[];
-}
 
 /**
  * Question Service - Contains all question-related API calls

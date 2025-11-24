@@ -1,14 +1,5 @@
+import type { ConfirmModalProps } from "../../types";
 import "./index.css";
-
-interface ConfirmModalProps {
-  open: boolean;
-  title?: string;
-  message?: string;
-  confirmText?: string;
-  cancelText?: string;
-  onConfirm: () => void;
-  onCancel: () => void;
-}
 
 export default function ConfirmModal({
   open,

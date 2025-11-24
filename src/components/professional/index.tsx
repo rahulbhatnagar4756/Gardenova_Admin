@@ -1,13 +1,6 @@
 import React from "react";
-import type { PartnerProfileResponse } from "../../services/apiCalls/partnerProfile";
 import "./index.css";
-
-interface ProfessionalsModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  professionals: PartnerProfileResponse[];
-  loading: boolean;
-}
+import type { ProfessionalsModalProps } from "../../types/partnerProfile";
 
 export const ProfessionalsModal: React.FC<ProfessionalsModalProps> = ({
   isOpen,

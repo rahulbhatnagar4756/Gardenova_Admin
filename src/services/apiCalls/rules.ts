@@ -1,46 +1,7 @@
 import { apiService } from "..";
-import type { ApiResponse } from "../../types";
+import type { ApiResponse } from "../../types/apiResponse";
+import type { CreateRuleRequest, Rule, RulesResponse, UpdateRuleRequest } from "../../types/rules";
 import { API_ROUTES } from "../apiRoutes";
-
-// ---------- Condition (Backend Response Shape) ----------
-export interface RuleCondition {
-  questionId: string;
-  questionText?: string;
-  operator: string; // backend returns "é igual", "ou", etc.
-  value: string; // backend returns string, not array
-}
-
-// ---------- Rule ----------
-export interface Rule {
-  id: string;
-  name: string;
-  conditions: RuleCondition[];
-}
-
-// ---------- Create Rule ----------
-export interface CreateRuleRequest {
-  name: string;
-  conditions: {
-    questionId: string;
-    operator: "equal" | "and" | "or"; // frontend sends English operators
-    value: string; // value must be string
-  }[];
-}
-
-// ---------- Update Rule ----------
-export interface UpdateRuleRequest {
-  name: string;
-  conditions: {
-    questionId: string;
-    operator: "equal" | "and" | "or";
-    value: string;
-  }[];
-}
-
-// ---------- Response Wrapper ----------
-export interface RulesResponse {
-  rules: Rule[];
-}
 
 /**
  * Rule Service - Contains all rule-related API calls

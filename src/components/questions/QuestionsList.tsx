@@ -1,17 +1,5 @@
-import type { Question } from "../../services/apiCalls/diagnosticQuestion";
+import type { QuestionsListProps } from "../../types/diagnosticQuestion";
 import QuestionCard from "./QuestionCard";
-
-interface QuestionWithId extends Question {
-  [key: string]: unknown;
-}
-
-interface QuestionsListProps {
-  questions: QuestionWithId[];
-  loading: boolean;
-  isActionShow: boolean;
-  onEdit: (question: QuestionWithId) => void;
-  onDelete: (id: string) => void;
-}
 
 const QuestionsList = ({
   questions,

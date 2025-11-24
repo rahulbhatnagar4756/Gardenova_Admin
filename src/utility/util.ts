@@ -1,5 +1,5 @@
-import type { PartnerAddress } from "../services/apiCalls/partnerProfile";
 import type { DecodedToken } from "../types/auth";
+import type { PartnerAddress } from "../types/partnerProfile";
 
 export const decodePayload = (decoded: DecodedToken): DecodedToken => ({
   ...decoded,

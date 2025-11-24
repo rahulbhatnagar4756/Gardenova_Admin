@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import {
-  questionService,
-  type CreateQuestionRequest,
-  type Question,
-  type UpdateQuestionRequest,
-} from "../services/apiCalls/diagnosticQuestion";
+import { questionService } from "../services/apiCalls/diagnosticQuestion";
+import type {
+  CreateQuestionRequest,
+  Question,
+  UpdateQuestionRequest,
+} from "../types/diagnosticQuestion";
 
 export const useDiagnosticQuestions = () => {
   const [questions, setQuestions] = useState<Question[]>([]);

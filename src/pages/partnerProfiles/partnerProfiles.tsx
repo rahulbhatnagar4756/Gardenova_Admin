@@ -2,10 +2,6 @@
 import { useEffect, useState, useCallback } from "react";
 import "./partnerProfiles.css";
 import { usePartnerProfiles } from "../../hooks/usePartnerProfiles";
-import type {
-  PartnerProfileResponse,
-  PartnerProfileStatus,
-} from "../../services/apiCalls/partnerProfile";
 import { Pagination } from "../../components/pagination";
 import { useToast } from "../../hooks/useToast";
 import StarRating from "../../components/starRating";
@@ -15,10 +11,11 @@ import { PartnerModal } from "../../components/partners/PartnerModal";
 import { PartnerViewModal } from "../../components/partners/PartnerViewModal";
 import { TableLoader } from "../../components/loader";
 import { useDebouncedBatchUpdater } from "../../hooks/useDebouncedBatchUpdater";
-
-interface PartnerProfilesProps {
-  limit?: number;
-}
+import type {
+  PartnerProfileResponse,
+  PartnerProfilesProps,
+  PartnerProfileStatus,
+} from "../../types/partnerProfile";
 
 // ✅ helper for cycling statuses in order
 const getNextStatus = (current: PartnerProfileStatus): PartnerProfileStatus => {

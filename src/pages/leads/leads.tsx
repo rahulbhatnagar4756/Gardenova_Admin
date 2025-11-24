@@ -1,18 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
 import "./leads.css";
 import { useLeads } from "../../hooks/useLeads";
-import type { Lead } from "../../services/apiCalls/leadService";
 import { Pagination } from "../../components/pagination";
 import { useToast } from "../../hooks/useToast";
 import { TableLoader } from "../../components/loader";
-import type { PartnerProfileResponse } from "../../services/apiCalls/partnerProfile";
 import { usePartnerProfiles } from "../../hooks/usePartnerProfiles";
 import { ProfessionalsModal } from "../../components/professional";
 import { useDebouncedBatchUpdater } from "../../hooks/useDebouncedBatchUpdater";
-
-interface LeadProps {
-  limit?: number;
-}
+import type { PartnerProfileResponse } from "../../types/partnerProfile";
+import type { Lead, LeadProps } from "../../types/lead";
 
 export const Leads = ({ limit }: LeadProps) => {
   const {

@@ -1,20 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
 import { ruleService } from "../services/apiCalls/rules";
 import type {
-  Rule,
   CreateRuleRequest,
+  Rule,
   UpdateRuleRequest,
-} from "../services/apiCalls/rules";
-
-interface UseRulesReturn {
-  rules: Rule[];
-  loading: boolean;
-  error: string | null;
-  createRule: (data: CreateRuleRequest) => Promise<void>;
-  updateRule: (id: string, data: UpdateRuleRequest) => Promise<void>;
-  deleteRule: (id: string) => Promise<void>;
-  refreshRules: () => Promise<void>;
-}
+  UseRulesReturn,
+} from "../types/rules";
 
 export const useRules = (): UseRulesReturn => {
   const [rules, setRules] = useState<Rule[]>([]);

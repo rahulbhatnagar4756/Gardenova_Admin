@@ -3,13 +3,9 @@ import type {
   AuthResponse,
   ForgotPasswordData,
   LoginCredentials,
+  VerifyResetTokenData,
 } from "../../types/auth";
 import { API_ROUTES } from "../apiRoutes";
-
-interface VerifyResetTokenData {
-  email: string;
-  token: string;
-}
 
 export const authService = {
   login: (credentials: LoginCredentials) =>

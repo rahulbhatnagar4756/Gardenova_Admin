@@ -1,14 +1,6 @@
 import React, { useState, useRef } from "react";
 import { FaStar } from "react-icons/fa";
-
-interface StarRatingProps {
-  rating: number; // e.g. 4.3
-  maxStars?: number;
-  size?: number;
-  filledColor?: string;
-  emptyColor?: string;
-  onChange?: (newRating: number) => void; // Click-to-update handler
-}
+import type { StarRatingProps } from "../../types/rating";
 
 const StarRating: React.FC<StarRatingProps> = ({
   rating,

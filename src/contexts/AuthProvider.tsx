@@ -1,12 +1,9 @@
-import React, { useEffect, useState, type ReactNode } from "react";
+import React, { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { AuthContext } from "./AuthContext";
 import type { DecodedToken } from "../types/auth";
 import { decodePayload } from "../utility/util";
-
-interface AuthProviderProps {
-  children: ReactNode;
-}
+import type { AuthProviderProps } from "../types";
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [token, setToken] = useState<string | null>(null);
