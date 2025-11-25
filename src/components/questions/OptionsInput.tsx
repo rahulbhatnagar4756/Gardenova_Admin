@@ -1,5 +1,15 @@
 import type { OptionsInputProps } from "../../types/diagnosticQuestion";
 
+/**
+ * Input component for adding a new option to a diagnostic question.
+ * Handles text input, change events, and add-option action.
+ *
+ * @param {OptionsInputProps} root0 Component props.
+ * @param {string} root0.currentOption Current text entered in the option input.
+ * @param {(value: string) => void} root0.onOptionChange Callback fired when the input value changes.
+ * @param {() => void} root0.onAddOption Callback fired when clicking the “Add” button.
+ * @returns {JSX.Element} The rendered option input field.
+ */
 const OptionsInput = ({
   currentOption,
   onOptionChange,

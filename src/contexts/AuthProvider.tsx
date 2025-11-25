@@ -5,11 +5,24 @@ import type { DecodedToken } from "../types/auth";
 import { decodePayload } from "../utility/util";
 import type { AuthProviderProps } from "../types";
 
+/**
+ * Provides authentication context for the application,
+ * including token management, login, logout, and validation.
+ *
+ * @param {{ children: React.ReactNode }} root0 Component props.
+ * @param {React.ReactNode} root0.children Nested components.
+ * @returns {JSX.Element} The AuthContext provider component.
+ */
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Token validation function
+  /**
+   * Validates a JWT token by decoding it and checking its expiration.
+   *
+   * @param {string} token The JWT token to validate.
+   * @returns {boolean} Returns true if the token is valid, otherwise false.
+   */
   const validateToken = (token: string): boolean => {
     try {
       const decoded = jwtDecode<DecodedToken>(token);
@@ -48,6 +61,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setIsLoading(false);
   }, []);
 
+  /**
+   * Saves a new token and logs in the user.
+   *
+   * @param {string} newToken The JWT token to store and validate.
+   * @returns {void}
+   */
   const login = (newToken: string) => {
     if (validateToken(newToken)) {
       localStorage.setItem("token", newToken);
@@ -58,6 +77,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  /**
+   * Logs out the user by clearing the stored token.
+   *
+   * @returns {void}
+   */
   const logout = () => {
     localStorage.removeItem("token");
     setToken(null);

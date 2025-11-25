@@ -14,6 +14,14 @@ import type {
 } from "../../types/diagnosticQuestion";
 import { Loader } from "../../components/loader";
 
+/**
+ * Diagnostic Questions page component.
+ *
+ * @param {DiagnosticQuestionsProps} props Component props.
+ * @param {number} props.limit Optional limit for number of questions shown.
+ * @param {boolean} props.isActionShow Whether to show action buttons.
+ * @returns {JSX.Element} The Diagnostic Questions component.
+ */
 export const DiagnosticQuestions = ({
   limit,
   isActionShow = true,
@@ -49,17 +57,33 @@ export const DiagnosticQuestions = ({
     }
   }, [error, showError]);
 
+  /**
+   * Opens the modal for adding a new question.
+   *
+   * @returns {void}
+   */
   const handleOpenAddModal = () => {
     setEditingQuestion(null);
     setIsModalOpen(true);
   };
 
+  /**
+   * Opens the modal for editing a selected question.
+   *
+   * @param {QuestionWithId} question The question to edit.
+   * @returns {void}
+   */
   const handleEdit = (question: QuestionWithId) => {
     const cloned = JSON.parse(JSON.stringify(question)); // deep clone
     setEditingQuestion(cloned);
     setIsModalOpen(true);
   };
 
+  /**
+   * Handles deleting a question after user confirmation.
+   *
+   * @returns {Promise<void>} Resolves once the question is deleted.
+   */
   const handleDelete = async () => {
     if (!deleteId) return;
 
@@ -73,11 +97,23 @@ export const DiagnosticQuestions = ({
     setDeleteId(null);
   };
 
+  /**
+   * Closes the question modal and resets editing state.
+   *
+   * @returns {void}
+   */
   const handleModalClose = () => {
     setIsModalOpen(false);
     setEditingQuestion(null);
   };
 
+  /**
+   * Saves a question — either creates a new one or updates an existing one.
+   *
+   * @param {CreateQuestionRequest | UpdateQuestionRequest} questionData Data to save.
+   * @param {boolean} isEditing Whether the user is editing an existing question.
+   * @returns {Promise<void>} Resolves when saving is completed.
+   */
   const handleSaveQuestion = async (
     questionData: CreateQuestionRequest | UpdateQuestionRequest,
     isEditing: boolean

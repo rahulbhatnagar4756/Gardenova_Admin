@@ -1,6 +1,19 @@
 import { useState, useEffect } from "react";
 import type { OptionItemProps } from "../../types/rules";
 
+/**
+ * Represents a single editable option item inside a rule modal.
+ * Supports editing mode, saving updates, and removing the option.
+ *
+ * @param {OptionItemProps} root0 Component props.
+ * @param {{ option_text: string }} root0.option Option object containing text.
+ * @param {number} root0.index Position index of the option.
+ * @param {boolean} root0.isEditing Indicates whether this option is currently being edited.
+ * @param {(index: number) => void} root0.onEditStart Callback fired to start editing.
+ * @param {(index: number, value: string) => void} root0.onEditSave Callback fired to save edited text.
+ * @param {(index: number) => void} root0.onRemove Callback fired to remove the option.
+ * @returns {JSX.Element} Rendered option item.
+ */
 const OptionItem = ({
   option,
   index,
@@ -15,8 +28,13 @@ const OptionItem = ({
     if (isEditing) {
       setEditText(option.option_text);
     }
-  }, [isEditing]);
+  }, [isEditing, option.option_text]);
 
+  /**
+   * Saves the edited text when the user confirms the change.
+   *
+   * @returns {void}
+   */
   const handleSave = () => {
     if (editText.trim() === "") return;
     onEditSave(index, editText.trim());

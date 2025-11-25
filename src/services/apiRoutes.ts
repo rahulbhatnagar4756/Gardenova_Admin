@@ -53,4 +53,9 @@ export const API_ROUTES = {
   },
 } as const;
 
+/**
+ * Represents the full type structure of all API route keys
+ * defined inside the API_ROUTES object. Useful for
+ * autocomplete and strict typing across API services.
+ */
 export type ApiRoute = typeof API_ROUTES;

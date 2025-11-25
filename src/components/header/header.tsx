@@ -2,7 +2,19 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "./header.css";
 import { APP_ROUTES, ROUTE_TITLES } from "../../constants/appRoutes";
 
+/**
+ * Header component that displays the page title and controls
+ * the sidebar toggle functionality. It determines the current
+ * route name and updates the page heading accordingly.
+ *
+ * @returns {JSX.Element} The rendered header component.
+ */
 export const Header = () => {
+  /**
+   * Expands the sidebar by adding a CSS class to the document body.
+   *
+   * @returns {void} No return value.
+   */
   const handleClick = () => {
     document.body.classList.add("sidebar-expand");
   };

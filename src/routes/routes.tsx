@@ -10,6 +10,12 @@ import { ForgotPassword } from "../pages/auth/forgotPassword/forgotPassword";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { Rules } from "../pages/rules/rules";
 
+/**
+ * Defines all application routes including public, protected,
+ * and layout-wrapped routes.
+ *
+ * @returns The complete JSX route tree for the application.
+ */
 export const AppRoutes = () => {
   return (
     <Routes>

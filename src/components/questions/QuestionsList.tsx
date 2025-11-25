@@ -1,6 +1,17 @@
 import type { QuestionsListProps } from "../../types/diagnosticQuestion";
 import QuestionCard from "./QuestionCard";
 
+/**
+ * Renders a list of diagnostic questions with optional edit and delete actions.
+ *
+ * @param {QuestionsListProps} root0 Component props.
+ * @param {Array<any>} root0.questions List of questions to display.
+ * @param {boolean} root0.loading Whether the list is currently loading.
+ * @param {boolean} root0.isActionShow Whether to show edit/delete buttons.
+ * @param {(question: any) => void} root0.onEdit Callback fired when clicking edit.
+ * @param {(questionId: string) => void} root0.onDelete Callback fired when clicking delete.
+ * @returns {JSX.Element} The rendered list of questions.
+ */
 const QuestionsList = ({
   questions,
   loading,
