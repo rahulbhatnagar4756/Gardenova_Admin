@@ -246,7 +246,7 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
                         }}
                       />
                     </td>
-                    {/* ✅ Click-to-cycle status badge */}
+                    {/* Click-to-cycle status badge */}
                     <td>
                       <span
                         className={`badge ${

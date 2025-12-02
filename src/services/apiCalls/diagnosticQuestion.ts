@@ -2,6 +2,7 @@ import { apiService } from "..";
 import type { ApiResponse } from "../../types/apiResponse";
 import type {
   CreateQuestionRequest,
+  GroupedOptionsResponse,
   Question,
   QuestionsResponse,
   UpdateQuestionRequest,
@@ -70,6 +71,18 @@ export const questionService = {
   deleteQuestion: async (id: string): Promise<ApiResponse<null>> => {
     return apiService.delete<null>(
       API_ROUTES.diagnosticQuestion.deleteQuestion + `${id}`
+    );
+  },
+
+  /**
+   * Fetch grouped diagnostic question options.
+   * GET /question/options-grouped
+   *
+   * @returns A promise resolving to an ApiResponse containing grouped options.
+   */
+  getGroupedOptions: async (): Promise<ApiResponse<GroupedOptionsResponse>> => {
+    return apiService.get<GroupedOptionsResponse>(
+      API_ROUTES.diagnosticQuestion.questionOptionsGrouped
     );
   },
 };

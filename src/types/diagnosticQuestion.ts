@@ -183,3 +183,15 @@ export interface OptionsInputProps {
   onOptionChange: (value: string) => void;
   onAddOption: () => void;
 }
+
+/**
+ * Represents grouped dropdown/filter options returned from the server
+ * for diagnostic questions. Each array corresponds to a specific
+ * category like space type, area size, challenges, and tech preferences.
+ */
+export interface GroupedOptionsResponse {
+  space_types: string[];
+  area_sizes: string[];
+  challenges: string[];
+  tech_preferences: string[];
+}

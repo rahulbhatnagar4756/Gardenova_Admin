@@ -10,6 +10,7 @@ export const APP_ROUTES = {
     rules: "/adminPanel/rules",
     partnerProfiles: "/adminPanel/partner-profiles",
     leads: "/adminPanel/leads",
+    knowledgeLibrary: "/adminPanel/knowledge-library",
   },
 };
 
@@ -19,4 +20,5 @@ export const ROUTE_TITLES: Record<string, string> = {
   [APP_ROUTES.admin.diagnosticQuestions]: "Diagnostic Questions",
   [APP_ROUTES.admin.leads]: "Leads",
   [APP_ROUTES.admin.rules]: "Create Rules",
+  [APP_ROUTES.admin.knowledgeLibrary]: "Knowledge Library",
 };

@@ -1,0 +1,230 @@
+/* full area inside admin panel */
+.kl-page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* content wrapper */
+.kl-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Search bar */
+.kl-search {
+  width: 780px;
+  padding: 12px 16px;
+  margin-bottom: 24px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1.5px solid #dcdcdc;
+  outline: none;
+  text-align: center;
+}
+
+/* Wrapper for grid + arrows */
+.kl-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Pagination arrows */
+.kl-arrow {
+  background: white;
+  border: 2px solid #ccc;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  font-size: 22px;
+  cursor: pointer;
+  transition: 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kl-arrow:hover:not(:disabled) {
+  transform: scale(1.12);
+  border-color: #999;
+}
+
+.kl-arrow:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Grid wrapper (for loader overlay) */
+.kl-grid-wrapper {
+  position: relative;
+}
+
+/* loader overlay */
+.kl-grid-loader {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(3px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+}
+
+/* spinner */
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #ccc;
+  border-top-color: #007bff;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Dim + blur grid when loading */
+.kl-grid-blur {
+  filter: blur(2px);
+  pointer-events: none;
+  opacity: 0.65;
+}
+
+/* Grid layout */
+.kl-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 260px);
+  gap: 26px;
+}
+
+/* Image card */
+.kl-card {
+  position: relative;
+  width: 260px;
+  height: 260px;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1.5px solid #e0e0e0;
+  background: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.kl-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Image */
+.kl-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.45s ease;
+}
+
+/* Zoom */
+.kl-card:hover .kl-img {
+  transform: scale(1.14);
+}
+
+/* Hover overlay */
+.kl-info {
+  position: absolute;
+  bottom: -70px;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.55);
+  color: white;
+  text-align: center;
+  transition: all 0.35s ease;
+  opacity: 0;
+}
+
+.kl-card:hover .kl-info {
+  bottom: 0;
+  opacity: 1;
+}
+
+.kl-common {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.kl-scientific {
+  font-size: 12px;
+  opacity: 0.85;
+  margin-top: 2px;
+}
+
+/* PAGE INDICATOR */
+.kl-page-indicator {
+  margin-top: 26px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* page text */
+.kl-page-number {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* dots */
+.kl-dots {
+  display: flex;
+  gap: 10px;
+}
+
+.kl-dot {
+  width: 12px;
+  height: 12px;
+  background: #7a7a7a;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.kl-dot:hover {
+  transform: scale(1.2);
+  background: #555;
+}
+
+.kl-dot.active {
+  background: #007bff;
+  transform: scale(1.35);
+}
+
+/* disable dots on loading */
+.kl-dot-disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.kl-add-btn {
+  background: #16a34a;
+  color: #fff;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 16px;
+  transition: background 0.2s ease;
+}
+
+.kl-add-btn:hover {
+  background: #15803d;
+}
