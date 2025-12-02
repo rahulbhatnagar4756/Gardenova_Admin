@@ -1,9 +1,20 @@
 import React from "react";
 import { useToast } from "../../hooks/useToast";
 
+/**
+ * Renders all active toast notifications on the screen.
+ *
+ * @returns {JSX.Element} A container holding all toast messages.
+ */
 export const ToastContainer: React.FC = () => {
   const { toasts, removeToast } = useToast();
 
+  /**
+   * Returns the CSS class for the background depending on the toast type.
+   *
+   * @param {"success" | "error" | "warning" | "info"} type The toast type.
+   * @returns {string} A string containing Tailwind/Bootstrap class names.
+   */
   const getBgClass = (type: "success" | "error" | "warning" | "info") => {
     switch (type) {
       case "success":
@@ -22,7 +33,7 @@ export const ToastContainer: React.FC = () => {
   return (
     <div
       className="toast-container position-fixed top-0 end-0 p-3"
-      style={{ zIndex: 1055 }}
+      style={{ zIndex: 9999 }}
     >
       {toasts.map((toast) => (
         <div

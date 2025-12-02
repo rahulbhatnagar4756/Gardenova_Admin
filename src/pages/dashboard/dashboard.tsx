@@ -6,6 +6,11 @@ import "./dashboard.css";
 import { useToast } from "../../hooks/useToast";
 import { Loader } from "../../components/loader";
 
+/**
+ * Dashboard page component that displays summary metrics and charts.
+ *
+ * @returns {JSX.Element} The dashboard component UI.
+ */
 export const Dashboard = () => {
   const { dashboard, loading, error } = useDashboardData();
   const { showError } = useToast();

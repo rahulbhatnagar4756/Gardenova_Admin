@@ -7,6 +7,19 @@ import type {
   RuleModalProps,
 } from "../../types/rules";
 
+/**
+ * Rule creation & editing modal. Handles conditions, validations, form updates,
+ * and invokes submit and close callbacks.
+ *
+ * @param {RuleModalProps} root0 Component props.
+ * @param {boolean} root0.isOpen Whether the modal is visible.
+ * @param {() => void} root0.onClose Callback when closing the modal.
+ * @param {(data: LocalFormData) => Promise<void>} root0.onSubmit Callback on form submit.
+ * @param {any} root0.editingRule Existing rule data if editing.
+ * @param {LocalFormData} root0.initialFormData Initial form data for the modal.
+ * @param {Array<any>} root0.questions List of questions available for conditions.
+ * @returns {JSX.Element | null} The modal UI or null when hidden.
+ */
 export const RuleModal = ({
   isOpen,
   onClose,
@@ -32,6 +45,11 @@ export const RuleModal = ({
     }
   }, [initialFormData, editingRule]);
 
+  /**
+   * Validates rule form data and submits to parent callback.
+   *
+   * @returns {Promise<void>} Resolves when submit completes.
+   */
   const handleSubmit = async () => {
     // Check rule name
     if (!formData.name.trim()) {
@@ -83,7 +101,11 @@ export const RuleModal = ({
     }
   };
 
-  // Add new condition
+  /**
+   * Adds a new empty condition to the form.
+   *
+   * @returns {void}
+   */
   const addCondition = () => {
     const newCondition: LocalCondition = {
       questionId: "",
@@ -98,14 +120,24 @@ export const RuleModal = ({
     });
   };
 
-  // Remove condition
+  /**
+   * Removes a condition by index.
+   *
+   * @param {number} index Index of the condition to remove.
+   * @returns {void}
+   */
   const removeCondition = (index: number) => {
     const updated = [...formData.conditions];
     updated.splice(index, 1);
     setFormData({ ...formData, conditions: updated });
   };
 
-  // Helper to convert string to array for multi-select display
+  /**
+   * Converts comma-separated value string into an array.
+   *
+   * @param {string} value Text value from input.
+   * @returns {string[]} Array of trimmed values.
+   */
   const stringToArray = (value: string): string[] => {
     if (!value) return [];
     return value
@@ -166,16 +198,17 @@ export const RuleModal = ({
                   />
                 </div>
               </div>
-                    <span className={`btn_condition w-100 ${
-                        isSubmitting ? "disabled-text" : ""
-                      }`}
-                      onClick={() => {
-                        if (isSubmitting) return; // ❌ Stop click when disabled
-                        addCondition();
-                      }}
-                    >
-                      + Add More Condition
-                  </span>
+              <span
+                className={`btn_condition w-100 ${
+                  isSubmitting ? "disabled-text" : ""
+                }`}
+                onClick={() => {
+                  if (isSubmitting) return; // ❌ Stop click when disabled
+                  addCondition();
+                }}
+              >
+                + Add More Condition
+              </span>
               {/* CONDITIONS */}
               <div
                 className="accordion accordion-flush"

@@ -2,6 +2,7 @@ import { apiService } from "..";
 import type { ApiResponse } from "../../types/apiResponse";
 import type {
   CreateQuestionRequest,
+  GroupedOptionsResponse,
   Question,
   QuestionsResponse,
   UpdateQuestionRequest,
@@ -9,12 +10,16 @@ import type {
 import { API_ROUTES } from "../apiRoutes";
 
 /**
- * Question Service - Contains all question-related API calls
+ * Question Service - Contains all question-related API calls.
+ * Provides operations for retrieving, creating, updating,
+ * and deleting diagnostic questions.
  */
 export const questionService = {
   /**
-   * Get all questions
+   * Fetch all diagnostic questions.
    * GET /questions
+   *
+   * @returns A promise resolving to an ApiResponse containing all questions.
    */
   getAllQuestions: async (): Promise<ApiResponse<QuestionsResponse>> => {
     return apiService.get<QuestionsResponse>(
@@ -23,8 +28,11 @@ export const questionService = {
   },
 
   /**
-   * Create a new question
+   * Create a new diagnostic question.
    * POST /question
+   *
+   * @param data The payload containing the question text, options, and order.
+   * @returns A promise resolving to an ApiResponse with null data.
    */
   createQuestion: async (
     data: CreateQuestionRequest
@@ -36,8 +44,12 @@ export const questionService = {
   },
 
   /**
-   * Update an existing question
+   * Update an existing diagnostic question by ID.
    * PUT /question/:id
+   *
+   * @param id Unique identifier of the question to update.
+   * @param data Updated question payload including text, options, and order.
+   * @returns A promise resolving to an ApiResponse containing the updated question.
    */
   updateQuestion: async (
     id: string,
@@ -50,12 +62,27 @@ export const questionService = {
   },
 
   /**
-   * Delete a question
+   * Delete a diagnostic question by its ID.
    * DELETE /question/:id
+   *
+   * @param id Unique identifier of the question to delete.
+   * @returns A promise resolving to an ApiResponse with null data.
    */
   deleteQuestion: async (id: string): Promise<ApiResponse<null>> => {
     return apiService.delete<null>(
       API_ROUTES.diagnosticQuestion.deleteQuestion + `${id}`
+    );
+  },
+
+  /**
+   * Fetch grouped diagnostic question options.
+   * GET /question/options-grouped
+   *
+   * @returns A promise resolving to an ApiResponse containing grouped options.
+   */
+  getGroupedOptions: async (): Promise<ApiResponse<GroupedOptionsResponse>> => {
+    return apiService.get<GroupedOptionsResponse>(
+      API_ROUTES.diagnosticQuestion.questionOptionsGrouped
     );
   },
 };

@@ -4,6 +4,16 @@ import "../../styles/global.css";
 import { Loader } from "../loader";
 import type { PartnerViewModalProps } from "../../types/partnerProfile";
 
+/**
+ * Modal that displays detailed partner information in a read-only view.
+ * Shows partner data when opened and allows closing via callback.
+ *
+ * @param {PartnerViewModalProps} root0 Component properties.
+ * @param {boolean} root0.isOpen Whether the modal is visible.
+ * @param {any} root0.partner Partner details to display in the modal.
+ * @param {() => void} root0.onClose Callback fired when closing the modal.
+ * @returns {JSX.Element | null} Rendered modal UI or null when closed.
+ */
 export const PartnerViewModal: React.FC<PartnerViewModalProps> = ({
   isOpen,
   partner,
@@ -47,8 +57,8 @@ export const PartnerViewModal: React.FC<PartnerViewModalProps> = ({
               <Loader text="Loading partner profiles..." />
             ) : (
               <>
-              <div className="head_area">
-                <h4 className="head_modal">Partner Details</h4>
+                <div className="head_area">
+                  <h4 className="head_modal">Partner Details</h4>
                 </div>
                 <div className="row g-3 text-start">
                   <div className="col-md-6">

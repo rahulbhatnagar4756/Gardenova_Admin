@@ -6,11 +6,30 @@ import type {
   UpdateQuestionRequest,
 } from "../types/diagnosticQuestion";
 
+/**
+ * Custom hook to manage diagnostic questions with CRUD operations and state.
+ *
+ * @returns {{
+ *   questions: Question[],
+ *   loading: boolean,
+ *   error: string | null,
+ *   fetchQuestions: () => Promise<void>,
+ *   createQuestion: (data: CreateQuestionRequest) => Promise<any>,
+ *   updateQuestion: (id: string, data: UpdateQuestionRequest) => Promise<any>,
+ *   deleteQuestion: (id: string) => Promise<any>,
+ *   clearError: () => void
+ * }} Diagnostic questions hook API.
+ */
 export const useDiagnosticQuestions = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  /**
+   * Fetches all diagnostic questions from the server.
+   *
+   * @returns {Promise<void>} Resolves when questions are fetched.
+   */
   const fetchQuestions = async () => {
     try {
       setLoading(true);
@@ -35,6 +54,12 @@ export const useDiagnosticQuestions = () => {
     fetchQuestions();
   }, []);
 
+  /**
+   * Creates a new diagnostic question.
+   *
+   * @param {CreateQuestionRequest} data The question details to create.
+   * @returns {Promise<any>} The response returned by the API.
+   */
   const createQuestion = async (data: CreateQuestionRequest) => {
     try {
       // Optimistic update
@@ -68,6 +93,13 @@ export const useDiagnosticQuestions = () => {
     }
   };
 
+  /**
+   * Updates an existing diagnostic question.
+   *
+   * @param {string} id The ID of the question to update.
+   * @param {UpdateQuestionRequest} data Updated question details.
+   * @returns {Promise<any>} The API response after update.
+   */
   const updateQuestion = async (id: string, data: UpdateQuestionRequest) => {
     try {
       // Find question by some criteria (since we don't have ID in response)
@@ -109,6 +141,12 @@ export const useDiagnosticQuestions = () => {
     }
   };
 
+  /**
+   * Deletes a diagnostic question by ID.
+   *
+   * @param {string} id The ID of the question to delete.
+   * @returns {Promise<any>} API response confirming deletion.
+   */
   const deleteQuestion = async (id: string) => {
     // Keep a copy of the current state in case we need to rollback
     const originalQuestions = [...questions];
@@ -136,6 +174,11 @@ export const useDiagnosticQuestions = () => {
     }
   };
 
+  /**
+   * Clears the current error state.
+   *
+   * @returns {void}
+   */
   const clearError = () => {
     setError(null);
   };

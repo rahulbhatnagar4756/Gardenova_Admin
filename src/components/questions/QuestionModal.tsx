@@ -7,12 +7,32 @@ import type {
   QuestionOption,
 } from "../../types/diagnosticQuestion";
 
+/**
+ * Represents the original state of a question before editing begins.
+ *
+ * @typedef {Object} OriginalQuestionState
+ * @property {string} question_text - Question text.
+ * @property {QuestionOption[]} options - List of options.
+ * @property {number} order - Ordering number.
+ */
 type OriginalQuestionState = {
   question_text: string;
   options: QuestionOption[];
   order: number;
 };
 
+/**
+ * Modal for creating or editing a diagnostic question.
+ * Handles question text, options, editing state, order, and validation.
+ *
+ * @param {QuestionModalProps} root0 Component props.
+ * @param {boolean} root0.isOpen Whether the modal is open.
+ * @param {any} root0.editingQuestion Question object when editing.
+ * @param {number} root0.questionsCount Total questions for auto-ordering.
+ * @param {() => void} root0.onClose Callback to close modal.
+ * @param {(data: any) => Promise<void>} root0.onSave Callback to save question.
+ * @returns {JSX.Element | null} The modal UI or null when hidden.
+ */
 const QuestionModal = ({
   isOpen,
   editingQuestion,
@@ -54,6 +74,11 @@ const QuestionModal = ({
     }
   }, [isOpen, editingQuestion, questionsCount]);
 
+  /**
+   * Adds a new option to the question.
+   *
+   * @returns {void}
+   */
   const handleAddOption = () => {
     if (currentOption.trim()) {
       const newOption: QuestionOption = {
@@ -65,16 +90,35 @@ const QuestionModal = ({
     }
   };
 
+  /**
+   * Removes an option by index.
+   *
+   * @param {number} index Index of the option to remove.
+   * @returns {void}
+   */
   const handleRemoveOption = (index: number) => {
     setOptions(options.filter((_, i) => i !== index));
   };
 
+  /**
+   * Updates option text at a specific index.
+   *
+   * @param {number} index Index of option to update.
+   * @param {string} text New text value.
+   * @returns {void}
+   */
   const handleUpdateOption = (index: number, text: string) => {
     const updated = [...options];
     updated[index].option_text = text;
     setOptions(updated);
   };
 
+  /**
+   * Validates and submits the question to parent for saving.
+   *
+   * @param {React.FormEvent} e Form submit event.
+   * @returns {Promise<void>}
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 

@@ -24,6 +24,15 @@ const INITIAL_FORM_DATA: LocalFormData = {
   ],
 };
 
+/**
+ * Rules page component. Handles listing, creating, editing,
+ * and deleting diagnostic rules used across the system.
+ *
+ * @param root0 Props passed to the Rules component.
+ * @param root0.limit Optional limit for number of rules to show.
+ * @param root0.isActionShow Whether edit/delete actions should be visible.
+ * @returns The Rules management page UI.
+ */
 export const Rules = ({ limit, isActionShow = true }: RulesProps) => {
   const { rules, loading, error, createRule, updateRule, deleteRule } =
     useRules();
@@ -35,14 +44,22 @@ export const Rules = ({ limit, isActionShow = true }: RulesProps) => {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const { showError, showSuccess } = useToast();
 
+  /**
+   * Normalizes the operator string to allowed values.
+   *
+   * @param op Raw operator text.
+   * @returns A valid operator type.
+   */
   const normalizeOperator = (op: string): "equal" | "and" | "or" => {
     if (op === "equal" || op === "and" || op === "or") return op;
     return "equal";
   };
 
-  // ---------------------------
-  // OPEN EDIT MODAL
-  // ---------------------------
+  /**
+   * Opens modal for editing a specific rule.
+   *
+   * @param rule The rule object that will be pre-filled into the form.
+   */
   const handleEdit = (rule: Rule) => {
     setEditingRule({ id: rule.id, name: rule.name });
 
@@ -63,9 +80,11 @@ export const Rules = ({ limit, isActionShow = true }: RulesProps) => {
     setIsModalOpen(true);
   };
 
-  // ---------------------------
-  // DELETE RULE
-  // ---------------------------
+  /**
+   * Deletes the selected rule from backend.
+   *
+   * @returns A promise that resolves when deletion is complete.
+   */
   const handleDelete = async () => {
     if (!deleteId) return;
 
@@ -77,9 +96,12 @@ export const Rules = ({ limit, isActionShow = true }: RulesProps) => {
     }
   };
 
-  // ---------------------------
-  // CREATE or UPDATE RULE
-  // ---------------------------
+  /**
+   * Handles both creating and updating rules based on edit state.
+   *
+   * @param formData The rule form data containing rule name & conditions.
+   * @returns A promise that resolves after create/update is done.
+   */
   const handleSubmit = async (formData: LocalFormData) => {
     // Backend does NOT accept questionText → remove it
     const payloadConditions = formData.conditions.map((c) => ({
@@ -105,18 +127,22 @@ export const Rules = ({ limit, isActionShow = true }: RulesProps) => {
     }
   };
 
-  // ---------------------------
-  // OPEN EMPTY MODAL
-  // ---------------------------
+  /**
+   * Opens the modal with empty/default form state.
+   *
+   * @returns void
+   */
   const handleOpenModal = () => {
     setEditingRule(null);
     setFormData(INITIAL_FORM_DATA);
     setIsModalOpen(true);
   };
 
-  // ---------------------------
-  // CLOSE MODAL
-  // ---------------------------
+  /**
+   * Closes the modal and resets form state.
+   *
+   * @returns void
+   */
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setEditingRule(null);

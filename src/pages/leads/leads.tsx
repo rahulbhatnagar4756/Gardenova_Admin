@@ -10,6 +10,13 @@ import { useDebouncedBatchUpdater } from "../../hooks/useDebouncedBatchUpdater";
 import type { PartnerProfileResponse } from "../../types/partnerProfile";
 import type { Lead, LeadProps } from "../../types/lead";
 
+/**
+ * Leads page component for listing, filtering, and updating lead statuses.
+ *
+ * @param {LeadProps} props Component props.
+ * @param {number} props.limit Number of leads to fetch per page.
+ * @returns {JSX.Element} The Leads component.
+ */
 export const Leads = ({ limit }: LeadProps) => {
   const {
     leads,
@@ -43,7 +50,12 @@ export const Leads = ({ limit }: LeadProps) => {
   );
   const [loadingProfessionals, setLoadingProfessionals] = useState(false);
 
-  // Open modal and fetch professionals
+  /**
+   * Opens the professional modal and fetches partner profiles for a lead.
+   *
+   * @param {Lead} lead Lead whose partners need to be fetched.
+   * @returns {Promise<void>} Resolves when professional data is loaded.
+   */
   const openProfessionalModal = async (lead: Lead) => {
     setIsModalOpen(true);
     setLoadingProfessionals(true);
@@ -67,6 +79,11 @@ export const Leads = ({ limit }: LeadProps) => {
     }
   };
 
+  /**
+   * Closes the professional modal and clears professional data.
+   *
+   * @returns {void}
+   */
   const closeProfessionalModal = () => {
     setIsModalOpen(false);
     setProfessionals([]);
@@ -75,20 +92,37 @@ export const Leads = ({ limit }: LeadProps) => {
   // Status cycle logic
   const statusOrder = ["new", "contacted", "closed"];
 
+  /**
+   * Returns the next status in the status cycle: new → contacted → closed.
+   *
+   * @param {string} current Current lead status.
+   * @returns {string} The next status in cycle.
+   */
   const getNextStatus = (current: string) => {
     const index = statusOrder.indexOf(current);
     if (index === -1) return statusOrder[0];
     return statusOrder[(index + 1) % statusOrder.length];
   };
 
-  // Handle status click
+  /**
+   * Handles status change when user clicks on a status badge.
+   *
+   * @param {Lead} lead Lead whose status should be updated.
+   * @returns {void}
+   */
   const handleStatusClick = (lead: Lead) => {
     const nextStatus = getNextStatus(lead.leadsStatus);
     lead.leadsStatus = nextStatus;
     triggerLeadUpdate(lead.id, nextStatus);
   };
 
-  // Badge UI
+  /**
+   * Generates a UI badge for a given lead status.
+   *
+   * @param {string} status Current lead status.
+   * @param {string} leadId Lead ID for checking pending updates.
+   * @returns {JSX.Element} A styled badge element.
+   */
   const getStatusBadge = (status: string, leadId: string) => {
     const isPending = Boolean(pendingUpdates[leadId]);
 

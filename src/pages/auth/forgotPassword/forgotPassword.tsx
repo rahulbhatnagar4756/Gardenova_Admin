@@ -8,6 +8,17 @@ import type { ApiError } from "../../../types/apiResponse";
 import type { ForgotPasswordStep } from "../../../types/auth";
 import { ForgotPasswordSteps } from "../../../constants";
 
+/**
+ * Forgot Password Component
+ *
+ * Handles the 4-step forgot password flow:
+ * 1. Enter Email
+ * 2. Verify 6-digit token
+ * 3. Reset password
+ * 4. Success screen
+ *
+ * @returns {JSX.Element} The forgot password UI flow.
+ */
 export const ForgotPassword: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<ForgotPasswordStep>(
     ForgotPasswordSteps.EMAIL
@@ -46,6 +57,12 @@ export const ForgotPassword: React.FC = () => {
     return () => clearTimeout(timer);
   }, [timeLeft, currentStep]);
 
+  /**
+   * Handles the "Send Verification Code" email form submission.
+   *
+   * @param {React.FormEvent} e The form submit event.
+   * @returns {Promise<void>} Resolves when email request completes.
+   */
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -75,6 +92,12 @@ export const ForgotPassword: React.FC = () => {
     }
   };
 
+  /**
+   * Handles submitting the 6-digit verification token.
+   *
+   * @param {React.FormEvent} e The form submit event.
+   * @returns {Promise<void>} Resolves after token validation.
+   */
   const handleTokenSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -101,6 +124,12 @@ export const ForgotPassword: React.FC = () => {
     }
   };
 
+  /**
+   * Handles resetting the password once verification succeeds.
+   *
+   * @param {React.FormEvent} e The form submit event.
+   * @returns {Promise<void>} Resolves after password reset request completes.
+   */
   const handlePasswordReset = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -135,6 +164,11 @@ export const ForgotPassword: React.FC = () => {
     }
   };
 
+  /**
+   * Sends a new 6-digit verification token to the user's email.
+   *
+   * @returns {Promise<void>} Resolves when resend request finishes.
+   */
   const handleResendToken = async () => {
     setIsLoading(true);
     try {
@@ -158,6 +192,13 @@ export const ForgotPassword: React.FC = () => {
     }
   };
 
+  /**
+   * Handles individual digit input change in the 6-digit token field.
+   *
+   * @param {number} index Index of the digit being updated (0–5).
+   * @param {string} value The new digit entered.
+   * @returns {void}
+   */
   const handleTokenDigitChange = (index: number, value: string) => {
     if (!/^\d*$/.test(value)) return; // Only allow digits
 
@@ -173,6 +214,13 @@ export const ForgotPassword: React.FC = () => {
     }
   };
 
+  /**
+   * Handles backspace navigation behavior while typing verification digits.
+   *
+   * @param {number} index Current digit index.
+   * @param {React.KeyboardEvent} e The keyboard event.
+   * @returns {void}
+   */
   const handleTokenKeyDown = (index: number, e: React.KeyboardEvent) => {
     if (e.key === "Backspace" && !tokenDigits[index] && index > 0) {
       const prevInput = document.querySelector(
@@ -182,12 +230,23 @@ export const ForgotPassword: React.FC = () => {
     }
   };
 
+  /**
+   * Formats a number of seconds into mm:ss format.
+   *
+   * @param {number} seconds Remaining time in seconds.
+   * @returns {string} A formatted time string (e.g. "04:32").
+   */
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
+  /**
+   * Renders the email input step (Step 1).
+   *
+   * @returns {JSX.Element} Email form UI.
+   */
   const renderEmailStep = () => (
     <>
       <section className="bl_section">
@@ -243,11 +302,23 @@ export const ForgotPassword: React.FC = () => {
 
           <div className="forgot-footer">
             <Link to={APP_ROUTES.auth.login} className="forgot-link">
-             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
-              <path fill="#f4f4f4" d="M7 16a1 1 0 0 0-1 1v3a3 3 0 0 0 3 3h7a3 3 0 0 0 3-3V4a3 3 0 0 0-3-3H9a3 3 0 0 0-3 3v3a1 1 0 1 0 2 0V4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1Z"/>
-              <path fill="#f4f4f4" d="M12.586 11H3a1 1 0 1 0 0 2h9.586l-2.293 2.293a1 1 0 1 0 1.414 1.414l4-4a1 1 0 0 0 0-1.414l-4-4a1 1 0 1 0-1.414 1.414L12.586 11Z"/>
-            </svg> 
-            Back to Sign In
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="#f4f4f4"
+                  d="M7 16a1 1 0 0 0-1 1v3a3 3 0 0 0 3 3h7a3 3 0 0 0 3-3V4a3 3 0 0 0-3-3H9a3 3 0 0 0-3 3v3a1 1 0 1 0 2 0V4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1Z"
+                />
+                <path
+                  fill="#f4f4f4"
+                  d="M12.586 11H3a1 1 0 1 0 0 2h9.586l-2.293 2.293a1 1 0 1 0 1.414 1.414l4-4a1 1 0 0 0 0-1.414l-4-4a1 1 0 1 0-1.414 1.414L12.586 11Z"
+                />
+              </svg>
+              Back to Sign In
             </Link>
           </div>
         </div>
@@ -255,6 +326,11 @@ export const ForgotPassword: React.FC = () => {
     </>
   );
 
+  /**
+   * Renders the token verification step (Step 2).
+   *
+   * @returns {JSX.Element} Token verification UI.
+   */
   const renderTokenStep = () => (
     <>
       <section className="bl_section">
@@ -321,11 +397,23 @@ export const ForgotPassword: React.FC = () => {
 
           <div className="forgot-footer">
             <Link to={APP_ROUTES.auth.login} className="forgot-link">
-             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
-  <path fill="#f4f4f4" d="M7 16a1 1 0 0 0-1 1v3a3 3 0 0 0 3 3h7a3 3 0 0 0 3-3V4a3 3 0 0 0-3-3H9a3 3 0 0 0-3 3v3a1 1 0 1 0 2 0V4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1Z"/>
-  <path fill="#f4f4f4" d="M12.586 11H3a1 1 0 1 0 0 2h9.586l-2.293 2.293a1 1 0 1 0 1.414 1.414l4-4a1 1 0 0 0 0-1.414l-4-4a1 1 0 1 0-1.414 1.414L12.586 11Z"/>
-</svg> 
-Back to Sign In
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="#f4f4f4"
+                  d="M7 16a1 1 0 0 0-1 1v3a3 3 0 0 0 3 3h7a3 3 0 0 0 3-3V4a3 3 0 0 0-3-3H9a3 3 0 0 0-3 3v3a1 1 0 1 0 2 0V4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1Z"
+                />
+                <path
+                  fill="#f4f4f4"
+                  d="M12.586 11H3a1 1 0 1 0 0 2h9.586l-2.293 2.293a1 1 0 1 0 1.414 1.414l4-4a1 1 0 0 0 0-1.414l-4-4a1 1 0 1 0-1.414 1.414L12.586 11Z"
+                />
+              </svg>
+              Back to Sign In
             </Link>
           </div>
         </div>
@@ -333,6 +421,11 @@ Back to Sign In
     </>
   );
 
+  /**
+   * Renders the new password creation step (Step 3).
+   *
+   * @returns {JSX.Element} Password reset UI.
+   */
   const renderPasswordStep = () => {
     const passwordsMatch =
       newPassword && confirmPassword && newPassword === confirmPassword;
@@ -503,11 +596,23 @@ Back to Sign In
 
             <div className="forgot-footer">
               <Link to={APP_ROUTES.auth.login} className="forgot-link">
-               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
-  <path fill="#f4f4f4" d="M7 16a1 1 0 0 0-1 1v3a3 3 0 0 0 3 3h7a3 3 0 0 0 3-3V4a3 3 0 0 0-3-3H9a3 3 0 0 0-3 3v3a1 1 0 1 0 2 0V4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1Z"/>
-  <path fill="#f4f4f4" d="M12.586 11H3a1 1 0 1 0 0 2h9.586l-2.293 2.293a1 1 0 1 0 1.414 1.414l4-4a1 1 0 0 0 0-1.414l-4-4a1 1 0 1 0-1.414 1.414L12.586 11Z"/>
-</svg> 
-Back to Sign In
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="#f4f4f4"
+                    d="M7 16a1 1 0 0 0-1 1v3a3 3 0 0 0 3 3h7a3 3 0 0 0 3-3V4a3 3 0 0 0-3-3H9a3 3 0 0 0-3 3v3a1 1 0 1 0 2 0V4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1Z"
+                  />
+                  <path
+                    fill="#f4f4f4"
+                    d="M12.586 11H3a1 1 0 1 0 0 2h9.586l-2.293 2.293a1 1 0 1 0 1.414 1.414l4-4a1 1 0 0 0 0-1.414l-4-4a1 1 0 1 0-1.414 1.414L12.586 11Z"
+                  />
+                </svg>
+                Back to Sign In
               </Link>
             </div>
           </div>
@@ -516,6 +621,11 @@ Back to Sign In
     );
   };
 
+  /**
+   * Renders the final success screen (Step 4).
+   *
+   * @returns {JSX.Element} Success message UI.
+   */
   const renderSuccessStep = () => (
     <>
       <section className="bl_section">

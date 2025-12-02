@@ -4,6 +4,16 @@ import type { DoughnutMiniChartProps } from "../../types";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+/**
+ * A compact doughnut chart component used to display a comparison
+ * between today's value and the total value. Useful for dashboard
+ * summary widgets showing quick progress indicators.
+ *
+ * @param {DoughnutMiniChartProps} root0 Component props.
+ * @param {number} root0.total Total count or maximum value represented.
+ * @param {number} root0.today Value recorded for today's count.
+ * @returns {JSX.Element} A rendered doughnut mini chart.
+ */
 export const DoughnutMiniChart = ({ total, today }: DoughnutMiniChartProps) => {
   const remaining = Math.max(total - today, 0);
 

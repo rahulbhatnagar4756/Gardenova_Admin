@@ -21,6 +21,8 @@ import type { ApiError } from "../../../types/apiResponse";
  * - Redirects user to admin dashboard upon successful login
  *
  * Note: Only the Toaster import changed - all existing functionality remains the same
+ *
+ * @returns {JSX.Element} The Login component UI.
  */
 export const Login: React.FC = () => {
   //#region  STATE HOOKS
@@ -44,6 +46,9 @@ export const Login: React.FC = () => {
   //#region  METHODS
   /**
    * Handles input field changes and updates formData state.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} e The input change event.
+   * @returns {void}
    */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -59,6 +64,9 @@ export const Login: React.FC = () => {
 
   /**
    * Updates the "Remember Me" checkbox state.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} e The checkbox change event.
+   * @returns {void}
    */
   const handleRememberMeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRememberMe(e.target.checked);
@@ -66,12 +74,14 @@ export const Login: React.FC = () => {
 
   /**
    * Handles login form submission.
-   * - Prevents default form reload
-   * - Shows loading state
-   * - Calls API to authenticate user
-   * - Shows toast notifications for success/error
-   * - Redirects to admin page on success
-   * - Resets form fields after successful login
+   * - Prevents default behavior
+   * - Validates input fields
+   * - Calls API to authenticate the user
+   * - Shows toast notifications
+   * - Redirects on success
+   *
+   * @param {React.FormEvent} e The form submit event.
+   * @returns {Promise<void>} Resolves when submission is complete.
    */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

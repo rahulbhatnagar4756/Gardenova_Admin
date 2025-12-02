@@ -10,6 +10,12 @@ import type {
   UsePartnerProfilesReturn,
 } from "../types/partnerProfile";
 
+/**
+ * Custom hook to fetch, paginate, create, update, delete, and manage partner profiles.
+ *
+ * @param {UsePartnerProfilesOptions} options Optional initial configuration (page, limit, autoFetch).
+ * @returns {UsePartnerProfilesReturn} Methods and data for managing partner profiles.
+ */
 export const usePartnerProfiles = (
   options: UsePartnerProfilesOptions = {}
 ): UsePartnerProfilesReturn => {
@@ -25,7 +31,12 @@ export const usePartnerProfiles = (
   const [totalCount, setTotalCount] = useState(0);
   const [limit, setLimit] = useState(initialLimit);
   const { showSuccess, showError } = useToast();
-
+  /**
+   * Fetches partner profiles with optional pagination parameters.
+   *
+   * @param {PaginationParams} [params] Optional pagination values (page, limit).
+   * @returns {Promise<void>} Resolves after fetching partner data.
+   */
   const fetchPartners = useCallback(async (params?: PaginationParams) => {
     try {
       setLoading(true);
@@ -67,7 +78,13 @@ export const usePartnerProfiles = (
     }
   }, []);
 
-  // Navigate to specific page
+  /**
+   * Navigates to a specific page.
+   *
+   * @param {number} page Target page number.
+   * @returns {void}
+   */
+
   const goToPage = useCallback(
     (page: number) => {
       if (page >= 1 && page <= totalPages) {
@@ -102,7 +119,19 @@ export const usePartnerProfiles = (
     await fetchPartners({ page: currentPage, limit });
   }, [fetchPartners, currentPage, limit]);
 
-  // Create partner
+  /**
+   * Creates a new partner profile.
+   *
+   * @param {PartnerProfileRequest} data Partner profile details.
+   * @returns {Promise<void>} Resolves when partner is created.
+   */
+
+  /**
+   * Creates a new partner profile.
+   *
+   * @param {PartnerProfileRequest} data The partner profile details to create.
+   * @returns {Promise<void>} - Resolves when the partner is successfully created.
+   */
   const createPartner = async (data: PartnerProfileRequest) => {
     try {
       const response = await partnerProfileService.create(data);
@@ -120,7 +149,13 @@ export const usePartnerProfiles = (
     }
   };
 
-  // Update partner
+  /**
+   * Updates an existing partner profile.
+   *
+   * @param {string} id The ID of the partner to update.
+   * @param {Partial<PartnerProfileRequest>} data Updated partner profile fields.
+   * @returns {Promise<void>} - Resolves when the partner is successfully updated.
+   */
   const updatePartner = async (
     id: string,
     data: Partial<PartnerProfileRequest>
@@ -139,7 +174,12 @@ export const usePartnerProfiles = (
     }
   };
 
-  // Delete partner
+  /**
+   * Deletes a partner profile by ID.
+   *
+   * @param {string} id The ID of the partner to delete.
+   * @returns {Promise<void>} - Resolves when the partner is successfully deleted.
+   */
   const deletePartner = async (id: string) => {
     try {
       const response = await partnerProfileService.delete(id);
@@ -163,6 +203,13 @@ export const usePartnerProfiles = (
     }
   };
 
+  /**
+   * Updates the rating for a partner profile.
+   *
+   * @param {string} partnerId The ID of the partner whose rating is being updated.
+   * @param {number} rating The new rating value to apply.
+   * @returns {Promise<void>} - Resolves when the rating is successfully updated.
+   */
   const updatePartnerRating = async (partnerId: string, rating: number) => {
     try {
       const response = await partnerProfileService.updateRating({
@@ -184,6 +231,13 @@ export const usePartnerProfiles = (
     }
   };
 
+  /**
+   * Updates the status of a partner profile.
+   *
+   * @param {string} partnerId The ID of the partner whose status is being updated.
+   * @param {"pending" | "approved" | "rejected" | "inactive"} status The new status.
+   * @returns {Promise<void>} - Resolves when the status is successfully updated.
+   */
   const updatePartnerStatus = async (partnerId: string, status: string) => {
     try {
       const response = await partnerProfileService.updateStatus({
@@ -205,7 +259,12 @@ export const usePartnerProfiles = (
     }
   };
 
-  // ✅ New: Get partner by ID
+  /**
+   * Fetches a partner profile by its ID.
+   *
+   * @param {string} id The ID of the partner to retrieve.
+   * @returns {Promise<PartnerProfileResponse | null>} - The partner data or null if not found.
+   */
   const getPartnerById = async (
     id: string
   ): Promise<PartnerProfileResponse | null> => {

@@ -1,6 +1,16 @@
 import React from "react";
 import type { PaginationProps } from "../../types";
 
+/**
+ * Pagination component used to navigate through pages of data.
+ *
+ * @param {PaginationProps} root0 Component properties.
+ * @param {number} root0.totalItems Total number of items available.
+ * @param {number} root0.itemsPerPage Number of items displayed per page.
+ * @param {number} root0.currentPage Currently active page.
+ * @param {(page: number) => void} root0.onPageChange Callback to update the current page.
+ * @returns {JSX.Element} The rendered pagination UI.
+ */
 export const Pagination: React.FC<PaginationProps> = ({
   totalItems,
   itemsPerPage,
@@ -9,6 +19,12 @@ export const Pagination: React.FC<PaginationProps> = ({
 }) => {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
+  /**
+   * Generates the list of page numbers to display based on current page
+   * and the maximum allowed visible page range.
+   *
+   * @returns {number[]} Array of page numbers.
+   */
   const getPageNumbers = () => {
     const pages = [];
     const maxPagesToShow = 5; // Customize how many pages to show
@@ -45,10 +61,22 @@ export const Pagination: React.FC<PaginationProps> = ({
     return pages;
   };
 
+  /**
+   * Handles navigating to the previous page.
+   * Decreases the current page index by 1 when possible.
+   *
+   * @returns {void} No return value.
+   */
   const handlePrev = () => {
     if (currentPage > 1) onPageChange(currentPage - 1);
   };
 
+  /**
+   * Handles navigating to the next page.
+   * Increases the current page index by 1 when possible.
+   *
+   * @returns {void} No return value.
+   */
   const handleNext = () => {
     if (currentPage < totalPages) onPageChange(currentPage + 1);
   };

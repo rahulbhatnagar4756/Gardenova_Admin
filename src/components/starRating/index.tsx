@@ -2,6 +2,19 @@ import React, { useState, useRef } from "react";
 import { FaStar } from "react-icons/fa";
 import type { StarRatingProps } from "../../types/rating";
 
+/**
+ * A customizable star rating component that supports fractional hover,
+ * click selection, custom colors, and dynamic star sizes.
+ *
+ * @param {StarRatingProps} root0 Component props.
+ * @param {number} root0.rating The current rating value.
+ * @param {number} root0.maxStars Total number of stars to display.
+ * @param {number} root0.size Size of each star in pixels.
+ * @param {string} root0.filledColor Color for filled stars.
+ * @param {string} root0.emptyColor Color for empty stars.
+ * @param {(value: number) => void} root0.onChange Callback when rating is changed.
+ * @returns {JSX.Element} The rendered star rating component.
+ */
 const StarRating: React.FC<StarRatingProps> = ({
   rating,
   maxStars = 5,
@@ -16,7 +29,12 @@ const StarRating: React.FC<StarRatingProps> = ({
   // Choose which value to display (hover > actual)
   const displayRating = hoverRating ?? rating;
 
-  // Calculate the stars with fractional fill
+  /**
+   * Computes the fill percentage for a given star based on fractional rating.
+   *
+   * @param {number} starIndex Index of the star.
+   * @returns {number} Percentage of fill (0–100).
+   */
   const getFillPercentage = (starIndex: number) => {
     const value = starIndex + 1;
     if (displayRating >= value) return 100;
@@ -24,7 +42,13 @@ const StarRating: React.FC<StarRatingProps> = ({
     return (displayRating - starIndex) * 100;
   };
 
-  // Handle mouse move — detect fractional hover
+  /**
+   * Handles mouse movement across the star container and calculates
+   * the fractional hover rating.
+   *
+   * @param {React.MouseEvent<HTMLDivElement>} e Mouse event.
+   * @returns {void}
+   */
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!onChange || !containerRef.current) return;
 
@@ -35,12 +59,20 @@ const StarRating: React.FC<StarRatingProps> = ({
     setHoverRating(Math.min(maxStars, Math.max(0, preciseRating)));
   };
 
-  // Handle mouse leave — reset hover
+  /**
+   * Clears hover rating when mouse leaves the component.
+   *
+   * @returns {void}
+   */
   const handleMouseLeave = () => {
     setHoverRating(null);
   };
 
-  // Handle click — set final rating
+  /**
+   * Handles rating selection when the user clicks a star.
+   *
+   * @returns {void}
+   */
   const handleClick = () => {
     if (hoverRating && onChange) {
       onChange(Number(hoverRating.toFixed(1)));
