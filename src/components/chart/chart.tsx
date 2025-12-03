@@ -10,6 +10,11 @@ import {
 
 import { Line } from "react-chartjs-2";
 import { useCallback, useMemo, useState } from "react";
+import type {
+  DashboardLineChartProps,
+  TrendFilter,
+  TrendPoint,
+} from "../../types/dashboard";
 
 ChartJS.register(
   CategoryScale,
@@ -21,43 +26,12 @@ ChartJS.register(
 );
 
 /**
- * Represents a single data point in a trend graph.
- */
-export interface TrendPoint {
-  date: string;
-  count: number;
-}
-
-/**
- * Represents grouped trend datasets for different lead statuses.
- */
-interface TrendDataSet {
-  all: TrendPoint[];
-  new: TrendPoint[];
-  closed: TrendPoint[];
-  contacted: TrendPoint[];
-}
-
-/**
- * Filter options for generating trend data ranges.
- */
-type TrendFilter = "all" | "monthly" | "yearly" | "custom";
-
-/**
- * Props for the DashboardLineChart component.
- */
-interface DashboardLineChartProps {
-  data: TrendDataSet;
-}
-
-/**
- * Line chart component used to display trend statistics for leads
- * (all, new, closed, contacted) over time. Allows filtering of the
- * dataset by predefined or custom date ranges.
+ * Dashboard line chart component that visualizes lead trends
+ * based on selected time filters.
  *
- * @param {DashboardLineChartProps} root0 Component props.
- * @param {TrendDataSet} root0.data Dataset containing trend data.
- * @returns {JSX.Element} Rendered line chart component.
+ * @param {DashboardLineChartProps} props Component props
+ * @param {object} props.data Trend dataset for all lead types
+ * @returns {JSX.Element | null} Line chart component
  */
 export const DashboardLineChart = ({ data }: DashboardLineChartProps) => {
   const [filter, setFilter] = useState<TrendFilter>("all");
@@ -65,36 +39,48 @@ export const DashboardLineChart = ({ data }: DashboardLineChartProps) => {
   const [customEnd, setCustomEnd] = useState<string>("");
 
   /**
-   * Sorts an array of trend points in ascending order by date.
+   * Sorts an array of trend points by date in ascending order.
    *
-   * @param {TrendPoint[]} arr Array of trend points.
-   * @returns {TrendPoint[]} Sorted array of trend points.
+   * @param {TrendPoint[]} arr Trend data array
+   * @returns {TrendPoint[]} Sorted trend data
    */
   const sortByDate = (arr: TrendPoint[]) =>
     [...arr].sort(
       (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
     );
 
+  /**
+   * Filters trend data based on selected filter type:
+   * - monthly → last 30 entries
+   * - yearly → last 12 entries
+   * - custom → between selected dates
+   *
+   * @param {TrendPoint[]} arr Trend data to filter
+   * @returns {TrendPoint[]} Filtered trend data
+   */
   const filterRange = useCallback(
     (arr: TrendPoint[]) => {
+      const sorted = sortByDate(arr);
+
       switch (filter) {
         case "monthly":
-          return sortByDate(arr).slice(-30);
+          return sorted.slice(-30);
         case "yearly":
-          return sortByDate(arr).slice(-12);
+          return sorted.slice(-12);
         case "custom":
-          if (!customStart || !customEnd) return sortByDate(arr);
-          return sortByDate(arr).filter((d) => {
+          if (!customStart || !customEnd) return sorted;
+          return sorted.filter((d) => {
             const dt = new Date(d.date);
             return dt >= new Date(customStart) && dt <= new Date(customEnd);
           });
         default:
-          return sortByDate(arr);
+          return sorted;
       }
     },
     [filter, customStart, customEnd]
   );
 
+  /** Filter all datasets */
   const filtered = useMemo(() => {
     if (!data) return null;
     return {
@@ -105,51 +91,66 @@ export const DashboardLineChart = ({ data }: DashboardLineChartProps) => {
     };
   }, [data, filterRange]);
 
-  if (!filtered || !filtered.all.length) return null;
+  if (!filtered) return null;
 
-  const labels = filtered.all.map((p) => p.date);
+  /**
+   * MERGE ALL UNIQUE DATES FOR X-AXIS
+   */
+  const labels = Array.from(
+    new Set([
+      ...filtered.all.map((p) => p.date),
+      ...filtered.new.map((p) => p.date),
+      ...filtered.closed.map((p) => p.date),
+      ...filtered.contacted.map((p) => p.date),
+    ])
+  ).sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+
+  /**
+   * Maps an array of trend points into an array aligned to the merged label list.
+   *
+   * @param {TrendPoint[]} arr Trend data for a specific lead category
+   * @returns {number[]} Array of aligned count values
+   */
+  const mapToLabels = (arr: TrendPoint[]) =>
+    labels.map((date) => arr.find((p) => p.date === date)?.count || 0);
 
   const chartData = {
     labels,
     datasets: [
       {
         label: "All Leads",
-        data: filtered.all.map((i) => i.count),
+        data: mapToLabels(filtered.all),
         borderColor: "#8C5E2B",
         backgroundColor: "#8C5E2B",
         tension: 0.4,
-        fill: false,
       },
       {
         label: "New Leads",
-        data: filtered.new.map((i) => i.count),
+        data: mapToLabels(filtered.new),
         borderColor: "#D9C29A",
         backgroundColor: "#D9C29A",
         tension: 0.4,
-        fill: false,
       },
       {
         label: "Closed Leads",
-        data: filtered.closed.map((i) => i.count),
+        data: mapToLabels(filtered.closed),
         borderColor: "#6D7F73",
         backgroundColor: "#6D7F73",
         tension: 0.4,
-        fill: false,
       },
       {
         label: "Contacted Leads",
-        data: filtered.contacted.map((i) => i.count),
+        data: mapToLabels(filtered.contacted),
         borderColor: "#FBBC05",
         backgroundColor: "#FBBC05",
         tension: 0.4,
-        fill: false,
       },
     ],
   };
 
   const options = {
     responsive: true,
-    maintainAspectRatio: false, // Allow custom height/width container sizing
+    maintainAspectRatio: false,
     plugins: {
       legend: { display: true },
     },
@@ -209,7 +210,6 @@ export const DashboardLineChart = ({ data }: DashboardLineChartProps) => {
         )}
       </div>
 
-      {/* Chart container sized to approx. box in screenshot */}
       <div style={{ width: "100%", height: "340px" }}>
         <Line data={chartData} options={options} />
       </div>
