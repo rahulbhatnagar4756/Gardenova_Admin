@@ -9,7 +9,7 @@ import { APP_ROUTES } from "../constants/appRoutes";
 import { ForgotPassword } from "../pages/auth/forgotPassword/forgotPassword";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { Rules } from "../pages/rules/rules";
-import { KnowledgeLibrary } from "../pages/knowledgeLibrary/knowledgeLibrary";
+//import { KnowledgeLibrary } from "../pages/knowledgeLibrary/knowledgeLibrary";
 
 /**
  * Defines all application routes including public, protected,
@@ -41,7 +41,7 @@ export const AppRoutes = () => {
         <Route path="rules" element={<Rules />} />
         <Route path="partner-profiles" element={<PartnerProfiles />} />
         <Route path="leads" element={<Leads />} />
-        <Route path="knowledge-library" element={<KnowledgeLibrary />} />
+        {/* <Route path="knowledge-library" element={<KnowledgeLibrary />} /> */}
       </Route>
 
       {/* Redirect root to dashboard */}

@@ -251,7 +251,7 @@ export const Sidebar = ({
           </NavLink>
         </li>
         {/* Knowledge Library */}
-        <li>
+        {/* <li>
           <NavLink
             to={APP_ROUTES.admin.knowledgeLibrary}
             className={({ isActive }) => (isActive ? "active" : "")}
@@ -282,7 +282,7 @@ export const Sidebar = ({
             </svg>
             <span>Knowledge Library</span>
           </NavLink>
-        </li>
+        </li> */}
       </ul>
       {/* Logout Section */}
       <div className="logout_btn text-center">
