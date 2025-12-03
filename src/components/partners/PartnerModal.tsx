@@ -34,6 +34,13 @@ const initialFormState: FormState = {
   specialityText: "",
 };
 
+/**
+ * Reducer for partner form state.
+ *
+ * @param {FormState} state Current form state.
+ * @param {FormAction} action Action describing the change.
+ * @returns {FormState} New form state after applying the action.
+ */
 function formReducer(state: FormState, action: FormAction): FormState {
   switch (action.type) {
     case "SET_FIELD":
@@ -82,6 +89,13 @@ const initialLocationState: LocationState = {
   loadingCities: false,
 };
 
+/**
+ * Reducer that manages location (states/cities) related UI state and lists.
+ *
+ * @param {LocationState} state Current location state.
+ * @param {LocationAction} action Action describing the change.
+ * @returns {LocationState} Updated location state.
+ */
 function locationReducer(
   state: LocationState,
   action: LocationAction
@@ -103,6 +117,12 @@ function locationReducer(
 }
 
 const selectStyles: StylesConfig<DropdownOption, false> = {
+  /**
+   * Style override for the react-select control wrapper.
+   *
+   * @param {any} base Base styles passed by react-select.
+   * @returns {any} Merged style object for the control.
+   */
   control: (base) => ({
     ...base,
     borderRadius: "8px",
@@ -111,13 +131,24 @@ const selectStyles: StylesConfig<DropdownOption, false> = {
     borderColor: "#ccc",
     "&:hover": { borderColor: "#888" },
   }),
+  /**
+   * Style override for the react-select menu.
+   *
+   * @param {any} base Base styles for the menu.
+   * @returns {any} Merged style object for the menu.
+   */
   menu: (base) => ({
     ...base,
     zIndex: 9999,
   }),
 };
 
-// Validation functions
+/**
+ * Validates an email address string.
+ *
+ * @param {string} email Candidate email.
+ * @returns {string|undefined} An error message or undefined if valid.
+ */
 const validateEmail = (email: string): string | undefined => {
   if (!email.trim()) {
     return "Email is required";
@@ -129,6 +160,12 @@ const validateEmail = (email: string): string | undefined => {
   return undefined;
 };
 
+/**
+ * Validates a mobile phone number (basic 10–15 digit international check).
+ *
+ * @param {string} mobile Candidate mobile string.
+ * @returns {string|undefined} Error message or undefined if valid.
+ */
 const validateMobileNumber = (mobile: string): string | undefined => {
   if (!mobile.trim()) {
     return "Mobile number is required";
@@ -143,6 +180,12 @@ const validateMobileNumber = (mobile: string): string | undefined => {
   return undefined;
 };
 
+/**
+ * Validates a website URL.
+ *
+ * @param {string} website Candidate website URL.
+ * @returns {string|undefined} Error message or undefined if valid.
+ */
 const validateWebsite = (website: string): string | undefined => {
   if (!website.trim()) {
     return "Website Url is required";
@@ -158,6 +201,12 @@ const validateWebsite = (website: string): string | undefined => {
   return undefined;
 };
 
+/**
+ * Validates a ZIP/postal code (Brazilian format expected).
+ *
+ * @param {string} zipCode ZIP code string.
+ * @returns {string|undefined} Error message or undefined if valid.
+ */
 const validateZipCode = (zipCode: string): string | undefined => {
   if (!zipCode.trim()) {
     return "ZIP code is required";
@@ -170,6 +219,12 @@ const validateZipCode = (zipCode: string): string | undefined => {
   return undefined;
 };
 
+/**
+ * Validates the complete partner form state and returns a map of field errors.
+ *
+ * @param {FormState} formData Current form data to validate.
+ * @returns {ValidationErrors} Object mapping field names to error messages.
+ */
 const validateForm = (formData: FormState): ValidationErrors => {
   const errors: ValidationErrors = {};
 
@@ -218,6 +273,16 @@ const validateForm = (formData: FormState): ValidationErrors => {
   return errors;
 };
 
+/**
+ * Partner creation/edit modal component.
+ *
+ * @param {PartnerModalProps} root0 Component props.
+ * @param {boolean} root0.isOpen Whether the modal is open.
+ * @param {any | null} root0.editingPartner Partner being edited (or null when creating).
+ * @param {(partner: PartnerProfileRequest) => Promise<void>} root0.onSave Save callback invoked with validated data.
+ * @param {() => void} root0.onClose Close callback.
+ * @returns {JSX.Element | null} The Partner modal UI or null when not visible.
+ */
 export const PartnerModal = ({
   isOpen,
   editingPartner,
@@ -287,6 +352,13 @@ export const PartnerModal = ({
     }
   }, [formData.address.state, formData.address.country]);
 
+  /**
+   * Marks a specific form field as "touched" so validation errors
+   * can be displayed only after the user interacts with the field.
+   *
+   * @param {string} fieldName The name of the field that lost focus.
+   * @returns {void}
+   */
   const handleBlur = (fieldName: string) => {
     setTouched((prev) => {
       const newTouched = new Set(prev);
@@ -303,6 +375,13 @@ export const PartnerModal = ({
     }
   }, [formData, touched]);
 
+  /**
+   * Validates all partner form fields and attempts to submit the form.
+   * Highlights errors, marks all fields as touched, and shows an error toast
+   * if validation fails.
+   *
+   * @returns {Promise<void>} Resolves once submission or validation handling completes.
+   */
   const handleSubmit = async () => {
     // Validate all fields
     const validationErrors = validateForm(formData);
@@ -356,6 +435,13 @@ export const PartnerModal = ({
     }
   };
 
+  /**
+   * Handles country dropdown selection. Updates the country field,
+   * resets state and city fields, and marks the country field as touched.
+   *
+   * @param {SingleValue<DropdownOption>} selectedOption Selected country option from the dropdown.
+   * @returns {void}
+   */
   const handleCountryChange = (selectedOption: SingleValue<DropdownOption>) => {
     const value = selectedOption ? selectedOption.value : "";
     dispatchForm({
@@ -368,6 +454,13 @@ export const PartnerModal = ({
     handleBlur("country");
   };
 
+  /**
+   * Handles state dropdown selection. Updates the state field,
+   * resets the city list, and marks the state field as touched.
+   *
+   * @param {SingleValue<DropdownOption>} selectedOption Selected state option from the dropdown.
+   * @returns {void}
+   */
   const handleStateChange = (selectedOption: SingleValue<DropdownOption>) => {
     const value = selectedOption ? selectedOption.value : "";
     dispatchForm({
@@ -379,6 +472,13 @@ export const PartnerModal = ({
     handleBlur("state");
   };
 
+  /**
+   * Handles city dropdown selection. Updates the city field
+   * and marks the city field as touched.
+   *
+   * @param {SingleValue<DropdownOption>} selectedOption Selected city option from the dropdown.
+   * @returns {void}
+   */
   const handleCityChange = (selectedOption: SingleValue<DropdownOption>) => {
     const value = selectedOption ? selectedOption.value : "";
     dispatchForm({

@@ -5,6 +5,7 @@ const PARTNER_PROFILE_BASE = "/api/v1/partnerProfile";
 const STATE_CITY_BASE = "/api/v1/stateCityData/countries";
 const LEADS = "/api/v1/admin/leads";
 const DASHBOARD = "/api/v1/admin/dashboard";
+const PLANTS = "/api/v1/admin/plants";
 
 // apiRoutes.ts
 export const API_ROUTES = {
@@ -22,6 +23,7 @@ export const API_ROUTES = {
     updateQuestion: `${ADMIN_BASE}/question/`,
     getAllQuestion: `${ADMIN_BASE}/question`,
     deleteQuestion: `${ADMIN_BASE}/question/`,
+    questionOptionsGrouped: `${ADMIN_BASE}/question/options-grouped`,
   },
   rules: {
     // Rule routes
@@ -51,6 +53,18 @@ export const API_ROUTES = {
   admin: {
     dashboard: `${DASHBOARD}`,
   },
+  plants: {
+    create: `${PLANTS}`,
+    getAll: `${PLANTS}`,
+    getById: `${PLANTS}/`,
+    update: `${PLANTS}/`,
+    delete: `${PLANTS}/`,
+  },
 } as const;
 
+/**
+ * Represents the full type structure of all API route keys
+ * defined inside the API_ROUTES object. Useful for
+ * autocomplete and strict typing across API services.
+ */
 export type ApiRoute = typeof API_ROUTES;

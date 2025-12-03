@@ -20,11 +20,17 @@ ChartJS.register(
   Legend
 );
 
+/**
+ * Represents a single data point in a trend graph.
+ */
 export interface TrendPoint {
   date: string;
   count: number;
 }
 
+/**
+ * Represents grouped trend datasets for different lead statuses.
+ */
 interface TrendDataSet {
   all: TrendPoint[];
   new: TrendPoint[];
@@ -32,17 +38,38 @@ interface TrendDataSet {
   contacted: TrendPoint[];
 }
 
+/**
+ * Filter options for generating trend data ranges.
+ */
 type TrendFilter = "all" | "monthly" | "yearly" | "custom";
 
+/**
+ * Props for the DashboardLineChart component.
+ */
 interface DashboardLineChartProps {
   data: TrendDataSet;
 }
 
+/**
+ * Line chart component used to display trend statistics for leads
+ * (all, new, closed, contacted) over time. Allows filtering of the
+ * dataset by predefined or custom date ranges.
+ *
+ * @param {DashboardLineChartProps} root0 Component props.
+ * @param {TrendDataSet} root0.data Dataset containing trend data.
+ * @returns {JSX.Element} Rendered line chart component.
+ */
 export const DashboardLineChart = ({ data }: DashboardLineChartProps) => {
   const [filter, setFilter] = useState<TrendFilter>("all");
   const [customStart, setCustomStart] = useState<string>("");
   const [customEnd, setCustomEnd] = useState<string>("");
 
+  /**
+   * Sorts an array of trend points in ascending order by date.
+   *
+   * @param {TrendPoint[]} arr Array of trend points.
+   * @returns {TrendPoint[]} Sorted array of trend points.
+   */
   const sortByDate = (arr: TrendPoint[]) =>
     [...arr].sort(
       (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()

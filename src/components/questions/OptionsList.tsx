@@ -2,6 +2,18 @@ import { useToast } from "../../hooks/useToast";
 import OptionItem from "./OptionItem";
 import type { OptionsListProps } from "../../types/diagnosticQuestion";
 
+/**
+ * Renders a list of option items for a diagnostic question,
+ * and manages editing, updating, and removing options.
+ *
+ * @param {OptionsListProps} root0 Component props.
+ * @param {Array<any>} root0.options List of option objects.
+ * @param {(index: number) => void} root0.onRemove Callback to remove an option.
+ * @param {(index: number, text: string) => void} root0.onUpdate Callback to update an option.
+ * @param {number | null} root0.editingOptionIndex Index of the option currently being edited.
+ * @param {(index: number | null) => void} root0.setEditingOptionIndex Setter for editing index.
+ * @returns {JSX.Element} A rendered list of option items.
+ */
 const OptionsList = ({
   options,
   onRemove,
@@ -11,6 +23,13 @@ const OptionsList = ({
 }: OptionsListProps) => {
   const { showWarning } = useToast();
 
+  /**
+   * Starts editing an option. Prevents editing another item
+   * if an edit session is already active.
+   *
+   * @param {number} index The index of the option to edit.
+   * @returns {void}
+   */
   const handleEditStart = (index: number) => {
     if (editingOptionIndex !== null && editingOptionIndex !== index) {
       showWarning(
@@ -21,6 +40,13 @@ const OptionsList = ({
     setEditingOptionIndex(index);
   };
 
+  /**
+   * Saves edits for an option and clears the editing index.
+   *
+   * @param {number} index Option index being updated.
+   * @param {string} text Updated text for the option.
+   * @returns {void}
+   */
   const handleEditSave = (index: number, text: string) => {
     onUpdate(index, text);
     setEditingOptionIndex(null);

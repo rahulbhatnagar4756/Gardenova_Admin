@@ -2,6 +2,11 @@ import { useState, useEffect, useCallback } from "react";
 import { leadService } from "../services/apiCalls/leadService";
 import type { Lead, LeadsResponse, RawLead } from "../types/lead";
 
+/**
+ * Custom hook to manage leads, pagination, and related state.
+ *
+ * @returns {object} Leads data, pagination state, loading state, and helper functions.
+ */
 export const useLeads = () => {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -12,6 +17,12 @@ export const useLeads = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  /**
+   * Converts a raw lead object from the API into a formatted Lead object.
+   *
+   * @param {RawLead} raw The raw lead data returned from the API.
+   * @returns {Lead} The formatted lead object.
+   */
   const formatLead = (raw: RawLead): Lead => ({
     id: raw.lead_id,
     userId: raw.user.user_id,
@@ -54,6 +65,12 @@ export const useLeads = () => {
     [limit]
   );
 
+  /**
+   * Navigates to a specific page and fetches leads for that page.
+   *
+   * @param {number} page The page number to navigate to.
+   * @returns {void}
+   */
   const goToPage = (page: number) => {
     if (page < 1 || page > totalPages) return;
     fetchLeads(page, limit);
@@ -68,6 +85,13 @@ export const useLeads = () => {
     await fetchLeads(currentPage, limit);
   }, [fetchLeads, currentPage, limit]);
 
+  /**
+   * Updates the status of a lead.
+   *
+   * @param {string} id The ID of the lead to update.
+   * @param {string} status The new status to assign to the lead.
+   * @returns {Promise<void>} - Resolves when the status update is complete.
+   */
   const updateLeadStatus = async (id: string, status: string) => {
     try {
       const response = await leadService.updateLeadStatus(id, {

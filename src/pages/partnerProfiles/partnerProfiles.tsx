@@ -17,7 +17,12 @@ import type {
   PartnerProfileStatus,
 } from "../../types/partnerProfile";
 
-// ✅ helper for cycling statuses in order
+/**
+ * Returns the next status in the predefined status cycle.
+ *
+ * @param current Current partner status.
+ * @returns The next status in the sequence.
+ */
 const getNextStatus = (current: PartnerProfileStatus): PartnerProfileStatus => {
   const order: PartnerProfileStatus[] = [
     "active",
@@ -30,6 +35,14 @@ const getNextStatus = (current: PartnerProfileStatus): PartnerProfileStatus => {
   return order[nextIndex];
 };
 
+/**
+ * Partner Profiles listing page. Handles CRUD operations,
+ * pagination, rating updates, and status updates.
+ *
+ * @param root0 Component props.
+ * @param root0.limit Optional limit for number of partners to display.
+ * @returns The Partner Profiles page UI.
+ */
 export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
   const {
     partners,
@@ -111,7 +124,12 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
     [goToPage]
   );
 
-  // ✅ handle opening View Modal
+  /**
+   * Opens the partner view modal and loads partner details from API.
+   *
+   * @param partnerId The ID of the partner to fetch and display.
+   * @returns A promise that resolves after modal state is updated.
+   */
   const handleViewPartner = async (partnerId: string) => {
     try {
       // Step 1: Open modal immediately with no data yet
@@ -130,6 +148,11 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
     }
   };
 
+  /**
+   * Closes the partner view modal.
+   *
+   * @returns void
+   */
   const handleCloseViewModal = () =>
     setViewModal({ isOpen: false, partner: null });
 
@@ -223,7 +246,7 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
                         }}
                       />
                     </td>
-                    {/* ✅ Click-to-cycle status badge */}
+                    {/* Click-to-cycle status badge */}
                     <td>
                       <span
                         className={`badge ${

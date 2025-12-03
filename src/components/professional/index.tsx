@@ -2,6 +2,17 @@ import React from "react";
 import "./index.css";
 import type { ProfessionalsModalProps } from "../../types/partnerProfile";
 
+/**
+ * Modal component that displays a list of professionals.
+ * Shows a loading state until data is fetched and allows closing the modal.
+ *
+ * @param {ProfessionalsModalProps} root0 Component properties.
+ * @param {boolean} root0.isOpen Whether the modal is currently visible.
+ * @param {() => void} root0.onClose Callback to close the modal.
+ * @param {Array<any>} root0.professionals List of professionals to display.
+ * @param {boolean} root0.loading Indicates whether professionals are still loading.
+ * @returns {JSX.Element | null} Rendered modal or null when closed.
+ */
 export const ProfessionalsModal: React.FC<ProfessionalsModalProps> = ({
   isOpen,
   onClose,

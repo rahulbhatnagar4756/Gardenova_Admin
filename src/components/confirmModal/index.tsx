@@ -1,6 +1,21 @@
 import type { ConfirmModalProps } from "../../types";
 import "./index.css";
 
+/**
+ * A reusable confirmation modal used to ask the user to confirm or cancel an action.
+ * Displays a title, message, and confirm/cancel buttons. Executes the provided callbacks
+ * depending on which action the user chooses.
+ *
+ * @param {ConfirmModalProps} root0 Component props.
+ * @param {boolean} root0.open Whether the modal is visible.
+ * @param {string} root0.title Modal title text.
+ * @param {string} root0.message Description or confirmation message.
+ * @param {string} root0.confirmText Text for the confirm button.
+ * @param {string} root0.cancelText Text for the cancel button.
+ * @param {() => void} root0.onConfirm Callback executed when user confirms.
+ * @param {() => void} root0.onCancel Callback executed when user cancels.
+ * @returns {JSX.Element | null} The confirmation modal or null when closed.
+ */
 export default function ConfirmModal({
   open,
   title = "Are you sure?",

@@ -3,6 +3,16 @@ import { useRef, useState, useEffect } from "react";
 import type { ImageUploadProps } from "../../types";
 import { useToast } from "../../hooks/useToast";
 
+/**
+ * Image uploader component that supports previewing,
+ * validating, and clearing an image. Accepts an image URL
+ * and returns the updated base64 string when changed.
+ *
+ * @param {ImageUploadProps} root0 Component properties.
+ * @param {string} root0.imageUrl Existing image URL or base64 string to display as preview.
+ * @param {(image: string) => void} root0.onImageChange Callback fired when an image is selected or removed.
+ * @returns {JSX.Element} The rendered image upload component.
+ */
 export const ImageUpload = ({ imageUrl, onImageChange }: ImageUploadProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -12,6 +22,13 @@ export const ImageUpload = ({ imageUrl, onImageChange }: ImageUploadProps) => {
     setPreview(imageUrl || null);
   }, [imageUrl]);
 
+  /**
+   * Handles file input change, validates the image,
+   * converts it to a base64 string, and updates preview state.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} e File input change event.
+   * @returns {void}
+   */
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -22,6 +39,11 @@ export const ImageUpload = ({ imageUrl, onImageChange }: ImageUploadProps) => {
     }
 
     const reader = new FileReader();
+    /**
+     * Reads the file and updates the preview + parent callback.
+     *
+     * @returns {void}
+     */
     reader.onloadend = () => {
       const base64String = reader.result as string;
       setPreview(base64String);
@@ -30,6 +52,12 @@ export const ImageUpload = ({ imageUrl, onImageChange }: ImageUploadProps) => {
     reader.readAsDataURL(file);
   };
 
+  /**
+   * Clears the selected image preview and resets
+   * file input & parent callback value.
+   *
+   * @returns {void}
+   */
   const removeImage = () => {
     setPreview(null);
     onImageChange("");

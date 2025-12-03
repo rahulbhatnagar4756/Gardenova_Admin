@@ -7,6 +7,13 @@ import type {
   UseRulesReturn,
 } from "../types/rules";
 
+/**
+ * Custom hook for fetching and managing rules.
+ *
+ * Handles loading state, returned rules list, and error handling for rule operations.
+ *
+ * @returns {UseRulesReturn} An object containing rules data, loading state, error state, and helper methods.
+ */
 export const useRules = (): UseRulesReturn => {
   const [rules, setRules] = useState<Rule[]>([]);
   const [loading, setLoading] = useState<boolean>(true);

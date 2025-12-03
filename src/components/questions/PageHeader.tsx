@@ -1,5 +1,13 @@
 import type { PageHeaderProps } from "../../types";
 
+/**
+ * Page header component that displays a title section
+ * and provides an "Add" button for creating new items.
+ *
+ * @param {PageHeaderProps} root0 Component props.
+ * @param {() => void} root0.onAddClick Callback fired when the Add button is clicked.
+ * @returns {JSX.Element} The rendered page header UI.
+ */
 const PageHeader = ({ onAddClick }: PageHeaderProps) => {
   return (
     <div className="main_heading_area">

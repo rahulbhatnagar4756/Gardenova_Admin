@@ -12,17 +12,19 @@ import { API_ROUTES } from "../apiRoutes";
 
 export const partnerProfileService = {
   /**
-   * Create a new partner profile
+   * Create a new partner profile.
+   *
+   * @param data The payload containing partner profile information.
+   * @returns A promise resolving to an ApiResponse with null data.
    */
   create: (data: PartnerProfileRequest) =>
     apiService.post<ApiResponse<null>>(API_ROUTES.partnerProfile.create, data),
 
   /**
-   * Get all partner profiles with pagination
-   * @param params - Pagination parameters (page, limit)
-   */
-  /**
-   * Get all partner profiles with pagination
+   * Get all partner profiles with optional pagination.
+   *
+   * @param params Pagination parameters including page and limit.
+   * @returns A promise resolving to an ApiResponse with paginated partner profiles.
    */
   getAll: (
     params?: PaginationParams
@@ -40,8 +42,10 @@ export const partnerProfileService = {
   },
 
   /**
-   * ✅ Get partner profile by ID
-   * @param id - Unique ID of the partner profile
+   * Fetch a single partner profile by ID.
+   *
+   * @param id Unique identifier of the partner profile.
+   * @returns A promise resolving to an ApiResponse with the partner profile.
    */
   getById: (id: string): Promise<ApiResponse<PartnerProfileResponse>> => {
     return apiService.get<PartnerProfileResponse>(
@@ -50,7 +54,11 @@ export const partnerProfileService = {
   },
 
   /**
-   * Update a partner profile by ID
+   * Update an existing partner profile by ID.
+   *
+   * @param id Unique identifier of the partner profile.
+   * @param data Partial partner profile details to update.
+   * @returns A promise resolving to an ApiResponse with the updated profile.
    */
   update: (id: string, data: Partial<PartnerProfileRequest>) =>
     apiService.put<ApiResponse<PartnerProfileResponse>>(
@@ -59,7 +67,10 @@ export const partnerProfileService = {
     ),
 
   /**
-   * Delete a partner profile by ID
+   * Delete a partner profile by ID.
+   *
+   * @param id Unique identifier of the partner profile.
+   * @returns A promise resolving to an ApiResponse with null data.
    */
   delete: (id: string) =>
     apiService.delete<ApiResponse<null>>(
@@ -67,8 +78,10 @@ export const partnerProfileService = {
     ),
 
   /**
-   * Update partner rating
-   * @param data - Object containing partnerId and rating
+   * Update the rating of a partner.
+   *
+   * @param data Object containing partnerId and new rating value.
+   * @returns A promise resolving to an ApiResponse with null data.
    */
   updateRating: (data: PartnerRatingUpdateRequest) =>
     apiService.patch<ApiResponse<null>>(
@@ -77,8 +90,10 @@ export const partnerProfileService = {
     ),
 
   /**
-   * Update partner status
-   * @param data - Object containing partnerId and status
+   * Update the status of a partner.
+   *
+   * @param data Object containing partnerId and status value.
+   * @returns A promise resolving to an ApiResponse with null data.
    */
   updateStatus: (data: PartnerStatusUpdateRequest) =>
     apiService.patch<ApiResponse<null>>(

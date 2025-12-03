@@ -1,5 +1,16 @@
 import type { QuestionCardProps } from "../../types/diagnosticQuestion";
 
+/**
+ * Renders a single question card with index, text, and optional action buttons.
+ *
+ * @param {QuestionCardProps} root0 Component props.
+ * @param {any} root0.question The question object to display.
+ * @param {number} root0.index Position index of the question in the list.
+ * @param {boolean} root0.isActionShow Whether edit/delete actions should be shown.
+ * @param {(question: any) => void} root0.onEdit Callback when editing the question.
+ * @param {(id: string) => void} root0.onDelete Callback when deleting the question.
+ * @returns {JSX.Element} The rendered question card UI.
+ */
 const QuestionCard = ({
   question,
   index,
