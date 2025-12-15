@@ -11,7 +11,7 @@ import { ToastProvider } from "./contexts/ToastProvider";
  * Root application component that sets up routing,
  * authentication context, and toast notifications.
  *
- * @returns {JSX.Element} The main application wrapper..
+ * @returns {JSX.Element} The main application wrapper.
  */
 function App() {
   return (
