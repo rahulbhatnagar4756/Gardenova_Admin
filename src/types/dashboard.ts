@@ -107,3 +107,40 @@ export interface DashboardResponse {
   lead_status_counts: LeadStatusCount[];
   lead_trend: DashboardTrend;
 }
+
+/**
+ * Represents a single data point for lead trend charts.
+ * Each point contains the date and the total count for that day.
+ */
+export interface TrendPoint {
+  date: string;
+  count: number;
+}
+
+/**
+ * Collection of categorized lead trend datasets used in dashboard charts.
+ * Includes data for all leads, new leads, closed leads, and contacted leads.
+ */
+export interface TrendDataSet {
+  all: TrendPoint[];
+  new: TrendPoint[];
+  closed: TrendPoint[];
+  contacted: TrendPoint[];
+}
+
+/**
+ * Allowed filter types for selecting how the trend chart data is displayed.
+ * - all → full dataset
+ * - monthly → last 30 days
+ * - yearly → last 12 months
+ * - custom → date range selected by the user
+ */
+export type TrendFilter = "all" | "monthly" | "yearly" | "custom";
+
+/**
+ * Props for the DashboardLineChart component.
+ * Contains the complete dataset required for rendering the line chart.
+ */
+export interface DashboardLineChartProps {
+  data: TrendDataSet;
+}
