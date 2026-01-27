@@ -113,7 +113,7 @@ export const Dashboard = () => {
             { name: "Husqvarna Robotic Mower", value: 70 },
             { name: "Rain Bird systems", value: 40 },
             { name: "Philips Hue Outdoor line", value: 60 },
-            { name: "Philips Hue Outdoor line", value: 80 },
+          
             { name: "Others", value: 20 },
           ].map((item, index) => (
             <div key={index} className="progressbar_item">
