@@ -1,3 +1,13 @@
+:root {
+   --Dark-Green: #2E3A30;
+   --Off-White: #F4F4F4;
+   --Burnt-Gold: #B48A3E;
+   --Gradient-Start: #E0B669;
+   --Gradient-End: #B48A3E;
+   --Dropdown-Background: #2E3A30;
+}
+
+
 .header_main
 {
   padding: 15px;
@@ -93,4 +103,78 @@ margin-top: 5px;
     bottom: 0;
     z-index: -1;
     padding-bottom: 0;
+}
+
+
+/* Admin Wrapper */
+.admin_wrapper {
+  position: relative;
+}
+
+/* Admin Dropdown Menu */
+.admin_dropdown_menu {
+  position: absolute;
+  top: calc(100% + 10px); /* Position below the admin name */
+  right: 0;
+  background: #2E3A30;
+  border-radius: 8px;
+  min-width: 200px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  padding: 8px 0;
+}
+
+/* Dropdown Item */
+.dropdown_item {
+  padding: 12px 16px;
+  color: #F4F4F4;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.2s;
+}
+
+.dropdown_item:hover {
+  background: rgba(244, 244, 244, 0.1);
+}
+
+.dropdown_item .arrow {
+  font-size: 12px;
+  margin-left: 8px;
+}
+
+/* Settings Submenu */
+.settings_submenu {
+  position: absolute;
+  top: 0;
+  right: calc(100% + 5px); /* Position to the left of parent dropdown */
+  background: #2E3A30;
+  border-radius: 8px;
+  min-width: 180px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 8px 0;
+}
+
+.submenu_item {
+  padding: 10px 16px;
+  color: #F4F4F4;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.submenu_item:hover {
+  background: rgba(244, 244, 244, 0.1);
+}
+
+/* Admin Click Area */
+.admin_click {
+  cursor: pointer;
+  user-select: none;
+}
+
+.admin_click .caret {
+  margin-left: 5px;
+  font-size: 12px;
 }

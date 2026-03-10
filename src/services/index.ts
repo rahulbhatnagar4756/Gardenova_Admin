@@ -47,6 +47,46 @@ const fetchWithError = async <T>(
   }
 };
 
+
+/**
+ * Makes an authenticated multipart/form-data request.
+ * Does NOT set Content-Type — the browser sets it automatically with the
+ * correct multipart boundary when the body is a FormData instance.
+ *
+ * @template T - Expected response data type.
+ * @param endpoint API endpoint appended to the base URL.
+ * @param formData The FormData payload to send.
+ * @returns A promise resolving to an ApiResponse of type T.
+ * @throws Error if the API response is not OK or request fails.
+ */
+const fetchFormData = async <T>(
+  endpoint: string,
+  formData: FormData
+): Promise<ApiResponse<T>> => {
+  try {
+    const token = getToken();
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      method: "POST",
+      headers: {
+        // Deliberately no Content-Type — browser sets multipart/form-data
+        // with the correct boundary automatically for FormData bodies.
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result: ApiResponse<T> = await response.json();
+    return result;
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error;
+  }
+};
+
 export const apiService = {
   /**
    * Sends a GET request to the specified endpoint.
@@ -106,4 +146,14 @@ export const apiService = {
     fetchWithError<T>(endpoint, {
       method: "DELETE",
     }),
+
+ /**
+  * Uploads a file to the given endpoint using FormData.
+  *
+  * @param {string} endpoint  The API endpoint to send the file to.
+  * @param {FormData} formData  The FormData object containing the file to upload.
+  * @returns {Promise<T>} A promise that resolves to the response after the file upload.
+  */
+    uploadFile: <T>(endpoint: string, formData: FormData) =>
+    fetchFormData<T>(endpoint, formData),
 };
