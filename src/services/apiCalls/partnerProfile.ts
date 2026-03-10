@@ -1,3 +1,4 @@
+// services/apiCalls/partnerProfile.ts
 import { apiService } from "..";
 import type { ApiResponse } from "../../types/apiResponse";
 import type {
@@ -6,20 +7,14 @@ import type {
   PartnerProfileRequest,
   PartnerProfileResponse,
   PartnerRatingUpdateRequest,
-  PartnerStatusUpdateRequest,
+  // PartnerProfileRequest,
+  // PartnerProfileResponse,
+  // PartnerRatingUpdateRequest,
+  PartnerRegisterRequest,
 } from "../../types/partnerProfile";
 import { API_ROUTES } from "../apiRoutes";
 
 export const partnerProfileService = {
-  /**
-   * Create a new partner profile.
-   *
-   * @param data The payload containing partner profile information.
-   * @returns A promise resolving to an ApiResponse with null data.
-   */
-  create: (data: PartnerProfileRequest) =>
-    apiService.post<ApiResponse<null>>(API_ROUTES.partnerProfile.create, data),
-
   /**
    * Get all partner profiles with optional pagination.
    *
@@ -35,8 +30,8 @@ export const partnerProfileService = {
     if (params?.limit) queryParams.append("limit", params.limit.toString());
 
     const url = queryParams.toString()
-      ? `${API_ROUTES.partnerProfile.getAll}?${queryParams}`
-      : API_ROUTES.partnerProfile.getAll;
+      ? `${API_ROUTES.PROFESSIONALS.getAll}?${queryParams}`
+      : API_ROUTES.PROFESSIONALS.getAll;
 
     return apiService.get<PaginatedPartnerProfilesResponse>(url);
   },
@@ -47,11 +42,10 @@ export const partnerProfileService = {
    * @param id Unique identifier of the partner profile.
    * @returns A promise resolving to an ApiResponse with the partner profile.
    */
-  getById: (id: string): Promise<ApiResponse<PartnerProfileResponse>> => {
-    return apiService.get<PartnerProfileResponse>(
-      `${API_ROUTES.partnerProfile.getById}/${id}`
-    );
-  },
+  getById: (id: string): Promise<ApiResponse<PartnerProfileResponse>> =>
+    apiService.get<PartnerProfileResponse>(
+      `${API_ROUTES.PROFESSIONALS.getById}/${id}`
+    ),
 
   /**
    * Update an existing partner profile by ID.
@@ -62,7 +56,7 @@ export const partnerProfileService = {
    */
   update: (id: string, data: Partial<PartnerProfileRequest>) =>
     apiService.put<ApiResponse<PartnerProfileResponse>>(
-      `${API_ROUTES.partnerProfile.update}/${id}`,
+      `${API_ROUTES.PROFESSIONALS.updateById}/${id}`,
       data
     ),
 
@@ -85,19 +79,32 @@ export const partnerProfileService = {
    */
   updateRating: (data: PartnerRatingUpdateRequest) =>
     apiService.patch<ApiResponse<null>>(
-      API_ROUTES.partnerProfile.updateRating,
+      API_ROUTES.PROFESSIONALS.updateRating,
       data
     ),
 
   /**
-   * Update the status of a partner.
+   * Register a partner — transitions status from pending → registered.
+   * Sends partnerId and email to the backend.
    *
-   * @param data Object containing partnerId and status value.
+   * @param data Object containing partnerId and email.
    * @returns A promise resolving to an ApiResponse with null data.
    */
-  updateStatus: (data: PartnerStatusUpdateRequest) =>
-    apiService.patch<ApiResponse<null>>(
-      API_ROUTES.partnerProfile.updateStatus,
+  register: (data: PartnerRegisterRequest): Promise<ApiResponse<null>> =>
+    apiService.post<null>(
+      API_ROUTES.PROFESSIONALS.register,
       data
+    ),
+  /**
+   * Bulk upload partner profiles via CSV file.
+   * Does not set Content-Type — browser sets multipart/form-data boundary automatically.
+   *
+   * @param formData FormData containing the CSV file under the key "file".
+   * @returns A promise resolving to an ApiResponse with null data.
+   */
+  uploadCsv: (formData: FormData): Promise<ApiResponse<null>> =>
+    apiService.uploadFile<null>(
+      API_ROUTES.PROFESSIONALS.upload,
+      formData
     ),
 };

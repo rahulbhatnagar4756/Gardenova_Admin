@@ -9,6 +9,8 @@ import { APP_ROUTES } from "../constants/appRoutes";
 import { ForgotPassword } from "../pages/auth/forgotPassword/forgotPassword";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { Rules } from "../pages/rules/rules";
+import { SubscriptionPlans } from "../pages/SubscriptionPlans/SubscriptionPlans";
+import {ExternalLinks} from "../pages/externalLinks/externalLinks";
 //import { KnowledgeLibrary } from "../pages/knowledgeLibrary/knowledgeLibrary";
 
 /**
@@ -42,8 +44,18 @@ export const AppRoutes = () => {
         <Route path="partner-profiles" element={<PartnerProfiles />} />
         <Route path="leads" element={<Leads />} />
         {/* <Route path="knowledge-library" element={<KnowledgeLibrary />} /> */}
-      </Route>
+        <Route
+          path="setting/subscription-plans"
+          element={ <SubscriptionPlans/>} 
+        />
+        <Route
+          path="setting/external-links"
+          element={ <ExternalLinks/> } 
+        />
 
+      </Route>
+      
+      
       {/* Redirect root to dashboard */}
       <Route
         path="/"

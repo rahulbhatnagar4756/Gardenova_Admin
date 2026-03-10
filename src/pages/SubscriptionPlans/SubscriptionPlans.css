@@ -1,0 +1,258 @@
+:root {
+  --Dark-Gray: #313131;
+  --Charcoal-Gray: #4a4a4a;
+  --Burnt-Gold: #b48a3e;
+  --Off-White: #f4f4f4;
+}
+
+/* Container */
+.subscription-plans {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Header */
+.subscription-header h2 {
+  color: var(--Dark-Gray);
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  font-family: "Merriweather", serif;
+}
+
+.subscription-header p {
+  color: var(--Charcoal-Gray);
+  font-size: 13px;
+  font-weight: 400;
+}
+
+/* Grid */
+.subscription-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 15px;
+}
+
+/* Empty state */
+.no-plans {
+  color: var(--Charcoal-Gray);
+  font-size: 13px;
+}
+
+/* Card */
+.subscription-card {
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid rgba(46, 58, 48, 0.15);
+  background: var(--Off-White);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Card Header */
+.subscription-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.subscription-card-header h3 {
+  color: var(--Dark-Gray);
+  font-size: 16px;
+  font-weight: 500;
+  font-family: "Merriweather", serif;
+}
+
+/* Status */
+.status {
+  padding: 4px 10px;
+  border-radius: 200px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.status.active {
+  background: rgba(180, 138, 62, 0.15);
+  color: var(--Burnt-Gold);
+}
+
+.status.inactive {
+  background: rgba(49, 49, 49, 0.1);
+  color: var(--Dark-Gray);
+}
+
+/* Description */
+.subscription-description {
+  color: var(--Charcoal-Gray);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* Pricing */
+.subscription-pricing {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.price-label {
+  font-size: 12px;
+  color: var(--Charcoal-Gray);
+}
+
+.price-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--Dark-Gray);
+}
+
+/* Features */
+.subscription-features {
+  font-size: 13px;
+  color: var(--Charcoal-Gray);
+  line-height: 1.6;
+}
+
+.subscription-features p {
+  margin: 3px 0;
+}
+
+/* Actions */
+.subscription-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-outline {
+  border-radius: 200px;
+  border: 1px solid rgba(46, 58, 48, 0.15);
+  padding: 6px 16px;
+  background: transparent;
+  color: var(--Dark-Gray);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-outline:hover {
+  background: linear-gradient(180deg, #e0b669 0%, var(--Burnt-Gold) 100%);
+  color: var(--Off-White);
+  border-color: transparent;
+}
+
+/* Mobile */
+@media (max-width: 500px) {
+  .subscription-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Toggle Switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 22px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  border-radius: 34px;
+  transition: 0.4s;
+}
+
+.slider:before {
+  content: "";
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 2px;
+  bottom: 2px;
+  background-color: #fff;
+  border-radius: 50%;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #28a745;
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+.switch input:focus + .slider {
+  box-shadow: 0 0 2px 2px rgba(0, 128, 0, 0.3);
+}
+
+/* Question Modal Checkboxes */
+.question_modal .modal-checkbox-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px 20px;
+  margin-top: 14px;
+}
+
+.question_modal .modal-checkbox label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.question_modal .modal-checkbox span {
+  color: #fff !important;
+}
+
+.question_modal .modal-checkbox input[type="checkbox"] {
+  accent-color: var(--Burnt-Gold);
+}
+
+/* Mobile fallback for checkboxes */
+@media (max-width: 480px) {
+  .question_modal .modal-checkbox-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Subscription Table */
+.subscription-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid rgba(46, 58, 48, 0.12);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.subscription-table th,
+.subscription-table td {
+  border-bottom: 1px solid rgba(46, 58, 48, 0.12);
+  background: transparent;
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.subscription-table thead th {
+  font-weight: 600;
+  border-top: none;
+}
+
+.subscription-table tbody tr:last-child td {
+  border-bottom: none;
+}

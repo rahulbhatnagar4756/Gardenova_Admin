@@ -1,18 +1,23 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import "./header.css";
 import { APP_ROUTES, ROUTE_TITLES } from "../../constants/appRoutes";
 import type { JSX } from "react";
 
+
 /**
- * Header component with improved UX:
- * - Hamburger opens sidebar
- * - Back arrow hidden on Dashboard
- * - Page title auto-detected
- * - All SVG and UI remain exactly unchanged
+ * Header component for the admin dashboard.
+ *
+ * Displays:
+ * - Mobile hamburger menu to toggle sidebar
+ * - Welcome message
+ * - Admin dropdown with settings submenu
+ * - Breadcrumb navigation
  *
  * @param props Component props
  * @param props.toggleSidebar Function to toggle the sidebar visibility
- * @returns JSX.Element - Rendered header component
+ *
+ * @returns JSX.Element
  */
 export const Header = ({
   toggleSidebar,
@@ -21,6 +26,10 @@ export const Header = ({
 }): JSX.Element => {
   const location = useLocation();
   const navigate = useNavigate();
+
+  // State for dropdowns
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   return (
     <>
@@ -61,10 +70,59 @@ export const Header = ({
 
             {/* Right User Section */}
             <div className="col-auto">
-              <ul className="name_area">
-                <li className="name_box">AM</li>
-                <li className="admin_name">Admin</li>
-              </ul>
+              <div className="admin_wrapper" style={{ position: "relative" }}>
+                <ul
+                  className="name_area admin_click"
+                  onClick={() => setIsAdminOpen(!isAdminOpen)}
+                >
+                  <li className="name_box">AM</li>
+                  <li className="admin_name">
+                    Admin <span className="caret">▾</span>
+                  </li>
+                </ul>
+
+                {isAdminOpen && (
+                  <div className="admin_dropdown_menu">
+                    {/* Settings Item */}
+                    <div
+                      className="dropdown_item"
+                      onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+                    >
+                      Settings <span className="arrow">▶</span>
+                    </div>
+
+                    {/* Settings Submenu */}
+                    {isSettingsOpen && (
+                      <div className="settings_submenu">
+                      
+                        <NavLink
+                          to="/adminPanel/setting/subscription-plans"
+                          className="submenu_item"
+                          onClick={() => {
+                            setIsSettingsOpen(false);
+                            setIsAdminOpen(false);
+                          }}
+                        >
+                          Subscription Plans
+                        </NavLink>
+                        <NavLink
+                          to="/adminPanel/setting/external-links"
+                          className="submenu_item"
+                          onClick={() => {
+                            setIsSettingsOpen(false);
+                            setIsAdminOpen(false);
+                          }}
+                        >
+                          External Links
+                        </NavLink>
+                        
+                        {/* <div className="submenu_item">Subscription API</div>
+                        <div className="submenu_item">Users API</div> */}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -74,11 +132,11 @@ export const Header = ({
       {!(location.pathname === APP_ROUTES.admin.root) && (
         <div className="breadcrumps_cus">
           <ul>
-            {/* Home Icon */}
             <li
               onClick={() => navigate(APP_ROUTES.admin.root)}
               style={{ cursor: "pointer" }}
             >
+              {/* Home SVG */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="21"
