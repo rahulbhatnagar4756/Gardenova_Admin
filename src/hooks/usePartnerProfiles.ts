@@ -4,7 +4,8 @@ import { partnerProfileService } from "../services/apiCalls/partnerProfile";
 import { useToast } from "./useToast";
 import type {
   PaginationParams,
-  PartnerProfileRequest,
+   PartnerApiRequest,
+  
   PartnerProfileResponse,
   UsePartnerProfilesOptions,
   UsePartnerProfilesReturn,
@@ -171,9 +172,9 @@ export const usePartnerProfiles = (
    * @param data Updated partner profile fields.
    */
   const updatePartner = async (
-    id: string,
-    data: Partial<PartnerProfileRequest>
-  ) => {
+  id: string,
+  data: Partial<PartnerApiRequest>   // ← was PartnerProfileRequest
+) => {
     try {
       console.log("Updating partner with ID:", id, "Data:", data);
       const response = await partnerProfileService.update(id, data);

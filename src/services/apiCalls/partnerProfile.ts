@@ -4,7 +4,8 @@ import type { ApiResponse } from "../../types/apiResponse";
 import type {
   PaginatedPartnerProfilesResponse,
   PaginationParams,
-  PartnerProfileRequest,
+  PartnerApiRequest,
+  
   PartnerProfileResponse,
   PartnerRatingUpdateRequest,
   // PartnerProfileRequest,
@@ -54,7 +55,7 @@ export const partnerProfileService = {
    * @param data Partial partner profile details to update.
    * @returns A promise resolving to an ApiResponse with the updated profile.
    */
-  update: (id: string, data: Partial<PartnerProfileRequest>) =>
+  update: (id: string, data: Partial<PartnerApiRequest>) =>
     apiService.put<ApiResponse<PartnerProfileResponse>>(
       `${API_ROUTES.PROFESSIONALS.updateById}/${id}`,
       data

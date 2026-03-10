@@ -1,13 +1,12 @@
 // types/partnerProfile.ts
 
-/**
- * Represents possible status values for a partner profile.
- */
+/** Represents possible status values for a partner profile. */
 export type PartnerProfileStatus = "pending" | "registered";
 
-/**
- * Nested location object returned by the API.
- */
+/** Status values used by the modal form. */
+export type PartnerModalStatus = "active" | "inactive";
+
+/** Nested location object returned by the API. */
 export interface PartnerLocation {
   city?: string;
   state?: string;
@@ -16,9 +15,7 @@ export interface PartnerLocation {
   longitude?: number;
 }
 
-/**
- * Nested contact object returned by the API.
- */
+/** Nested contact object returned by the API. */
 export interface PartnerContact {
   telefone?: string;
   whatsapp?: string;
@@ -26,17 +23,13 @@ export interface PartnerContact {
   instagram?: string;
 }
 
-/**
- * Nested ratings object returned by the API.
- */
+/** Nested ratings object returned by the API. */
 export interface PartnerRatings {
   assessment?: string | null;
   numAvaliacoes?: number | null;
 }
 
-/**
- * Represents a full partner profile as returned by the API.
- */
+/** Represents a full partner profile as returned by the API. */
 export interface PartnerProfileResponse {
   id: string;
   companyName?: string;
@@ -44,7 +37,8 @@ export interface PartnerProfileResponse {
   category?: string;
   description?: string;
   image_url?: string;
-  status?: PartnerProfileStatus | string;
+  projectImageUrl?: string;
+  status?: PartnerProfileStatus | PartnerModalStatus | string;
   registered?: boolean;
   location?: PartnerLocation;
   contact?: PartnerContact;
@@ -52,12 +46,41 @@ export interface PartnerProfileResponse {
   verifiedSource?: string;
   createdAt?: object | string;
   updatedAt?: object | string;
+  // Modal flat fields (populated when editing a modal-created partner)
+  speciality?: string[];
+  address?: PartnerAddress;
+  website?: string;
+  contactPerson?: string;
+  mobileNumber?: string;
 }
 
-/**
- * Payload used when creating or updating a partner profile.
- */
+/** Flat address shape used by the modal form. */
+export interface PartnerAddress {
+  street: string;
+  city: string;
+  state: string;
+  country: string;
+  zipCode: string;
+}
+
+/** Alias for backward compatibility with util.ts */
+export type Address = PartnerAddress;
+
+/** Payload used when creating or updating a partner via the modal. */
 export interface PartnerProfileRequest {
+  companyName: string;
+  email: string;
+  speciality: string[];
+  address: PartnerAddress;
+  website: string;
+  contactPerson: string;
+  mobileNumber: string;
+  projectImageUrl: string;
+  status: PartnerModalStatus;
+}
+
+/** Payload for the original API create/update (nested shape). */
+export interface PartnerApiRequest {
   companyName?: string;
   email: string;
   category?: string;
@@ -68,25 +91,19 @@ export interface PartnerProfileRequest {
   contact?: PartnerContact;
 }
 
-/**
- * Request body sent to register a partner (pending → registered).
- */
+/** Request body sent to register a partner (pending → registered). */
 export interface PartnerRegisterRequest {
   professionalId: string;
   email: string;
 }
 
-/**
- * Parameters used for paginated requests.
- */
+/** Parameters used for paginated requests. */
 export interface PaginationParams {
   page?: number;
   limit?: number;
 }
 
-/**
- * Standard API response for paginated partner profiles.
- */
+/** Standard API response for paginated partner profiles. */
 export interface PaginatedPartnerProfilesResponse {
   currentPage: number;
   totalPages: number;
@@ -95,26 +112,19 @@ export interface PaginatedPartnerProfilesResponse {
   professionals: PartnerProfileResponse[];
 }
 
-/**
- * Request body to update partner rating.
- */
+/** Request body to update partner rating. */
 export interface PartnerRatingUpdateRequest {
   partnerId?: string;
   rating: number;
   professionalId?: string;
-
 }
 
-/**
- * Props for partner profiles list component.
- */
+/** Props for partner profiles list component. */
 export interface PartnerProfilesProps {
   limit?: number;
 }
 
-/**
- * Return type for usePartnerProfiles hook.
- */
+/** Return type for usePartnerProfiles hook. */
 export interface UsePartnerProfilesReturn {
   partners: PartnerProfileResponse[];
   loading: boolean;
@@ -129,40 +139,123 @@ export interface UsePartnerProfilesReturn {
   setItemsPerPage: (limit: number) => void;
   uploadPartnersCsv: (file: File) => Promise<void>;
   registerPartner: (partnerId: string, email: string) => Promise<void>;
-  updatePartner: (
-    id: string,
-    data: Partial<PartnerProfileRequest>
-  ) => Promise<void>;
+  updatePartner: (id: string, data: Partial<PartnerApiRequest>) => Promise<void>;
   deletePartner: (id: string) => Promise<void>;
   refetch: () => Promise<void>;
   updatePartnerRating: (partnerId: string, rating: number) => Promise<void>;
   getPartnerById: (id: string) => Promise<PartnerProfileResponse | null>;
 }
 
-/**
- * Configuration options for usePartnerProfiles hook.
- */
+/** Configuration options for usePartnerProfiles hook. */
 export interface UsePartnerProfilesOptions {
   initialPage?: number;
   initialLimit?: number;
   autoFetch?: boolean;
 }
 
-/**
- * Props for viewing partner details inside a modal.
- */
+/** Props for viewing partner details inside a modal. */
 export interface PartnerViewModalProps {
   isOpen: boolean;
   partner: PartnerProfileResponse | null;
   onClose: () => void;
 }
 
-/**
- * Props for a modal showing multiple professionals.
- */
+/** Props for a modal showing multiple professionals. */
 export interface ProfessionalsModalProps {
   isOpen: boolean;
   onClose: () => void;
   professionals: PartnerProfileResponse[];
   loading: boolean;
+}
+
+// --- Modal-specific types ---
+/**
+ * Represents an option for a dropdown menu.
+ */
+export interface DropdownOption {
+  value: string;
+  label: string;
+}
+
+/**
+ * Represents the address of a partner.
+ */
+export interface FormState {
+  companyName: string;
+  email: string;
+  speciality: string[];
+  address: PartnerAddress;
+  website: string;
+  contactPerson: string;
+  mobileNumber: string;
+  projectImageUrl: string;
+  status: string;
+  specialityText: string;
+}
+/**
+ * Represents the state of the partner form.
+ */
+export type FormAction =
+  | { type: "SET_FIELD"; field: string; value: string }
+  | { type: "SET_ADDRESS_FIELD"; field: string; value: string }
+  | { type: "SET_SPECIALITY"; text: string; array: string[] }
+  | { type: "LOAD_PARTNER"; partner: PartnerProfileResponse }
+  | { type: "RESET" };
+
+
+/**
+ * Actions that can be dispatched to update the partner form state.
+ */
+export interface StateOption {
+  iso2: string;
+  name: string;
+}
+/**
+ * Represents a city option for location selection.
+ */
+export interface CityOption {
+  name: string;
+}
+/**
+ * Represents the state of location-related data.
+ */
+export interface LocationState {
+  states: StateOption[];
+  cities: CityOption[];
+  loadingStates: boolean;
+  loadingCities: boolean;
+}
+/**
+ * Actions that can be dispatched to update the location state.
+ */
+export type LocationAction =
+  | { type: "SET_STATES"; states: StateOption[] }
+  | { type: "SET_CITIES"; cities: CityOption[] }
+  | { type: "SET_LOADING_STATES"; loading: boolean }
+  | { type: "SET_LOADING_CITIES"; loading: boolean }
+  | { type: "RESET_LOCATION" };
+/**
+ * Props for the Partner modal component.
+ */
+export interface PartnerModalProps {
+  isOpen: boolean;
+  editingPartner: PartnerProfileResponse | null;
+  onSave: (partner: PartnerProfileRequest) => Promise<void>;
+  onClose: () => void;
+}
+/**
+ * Represents validation errors for a partner form.
+ */
+export interface ValidationErrors {
+  companyName?: string;
+  email?: string;
+  contactPerson?: string;
+  mobileNumber?: string;
+  speciality?: string;
+  website?: string;
+  street?: string;
+  zipCode?: string;
+  country?: string;
+  state?: string;
+  city?: string;
 }
