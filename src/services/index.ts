@@ -34,12 +34,12 @@ const fetchWithError = async <T>(
       },
       ...options,
     });
-
+      const result: ApiResponse<T> = await response.json();
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(result?.message || `HTTP error! status: ${response.status}`);
     }
 
-    const result: ApiResponse<T> = await response.json();
+   
     return result;
   } catch (error) {
     console.error("API Error:", error);
@@ -74,12 +74,12 @@ const fetchFormData = async <T>(
       },
       body: formData,
     });
-
+    const result: ApiResponse<T> = await response.json();
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+       throw new Error(result?.message || `HTTP error! status: ${response.status}`);
     }
 
-    const result: ApiResponse<T> = await response.json();
+    
     return result;
   } catch (error) {
     console.error("API Error:", error);

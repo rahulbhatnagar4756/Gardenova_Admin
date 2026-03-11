@@ -159,7 +159,7 @@ export const usePartnerProfiles = (
       }
     } catch (err) {
       console.error("Register partner error:", err);
-      showError("An error occurred while registering the partner.");
+      showError(err instanceof Error ? err.message : "An error occurred during registration.");
       throw err;
     }
   };
