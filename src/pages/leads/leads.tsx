@@ -9,6 +9,7 @@ import { ProfessionalsModal } from "../../components/professional";
 import { useDebouncedBatchUpdater } from "../../hooks/useDebouncedBatchUpdater";
 import type { PartnerProfileResponse } from "../../types/partnerProfile";
 import type { Lead, LeadProps } from "../../types/lead";
+// import { partnerProfileService } from "../../services/apiCalls/partnerProfile";
 
 /**
  * Leads page component for listing, filtering, and updating lead statuses.
@@ -29,7 +30,10 @@ export const Leads = ({ limit }: LeadProps) => {
     goToPage,
     updateLeadStatus,
   } = useLeads();
-  const { getPartnerById } = usePartnerProfiles({ autoFetch: false });
+  const { getPartnerById } = usePartnerProfiles({
+  autoFetch: false,
+  // fetchFn: partnerProfileService.getAllForLeads, // ← swap here
+});
 
   const { showError, showSuccess } = useToast();
 

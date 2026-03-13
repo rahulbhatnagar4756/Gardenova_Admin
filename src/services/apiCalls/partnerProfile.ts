@@ -38,6 +38,22 @@ export const partnerProfileService = {
   },
 
   /**
+   * Get all partner profiles with optional pagination.
+   *
+   * @param params Pagination parameters including page and limit.
+   */
+  // getAllForLeads: (
+  //   params?: PaginationParams
+  // ): Promise<ApiResponse<PaginatedPartnerProfilesResponse>> => {
+  //   const queryParams = new URLSearchParams();
+  //   if (params?.page) queryParams.append("page", params.page.toString());
+  //   if (params?.limit) queryParams.append("limit", params.limit.toString());
+  //   const url = queryParams.toString()
+  //     ? `${API_ROUTES.partnerProfile.getById}?${queryParams}`  // ← your leads route
+  //     : API_ROUTES.partnerProfile.getAll;
+  //   return apiService.get<PaginatedPartnerProfilesResponse>(url);
+  // },
+  /**
    * Fetch a single partner profile by ID.
    *
    * @param id Unique identifier of the partner profile.

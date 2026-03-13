@@ -205,7 +205,7 @@ const SubscriptionPlanModal = ({
               <label htmlFor="annualPrice">Annual Price <span className="text-danger">*</span></label>
               <input
               id="annualPrice"
-                name="annual_price"
+                name="price_annual"
                 value={form.price_annual}
                 onChange={handleChange}
                 placeholder="Annual Price"
@@ -221,7 +221,7 @@ const SubscriptionPlanModal = ({
               <label htmlFor="leadsLimit">Leads / Month <span className="text-danger">*</span></label>
               <input
                 id="leadsLimit"
-                name="lead_limit_per_month"
+                name="leads_limit"
                 value={form.leads_limit}
                 onChange={handleChange}
                 placeholder="Leads / Month"
@@ -236,7 +236,7 @@ const SubscriptionPlanModal = ({
               <label htmlFor="regions">Regions <span className="text-danger">*</span></label>
               <input
               id="regions"
-                name="number_of_regions"
+                name="cities_coverage"
                 value={form.cities_coverage}
                 onChange={handleChange}
                 placeholder="Regions"
@@ -252,7 +252,7 @@ const SubscriptionPlanModal = ({
                   <label>
                     <input
                       type="checkbox"
-                      name="highlight_in_result"
+                      name="appear_in_search"
                       checked={form.appear_in_search}
                       onChange={handleChange}
                     />
@@ -264,7 +264,7 @@ const SubscriptionPlanModal = ({
                   <label>
                     <input
                       type="checkbox"
-                      name="verification_badge"
+                      name="premium_profile_badge"
                       checked={form.premium_profile_badge}
                       onChange={handleChange}
                     />

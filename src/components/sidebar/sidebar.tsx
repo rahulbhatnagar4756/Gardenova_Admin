@@ -203,7 +203,7 @@ export const Sidebar = ({
           </NavLink>
         </li>
         {/* Leads */}
-        <li>
+        {/* <li>
           <NavLink
             to={APP_ROUTES.admin.leads}
             className={({ isActive }) => (isActive ? "active" : "")}
@@ -225,7 +225,7 @@ export const Sidebar = ({
             </svg>
             <span>Leads</span>
           </NavLink>
-        </li>
+        </li> */}
         {/* Create Rules */}
         <li>
           <NavLink

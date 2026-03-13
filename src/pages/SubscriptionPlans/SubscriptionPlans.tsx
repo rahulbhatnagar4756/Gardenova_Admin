@@ -47,7 +47,7 @@ export const SubscriptionPlans = (): JSX.Element => {
           title="Manage Subscription Plans"
           addText="Add Plan"
           onAddClick={openAddModal}
-          showAddButton={plans.length < 5}
+          showAddButton={plans.length < 3}
         />
 
         <SubscriptionPlansList

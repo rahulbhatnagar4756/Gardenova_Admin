@@ -1,5 +1,7 @@
 // types/partnerProfile.ts
 
+import type { ApiResponse } from "./apiResponse";
+
 /** Represents possible status values for a partner profile. */
 export type PartnerProfileStatus = "pending" | "registered";
 
@@ -151,6 +153,7 @@ export interface UsePartnerProfilesOptions {
   initialPage?: number;
   initialLimit?: number;
   autoFetch?: boolean;
+  fetchFn?: (params?: PaginationParams) => Promise<ApiResponse<PaginatedPartnerProfilesResponse>>;
 }
 
 /** Props for viewing partner details inside a modal. */
