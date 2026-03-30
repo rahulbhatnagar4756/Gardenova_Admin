@@ -1,6 +1,6 @@
 import React from "react";
 import "./index.css";
-import type { ProfessionalsModalProps } from "../../types/partnerProfile";
+import type {  ProfessionalsModalProps } from "../../types/lead";
 
 /**
  * Modal component that displays a list of professionals.
@@ -12,14 +12,38 @@ import type { ProfessionalsModalProps } from "../../types/partnerProfile";
  * @param {Array<any>} root0.professionals List of professionals to display.
  * @param {boolean} root0.loading Indicates whether professionals are still loading.
  * @returns {JSX.Element | null} Rendered modal or null when closed.
- */
+//  */
+// import React from "react";
+// import "./index.css";
+// import type { LeadRow } from "../../types/lead";
+
+// interface ProfessionalsModalProps {
+//   isOpen: boolean;
+//   onClose: () => void;
+//   row: LeadRow | null;
+// }
+
+// // import React from "react";
+// // import "./index.css";
+// // import type { LeadRow } from "../../types/lead";
+
+// interface ProfessionalsModalProps {
+//   isOpen: boolean;
+//   onClose: () => void;
+//   row: LeadRow | null;
+// }
+
 export const ProfessionalsModal: React.FC<ProfessionalsModalProps> = ({
   isOpen,
   onClose,
-  professionals,
-  loading,
+  row,
 }) => {
-  if (!isOpen) return null;
+  if (!isOpen || !row) return null;
+
+  const location =
+    row.partnerCity && row.partnerState
+      ? `${row.partnerCity}, ${row.partnerState}`
+      : row.partnerAddress || "N/A";
 
   return (
     <div className="pro-modal-backdrop" onClick={onClose}>
@@ -37,52 +61,30 @@ export const ProfessionalsModal: React.FC<ProfessionalsModalProps> = ({
         </div>
 
         <div className="pro-table-wrapper">
-          {loading ? (
-            <div className="pro-loading">
-              <p>Loading professionals...</p>
-            </div>
-          ) : professionals.length > 0 ? (
-            <table className="pro-table">
-              <thead>
-                <tr>
-                  <th>Photo</th>
-                  <th>Name</th>
-                  <th>Specialty</th>
-                  <th>Service Region</th>
-                </tr>
-              </thead>
-              <tbody>
-                {professionals.map((pro) => (
-                  <tr key={pro.id}>
-                    <td>
-                      <img
-                        src={pro.projectImageUrl || "/default.png"}
-                        alt={pro.companyName}
-                        className="pro-photo"
-                      />
-                    </td>
-                    <td>{pro.companyName}</td>
-                    <td>
-                      {pro.speciality?.length
-                        ? pro.speciality.join(", ")
-                        : "N/A"}
-                    </td>
-                    <td>
-                      {pro.address
-                        ? `${pro.address.city || ""}, ${
-                            pro.address.state || ""
-                          }`
-                        : "N/A"}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <div className="pro-empty">
-              <p>No professionals found.</p>
-            </div>
-          )}
+          <table className="pro-table">
+            <thead>
+              <tr>
+                <th>Photo</th>
+                <th>Name</th>
+                <th>Specialty</th>
+                <th>Service Region</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr key={row.partnerId}>
+                <td>
+                  <img
+                    src={row.partnerImageUrl || "/default.png"}
+                    alt={row.partnerDisplayName}
+                    className="pro-photo"
+                  />
+                </td>
+                <td>{row.partnerDisplayName}</td>
+                <td>{row.partnerSpeciality || "N/A"}</td>
+                <td>{location}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

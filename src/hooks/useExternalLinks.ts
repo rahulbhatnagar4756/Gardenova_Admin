@@ -64,13 +64,17 @@ export const useExternalLinks = () => {
     id: string,
     data: Omit<UpdateExternalLinkRequest, "id">
   ) => {
-    const res = await externalLinksService.updateExternalLink({
-      id,
-      ...data,  
-    });
+      const res = await externalLinksService.updateExternalLink({
+        id,
+        ...data,
+      });
 
-    if (res.success) await fetchLinks();
-    return res;
+      if (res.success) await fetchLinks();
+
+      return res;
+   
+     
+    
   };
   /**
    * Delete an external link by ID.

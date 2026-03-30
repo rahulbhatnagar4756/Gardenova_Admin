@@ -1,86 +1,87 @@
-/**
- * Represents a processed lead with mapped user and partner details.
- *
- * @property id - Unique identifier of the lead.
- * @property userId - ID of the user who created the lead.
- * @property userName - Name of the user.
- * @property userEmail - Email of the user.
- * @property leadsStatus - Status of the lead.
- * @property partners - Partner companies associated with the lead.
- */
-export interface Lead {
-  id: string;
-  userId: string;
-  userName: string;
-  userEmail: string;
-  leadsStatus: string;
-  partners: {
-    partnerId: string;
-    companyName: string;
-  }[];
-}
+// types/lead.ts
 
 /**
- * Represents partner details inside a raw lead.
- *
- * @property partner_id - Unique identifier of the partner.
- * @property company_name - Name of the partner company.
+ * Raw flat row returned by GET /admin/leads API.
+ * One row per lead-partner combination.
  */
-export interface LeadPartner {
-  partner_id: string;
-  company_name: string;
-}
-
-/**
- * Represents user information inside a raw lead.
- *
- * @property user_id - Unique identifier of the user.
- * @property user_name - Name of the user.
- * @property user_email - Email of the user.
- */
-export interface LeadUser {
-  user_id: string;
-  user_name: string;
-  user_email: string;
-}
-
-/**
- * Raw lead structure returned by backend before transforming to UI model.
- *
- * @property lead_id - Lead ID from backend.
- * @property leads_status - Status of the lead.
- * @property user - Nested user information.
- * @property partners - Array of partner details.
- */
-export interface RawLead {
+export interface RawLeadRow {
   lead_id: string;
   leads_status: string;
-  user: LeadUser;
-  partners: LeadPartner[];
+  quoter_id: string;
+  quoter_name: string;
+  quoter_email: string;
+  partner_id: string;
+  partner_display_name: string;
+  partner_image_url: string;
+  partner_speciality: string;
+  partner_address: string;
+  partner_city: string;
+  partner_state: string;
 }
 
 /**
  * Pagination wrapper returned by the leads API.
- *
- * @property currentPage - Current page number.
- * @property totalPages - Total number of pages available.
- * @property totalCount - Total number of leads.
- * @property limit - Maximum items per page.
- * @property leads - Array of raw leads returned from backend.
  */
-export interface LeadsResponse {
-  currentPage: number;
-  totalPages: number;
-  totalCount: number;
+export interface LeadsApiResponse {
+  leads: RawLeadRow[];
+  total: number;
+  page: number;
   limit: number;
-  leads: RawLead[];
+  totalPages: number;
 }
 
 /**
- * Props used when fetching or listing leads.
- *
- * @property limit - Maximum number of leads to fetch.
+ * Flat UI row — maps 1:1 with RawLeadRow, used directly in the table.
+ */
+export interface LeadRow {
+  leadId: string;
+  leadsStatus: string;
+  quoterId: string;
+  quoterName: string;
+  quoterEmail: string;
+  partnerId: string;
+  partnerDisplayName: string;
+  partnerImageUrl: string;
+  partnerSpeciality: string;
+  partnerAddress: string;
+  partnerCity: string;
+  partnerState: string;
+}
+
+/**
+ * Props for the Leads page component.
  */
 export interface LeadProps {
   limit?: number;
+}
+
+
+
+/**
+ * Props for the ProfessionalsModal component.
+ *
+ * @property {boolean} isOpen - Whether the modal is currently open
+ * @property {() => void} onClose - Callback to close the modal
+ * @property {LeadRow | null} row - The lead row data to display in the modal, or null if none selected
+ */
+export interface ProfessionalsModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  row: LeadRow | null;
+}
+
+// import React from "react";
+// import "./index.css";
+// import type { LeadRow } from "../../types/lead";
+/**
+ * Props for the ProfessionalsModal component.
+ *
+ * @property {boolean} isOpen - Whether the modal is currently open
+ * @property {() => void} onClose - Callback to close the modal
+ * @property {LeadRow | null} row - The lead row data to display in the modal, or null if none selected
+ */
+export interface ProfessionalsModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  row: LeadRow | null;
 }

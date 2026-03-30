@@ -100,8 +100,10 @@ const handleSave = async (data: { title: string; url: string; is_active: boolean
 
     setIsModalOpen(false);
     setEditingLink(null);
-  } catch {
-    showError("Failed to save external link");
+  } catch(err) {
+    const message =
+    err instanceof Error ? err.message : "Failed to save external link";
+    showError(message);
   }
 };
   /**

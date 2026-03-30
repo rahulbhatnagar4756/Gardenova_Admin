@@ -4,7 +4,7 @@ const AUTH_BASE = "/api/v1/auth";
 const ADMIN_BASE = "/api/v1/admin";
 const PARTNER_PROFILE_BASE = "/api/v1/partnerProfile";
 const STATE_CITY_BASE = "/api/v1/stateCityData/countries";
-const LEADS = "/api/v1/admin/leads";
+const LEADS = "/api/v1/admin/admin/leads";
 const DASHBOARD = "/api/v1/admin/dashboard";
 const PLANTS = "/api/v1/admin/plants";
 const SUBSCRIPTION_PLANS = "/api/v1/subscription";
@@ -53,7 +53,7 @@ export const API_ROUTES = {
   },
   leads: {
     getAll: `${LEADS}`,
-    updateStatus: `${LEADS}/`,
+    // updateStatus: `${LEADS}/`,
   },
   admin: {
     dashboard: `${DASHBOARD}`,

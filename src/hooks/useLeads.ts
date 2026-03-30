@@ -1,39 +1,57 @@
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
+import type { LeadRow, LeadsApiResponse, RawLeadRow } from "../types/lead";
 import { leadService } from "../services/apiCalls/leadService";
-import type { Lead, LeadsResponse, RawLead } from "../types/lead";
 
 /**
- * Custom hook to manage leads, pagination, and related state.
+ * Formats a raw lead row object into a normalized LeadRow structure.
  *
- * @returns {object} Leads data, pagination state, loading state, and helper functions.
+ * @param {RawLeadRow} raw  The raw lead data received from the source (e.g., API or database).
+ * @returns {LeadRow} A formatted lead row object with mapped and renamed properties.
+ */
+const formatRow = (raw: RawLeadRow): LeadRow => ({
+  leadId: raw.lead_id,
+  leadsStatus: raw.leads_status,
+  quoterId: raw.quoter_id,
+  quoterName: raw.quoter_name,
+  quoterEmail: raw.quoter_email,
+  partnerId: raw.partner_id,
+  partnerDisplayName: raw.partner_display_name,
+  partnerImageUrl: raw.partner_image_url,
+  partnerSpeciality: raw.partner_speciality,
+  partnerAddress: raw.partner_address,
+  partnerCity: raw.partner_city,
+  partnerState: raw.partner_state,
+});
+/**
+ * Custom React hook to manage and fetch paginated leads data.
+ *
+ * Handles:
+ * - Fetching leads from the API
+ * - Pagination (current page, total pages)
+ * - Loading and error states
+ * - Data transformation using `formatRow`
+ *
+ * @returns {{
+ *   rows: LeadRow[],
+ *   loading: boolean,
+ *   error: string | null,
+ *   currentPage: number,
+ *   totalPages: number,
+ *   totalCount: number,
+ *   limit: number,
+ *   goToPage: (page: number) => void,
+ *   setLimit: (limit: number) => void,
+ *   refetch: (page?: number, pageLimit?: number) => Promise<void>
+ * }} Leads state and helper functions
  */
 export const useLeads = () => {
-  const [leads, setLeads] = useState<Lead[]>([]);
+  const [rows, setRows] = useState<LeadRow[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [totalCount, setTotalCount] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(5); // default items per page
-
+  const [limit, setLimit] = useState<number>(10);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
-  /**
-   * Converts a raw lead object from the API into a formatted Lead object.
-   *
-   * @param {RawLead} raw The raw lead data returned from the API.
-   * @returns {Lead} The formatted lead object.
-   */
-  const formatLead = (raw: RawLead): Lead => ({
-    id: raw.lead_id,
-    userId: raw.user.user_id,
-    userName: raw.user.user_name,
-    userEmail: raw.user.user_email,
-    leadsStatus: raw.leads_status,
-    partners: raw.partners.map((p) => ({
-      partnerId: p.partner_id,
-      companyName: p.company_name,
-    })),
-  });
 
   const fetchLeads = useCallback(
     async (page: number = 1, pageLimit: number = limit) => {
@@ -44,15 +62,13 @@ export const useLeads = () => {
         const response = await leadService.getAllLeads(page, pageLimit);
 
         if (response.success) {
-          const apiData: LeadsResponse = response.data;
+          const apiData: LeadsApiResponse = response.data;
 
-          setCurrentPage(apiData.currentPage);
+          setCurrentPage(apiData.page);
           setTotalPages(apiData.totalPages);
-          setTotalCount(apiData.totalCount);
-          setLimit(apiData.limit); // backend-sent limit overwrite
-
-          const formatted = apiData.leads.map(formatLead);
-          setLeads(formatted);
+          setTotalCount(apiData.total);
+          setLimit(apiData.limit);
+          setRows(apiData.leads.map(formatRow));
         } else {
           setError(response.message || "Failed to load leads");
         }
@@ -62,15 +78,17 @@ export const useLeads = () => {
         setLoading(false);
       }
     },
-    [limit]
+     // eslint-disable-next-line react-hooks/exhaustive-deps
+    [] // no dependency on limit — avoids double-fetch on mount
   );
-
-  /**
-   * Navigates to a specific page and fetches leads for that page.
-   *
-   * @param {number} page The page number to navigate to.
-   * @returns {void}
-   */
+/**
+ * Navigates to a specific page and triggers a data fetch.
+ *
+ * Ensures the requested page is within valid bounds before fetching.
+ *
+ * @param {number} page  The page number to navigate to
+ * @returns {void}
+ */
   const goToPage = (page: number) => {
     if (page < 1 || page > totalPages) return;
     fetchLeads(page, limit);
@@ -78,53 +96,19 @@ export const useLeads = () => {
 
   useEffect(() => {
     fetchLeads(1, limit);
-  }, [fetchLeads, limit]);
-
-  // Manual refetch with current pagination settings
-  const refetch = useCallback(async () => {
-    await fetchLeads(currentPage, limit);
-  }, [fetchLeads, currentPage, limit]);
-
-  /**
-   * Updates the status of a lead.
-   *
-   * @param {string} id The ID of the lead to update.
-   * @param {string} status The new status to assign to the lead.
-   * @returns {Promise<void>} - Resolves when the status update is complete.
-   */
-  const updateLeadStatus = async (id: string, status: string) => {
-    try {
-      const response = await leadService.updateLeadStatus(id, {
-        leads_status: status,
-      });
-
-      if (!response.success) {
-        throw new Error(response.message || "Failed to update status");
-      }
-
-      refetch();
-    } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Failed to update lead status";
-      setError(message);
-    }
-  };
+     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return {
-    leads,
+    rows,
     loading,
     error,
-    updateLeadStatus,
-
-    // pagination state
     currentPage,
     totalPages,
     totalCount,
     limit,
-
-    // actions
     goToPage,
-    setLimit, // allow UI to change limit
+    setLimit,
     refetch: fetchLeads,
   };
 };

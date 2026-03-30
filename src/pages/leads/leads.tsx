@@ -4,23 +4,28 @@ import { useLeads } from "../../hooks/useLeads";
 import { Pagination } from "../../components/pagination";
 import { useToast } from "../../hooks/useToast";
 import { TableLoader } from "../../components/loader";
-import { usePartnerProfiles } from "../../hooks/usePartnerProfiles";
 import { ProfessionalsModal } from "../../components/professional";
-import { useDebouncedBatchUpdater } from "../../hooks/useDebouncedBatchUpdater";
-import type { PartnerProfileResponse } from "../../types/partnerProfile";
-import type { Lead, LeadProps } from "../../types/lead";
-// import { partnerProfileService } from "../../services/apiCalls/partnerProfile";
+import type { LeadProps, LeadRow } from "../../types/lead";
 
 /**
- * Leads page component for listing, filtering, and updating lead statuses.
+ * Leads component displays a paginated and filterable list of leads.
  *
- * @param {LeadProps} props Component props.
- * @param {number} props.limit Number of leads to fetch per page.
- * @returns {JSX.Element} The Leads component.
+ * Features:
+ * - Fetches leads using `useLeads` hook
+ * - Filters leads by status (new, contacted, closed)
+ * - Displays paginated data with a table layout
+ * - Shows loading and empty states
+ * - Opens a modal to view detailed partner/professional information
+ * - Displays toast notifications on errors
+ *
+ * @param {LeadProps} props  Component props
+ * @param {number} [props.limit]  Optional limit to restrict number of displayed rows
+ *
+ * @returns {JSX.Element} Rendered Leads table with pagination and modal
  */
 export const Leads = ({ limit }: LeadProps) => {
   const {
-    leads,
+    rows,
     loading,
     error,
     currentPage,
@@ -28,148 +33,77 @@ export const Leads = ({ limit }: LeadProps) => {
     totalCount,
     limit: itemsPerPage,
     goToPage,
-    updateLeadStatus,
   } = useLeads();
-  const { getPartnerById } = usePartnerProfiles({
-  autoFetch: false,
-  // fetchFn: partnerProfileService.getAllForLeads, // ← swap here
-});
 
-  const { showError, showSuccess } = useToast();
-
-  const { triggerUpdate: triggerLeadUpdate, pendingUpdates } =
-    useDebouncedBatchUpdater<string>(
-      updateLeadStatus,
-      1200, // debounce delay
-      () => showSuccess("Lead statuses updated successfully!"),
-      (failed) => showError(`${failed} lead(s) failed to update`)
-    );
-
+  const { showError } = useToast();
   const [filterStatus, setFilterStatus] = useState<string>("all");
 
-  // Modal states
+  // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [professionals, setProfessionals] = useState<PartnerProfileResponse[]>(
-    []
-  );
-  const [loadingProfessionals, setLoadingProfessionals] = useState(false);
-
-  /**
-   * Opens the professional modal and fetches partner profiles for a lead.
-   *
-   * @param {Lead} lead Lead whose partners need to be fetched.
-   * @returns {Promise<void>} Resolves when professional data is loaded.
-   */
-  const openProfessionalModal = async (lead: Lead) => {
+  const [selectedRow, setSelectedRow] = useState<LeadRow | null>(null);
+/**
+ * Opens the modal and sets the selected lead row.
+ *
+ * @param {LeadRow} row  The lead row data to display in the modal
+ * @returns {void}
+ */
+  const openModal = (row: LeadRow) => {
+    setSelectedRow(row);
     setIsModalOpen(true);
-    setLoadingProfessionals(true);
-    setProfessionals([]);
-
-    try {
-      const partnerList = lead.partners || [];
-      const results: PartnerProfileResponse[] = [];
-
-      for (const item of partnerList) {
-        const profile = await getPartnerById(item.partnerId);
-        if (profile) results.push(profile);
-      }
-
-      setProfessionals(results);
-    } catch (err) {
-      console.error("Failed fetching professionals:", err);
-      showError("Failed to load professionals");
-    } finally {
-      setLoadingProfessionals(false);
-    }
   };
-
-  /**
-   * Closes the professional modal and clears professional data.
-   *
-   * @returns {void}
-   */
-  const closeProfessionalModal = () => {
+/**
+ * Closes the modal and clears the selected lead row.
+ *
+ * @returns {void}
+ */
+  const closeModal = () => {
     setIsModalOpen(false);
-    setProfessionals([]);
+    setSelectedRow(null);
   };
-
-  // Status cycle logic
-  const statusOrder = ["new", "contacted", "closed"];
-
-  /**
-   * Returns the next status in the status cycle: new → contacted → closed.
-   *
-   * @param {string} current Current lead status.
-   * @returns {string} The next status in cycle.
-   */
-  const getNextStatus = (current: string) => {
-    const index = statusOrder.indexOf(current);
-    if (index === -1) return statusOrder[0];
-    return statusOrder[(index + 1) % statusOrder.length];
-  };
-
-  /**
-   * Handles status change when user clicks on a status badge.
-   *
-   * @param {Lead} lead Lead whose status should be updated.
-   * @returns {void}
-   */
-  const handleStatusClick = (lead: Lead) => {
-    const nextStatus = getNextStatus(lead.leadsStatus);
-    lead.leadsStatus = nextStatus;
-    triggerLeadUpdate(lead.id, nextStatus);
-  };
-
-  /**
-   * Generates a UI badge for a given lead status.
-   *
-   * @param {string} status Current lead status.
-   * @param {string} leadId Lead ID for checking pending updates.
-   * @returns {JSX.Element} A styled badge element.
-   */
-  const getStatusBadge = (status: string, leadId: string) => {
-    const isPending = Boolean(pendingUpdates[leadId]);
-
-    const style: React.CSSProperties = {
-      opacity: isPending ? 0.5 : 1,
-      transition: "opacity 0.2s ease",
-      cursor: "pointer",
-    };
-
+/**
+ * Returns a styled badge element based on the lead status.
+ *
+ * Maps lead statuses to Bootstrap badge classes:
+ * - "new" → warning badge
+ * - "contacted" → success badge
+ * - "closed" → danger badge
+ * - Any other status → secondary badge
+ *
+ * @param {string} status  The lead status string
+ * @returns {JSX.Element} A span element styled as a badge with capitalized status text
+ */
+  const getStatusBadge = (status: string) => {
     let badgeClass = "";
-
     if (status === "new") badgeClass = "bg-warning text-dark";
     else if (status === "contacted") badgeClass = "bg-success";
     else if (status === "closed") badgeClass = "bg-danger";
     else badgeClass = "bg-secondary";
 
     return (
-      <span className={`badge ${badgeClass}`} style={style}>
+      <span
+        className={`badge ${badgeClass}`}
+        style={{ pointerEvents: "none", userSelect: "none" }}
+      >
         {status.charAt(0).toUpperCase() + status.slice(1)}
       </span>
     );
   };
 
   const handlePageChange = useCallback(
-    (page: number) => {
-      goToPage(page);
-    },
+    (page: number) => goToPage(page),
     [goToPage]
   );
 
   useEffect(() => {
-    if (error) {
-      showError(`Error: ${error}`);
-    }
+    if (error) showError(`Error: ${error}`);
   }, [error, showError]);
 
-  // Filter leads
-  const filteredLeads =
+  const filteredRows =
     filterStatus === "all"
-      ? leads
-      : leads.filter((lead) => lead.leadsStatus === filterStatus);
+      ? rows
+      : rows.filter((row) => row.leadsStatus === filterStatus);
 
-  const displayedLeads = limit ? filteredLeads.slice(0, limit) : filteredLeads;
+  const displayedRows = limit ? filteredRows.slice(0, limit) : filteredRows;
 
   return (
     <>
@@ -179,7 +113,6 @@ export const Leads = ({ limit }: LeadProps) => {
             <div className="col">
               <h4 className="page_heading">All Leads</h4>
             </div>
-
             <div className="col-auto">
               <div className="input_field">
                 <select
@@ -201,24 +134,23 @@ export const Leads = ({ limit }: LeadProps) => {
           <table className="table mb-0">
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Lead Status</th>
-                <th>Request to Professionals</th>
+                <th>Quoter Name</th>
+                <th>Quoter Email</th>
+                <th>Status</th>
+                <th>Partner</th>
+                <th>Details</th>
               </tr>
             </thead>
-
             <tbody>
               {loading ? (
                 <TableLoader />
-              ) : displayedLeads.length > 0 ? (
-                displayedLeads.map((lead) => (
-                  <tr key={lead.id}>
-                    <td>{lead.userName}</td>
-                    <td>{lead.userEmail}</td>
-                    <td onClick={() => handleStatusClick(lead)}>
-                      {getStatusBadge(lead.leadsStatus, lead.id)}
-                    </td>
+              ) : displayedRows.length > 0 ? (
+                displayedRows.map((row) => (
+                  <tr key={`${row.leadId}-${row.partnerId}`}>
+                    <td>{row.quoterName}</td>
+                    <td>{row.quoterEmail}</td>
+                    <td>{getStatusBadge(row.leadsStatus)}</td>
+                    <td>{row.partnerDisplayName}</td>
                     <td>
                       <span
                         className="text-success"
@@ -226,9 +158,9 @@ export const Leads = ({ limit }: LeadProps) => {
                           cursor: "pointer",
                           textDecoration: "underline",
                         }}
-                        onClick={() => openProfessionalModal(lead)}
+                        onClick={() => openModal(row)}
                       >
-                        View Professional List
+                        View Professional Details
                       </span>
                     </td>
                   </tr>
@@ -236,7 +168,7 @@ export const Leads = ({ limit }: LeadProps) => {
               ) : (
                 <tr>
                   <td
-                    colSpan={4}
+                    colSpan={5}
                     style={{ textAlign: "center", padding: "20px" }}
                   >
                     No leads found
@@ -259,9 +191,8 @@ export const Leads = ({ limit }: LeadProps) => {
 
       <ProfessionalsModal
         isOpen={isModalOpen}
-        onClose={closeProfessionalModal}
-        professionals={professionals}
-        loading={loadingProfessionals}
+        onClose={closeModal}
+        row={selectedRow}
       />
     </>
   );
