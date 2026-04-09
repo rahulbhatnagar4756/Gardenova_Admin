@@ -41,10 +41,10 @@ export interface PartnerProfileResponse {
   image_url?: string;
   projectImageUrl?: string;
   status?: PartnerProfileStatus | PartnerModalStatus | string;
-  registered?: boolean;
+  registered?: string | boolean;
   location?: PartnerLocation;
   contact?: PartnerContact;
-  ratings?: PartnerRatings;
+  ratings?: string | null;
   verifiedSource?: string;
   createdAt?: object | string;
   updatedAt?: object | string;

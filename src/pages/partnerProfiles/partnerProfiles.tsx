@@ -147,6 +147,7 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
       email: data.email,
       category: data.category,
       description: data.description,
+      
 
       // ── Flatten location ──
       address: data.location?.address,
@@ -157,7 +158,7 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
       telefone: data.contact?.telefone,
       whatsapp: data.contact?.whatsapp,
       website: data.contact?.website,
-      instagram: data.contact?.instagram,
+      // instagram: data.contact?.instagram,
     };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await updatePartner(id, payload as any);
@@ -252,7 +253,7 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
               ) : partners.length > 0 ? (
                 partners.map((partner) => {
                   const isRegistering = registeringIds.has(partner.id);
-                  const isRegistered = partner.registered === true;
+                  const isRegistered = partner.registered === "true";
 
                   return (
                     <tr key={partner.id}>
@@ -299,10 +300,10 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
 
                       <td className="star_rating">
                         <StarRating
-                          rating={parseRating(partner.ratings?.assessment)}
+                          rating={parseRating(partner.ratings)}
                           onChange={async (newRating) => {
                             if (partner.ratings) {
-                              partner.ratings.assessment = String(newRating);
+                              partner.ratings = String(newRating);
                             }
                             try {
                               await updatePartnerRating(partner.id, newRating);

@@ -58,8 +58,8 @@ export const PartnerViewModal: React.FC<PartnerViewModalExtendedProps> = ({
     state: "",
     telefone: "",
     whatsapp: "",
-    website: "",
-    instagram: "",
+    website: ""
+   
   });
 
   // Populate form when partner data arrives or mode changes
@@ -76,7 +76,7 @@ export const PartnerViewModal: React.FC<PartnerViewModalExtendedProps> = ({
         telefone: partner.contact?.telefone || "",
         whatsapp: partner.contact?.whatsapp || "",
         website: partner.contact?.website || "",
-        instagram: partner.contact?.instagram || "",
+       
       });
     }
   }, [partner, mode]);
@@ -119,7 +119,7 @@ export const PartnerViewModal: React.FC<PartnerViewModalExtendedProps> = ({
           telefone: form.telefone,
           whatsapp: form.whatsapp,
           website: form.website,
-          instagram: form.instagram,
+          
         },
       });
       // ✅ Only close on success — onSave throws on API failure
@@ -332,7 +332,7 @@ export const PartnerViewModal: React.FC<PartnerViewModalExtendedProps> = ({
                     )}
                   </div>
 
-                  <div className="col-md-6">
+                  {/* <div className="col-md-6">
                     <strong>Instagram:</strong>
                     {isEdit ? (
                       <input
@@ -347,20 +347,20 @@ export const PartnerViewModal: React.FC<PartnerViewModalExtendedProps> = ({
                         {partner.contact?.instagram || "N/A"}
                       </p>
                     )}
-                  </div>
+                  </div> */}
 
                   {/* ── Ratings (read-only even in edit mode) ── */}
                   <div className="col-md-6">
                     <strong>Rating:</strong>
                     <p className="lock_field">
-                      {formatAssessment(partner.ratings?.assessment)}
+                      {formatAssessment(partner.ratings)}
                     </p>
                   </div>
 
                   <div className="col-md-6">
                     <strong>No. of Reviews:</strong>
                     <p className="lock_field">
-                      {partner.ratings?.numAvaliacoes ?? "N/A"}
+                      {partner.ratings ?? "N/A"}
                     </p>
                   </div>
 

@@ -81,7 +81,7 @@ export const API_ROUTES = {
       upload: `${PROFESSIONALS}/import`,
       getAll: `${PROFESSIONALS}/`,
       register: `${PROFESSIONALS}/register`,
-      getById: `${PROFESSIONALS}/getProfessionalsById`,
+      getById: `${PROFESSIONALS}/admin/getProfessionalsById`,
       updateById: `${PROFESSIONALS}/updateProfessionalProfile`,
       updateRating: `${PROFESSIONALS}/updateRating`,
 
