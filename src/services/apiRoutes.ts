@@ -84,6 +84,7 @@ export const API_ROUTES = {
       getById: `${PROFESSIONALS}/admin/getProfessionalsById`,
       updateById: `${PROFESSIONALS}/updateProfessionalProfile`,
       updateRating: `${PROFESSIONALS}/updateRating`,
+      updateFounderStatus: `${PROFESSIONALS}/updateFounderStatus`,
 
   }
 } as const;

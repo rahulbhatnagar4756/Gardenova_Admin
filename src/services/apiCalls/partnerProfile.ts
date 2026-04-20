@@ -124,4 +124,23 @@ export const partnerProfileService = {
       API_ROUTES.PROFESSIONALS.upload,
       formData
     ),
+
+  /**
+   * Update the founder status of a partner.
+   * @param partnerId Unique identifier of the partner profile.
+   * @param isFounder New founder status ("true" or "false").
+   * @returns A promise resolving to an ApiResponse with null data.
+   * 
+   * Note: The backend expects the is_founder field as a string ("true"/"false") rather than a boolean.
+   * This method abstracts that detail away from the caller, allowing them to simply pass a boolean value.
+   * The service will handle the conversion to the expected string format before making the API call.
+   * 
+   */
+  updateFounderStatus: (partnerId: string, isFounder: boolean | string): Promise<ApiResponse<null>> => {
+    const isFounderString = typeof isFounder === "boolean" ? (isFounder ? "true" : "false") : isFounder;
+    return apiService.patch<null>(
+      `${API_ROUTES.PROFESSIONALS.updateFounderStatus}/${partnerId}`,
+      { is_founder: isFounderString }
+    );
+  }
 };
