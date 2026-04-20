@@ -70,16 +70,18 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
     uploadPartnersCsv,
     updatePartnerRating,
     updatePartner,
-    registerPartner,
+    // registerPartner,
+    updateFounderStatus,
     getPartnerById,
   } = usePartnerProfiles({
     initialLimit: limit ?? 5,
   });
   const { showError } = useToast();
 
-  const [registeringIds, setRegisteringIds] = useState<Set<string>>(new Set());
+  // const [registeringIds, setRegisteringIds] = useState<Set<string>>(new Set());
   const [csvModalOpen, setCsvModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  // const [updatingFounderIds, setUpdatingFounderIds] = useState<Set<string>>(new Set());
 
   // Single modal state drives both view and edit
   const [modal, setModal] = useState<ModalState>(CLOSED_MODAL);
@@ -147,7 +149,7 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
       email: data.email,
       category: data.category,
       description: data.description,
-      
+
 
       // ── Flatten location ──
       address: data.location?.address,
@@ -170,22 +172,17 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
    * @param {PartnerProfileResponse} partner  The partner profile to register.
    * @returns {Promise<void>} A promise that resolves when the registration process is complete.
    */
-  const handleRegister = async (partner: PartnerProfileResponse) => {
-    if (!partner.email || partner.email.trim() === "") {
-      showError(
-        `Cannot register "${partner.companyName || "this partner"}" — email is missing.`
-      );
-      return;
-    }
-    setRegisteringIds((prev) => new Set(prev).add(partner.id));
+  const handleToggleFounder = async (partner: PartnerProfileResponse) => {
+    const newValue = partner.is_founder === "true"? "false" : "true";
+    
+
     try {
-      await registerPartner(partner.id, partner.email);
-    } finally {
-      setRegisteringIds((prev) => {
-        const next = new Set(prev);
-        next.delete(partner.id);
-        return next;
-      });
+      await updateFounderStatus(partner.id, newValue);
+      // Optional: update UI immediately (optimistic update)
+      partner.is_founder = newValue;
+    } catch (err) {
+      console.error("Failed to update founder status:", err);
+      showError("Failed to update founder status");
     }
   };
   /**
@@ -252,8 +249,7 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
                 <TableLoader />
               ) : partners.length > 0 ? (
                 partners.map((partner) => {
-                  const isRegistering = registeringIds.has(partner.id);
-                  const isRegistered = partner.registered === "true";
+                  const isFounder = partner.is_founder === "true";
 
                   return (
                     <tr key={partner.id}>
@@ -315,39 +311,26 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
                       </td>
 
                       <td>
-                        {isRegistered ? (
-                          <span className="badge bg-success">Registered</span>
-                        ) : (
-                          <span
-                            className="badge bg-warning text-dark"
-                            style={{
-                              cursor: isRegistering ? "not-allowed" : "pointer",
-                              opacity: isRegistering ? 0.6 : 1,
-                              transition: "opacity 0.2s ease",
-                              userSelect: "none",
-                            }}
-                            title={
-                              isRegistering ? "Registering..." : "Click to register"
-                            }
-                            onClick={() => {
-                              if (!isRegistering) handleRegister(partner);
-                            }}
-                          >
-                            {isRegistering ? (
-                              <>
-                                <span
-                                  className="spinner-border spinner-border-sm me-1"
-                                  role="status"
-                                  aria-hidden="true"
-                                  style={{ width: "10px", height: "10px" }}
-                                />
-                                Registering...
-                              </>
-                            ) : (
-                              "Pending"
-                            )}
-                          </span>
-                        )}
+                        <span
+                          className={
+                            isFounder
+                              ? "badge bg-success"
+                              : "badge bg-warning text-dark"
+                          }
+                          style={{
+                            cursor: "pointer",
+                            transition: "opacity 0.2s ease",
+                            userSelect: "none",
+                          }}
+                          title={
+                            isFounder
+                              ? "Click to remove Founder"
+                              : "Click to set as Founder"
+                          }
+                          onClick={() => handleToggleFounder(partner)}
+                        >
+                          {isFounder ? "Founder" : "Pending"}
+                        </span>
                       </td>
 
                       {/* ── Actions: View icon + Edit icon ── */}

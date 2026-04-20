@@ -137,32 +137,32 @@ export const usePartnerProfiles = (
  * @param {string} email  The email address used for partner registration.
  * @returns {Promise<void>} Resolves when the registration process completes.
  */
-  const registerPartner = async (
-    partnerId: string,
-    email: string
-  ): Promise<void> => {
-    try {
-      const response = await partnerProfileService.register({
-        professionalId: partnerId,
-        email,
-      });
 
-      if (response?.success) {
-        showSuccess("Partner registered successfully!");
-        setPartners((prev) =>
-          prev.map((p) =>
-            p.id === partnerId ? { ...p, registered: true } : p
-          )
-        );
-      } else {
-        showError(response?.message || "Registration failed. Please try again.");
-      }
-    } catch (err) {
-      console.error("Register partner error:", err);
-      showError(err instanceof Error ? err.message : "An error occurred during registration.");
-      throw err;
-    }
-  };
+  //   partnerId: string,
+  //   email: string
+  // ): Promise<void> => {
+  //   try {
+  //     const response = await partnerProfileService.register({
+  //       professionalId: partnerId,
+  //       email,
+  //     });
+
+  //     if (response?.success) {
+  //       showSuccess("Partner registered successfully!");
+  //       setPartners((prev) =>
+  //         prev.map((p) =>
+  //           p.id === partnerId ? { ...p, registered: true } : p
+  //         )
+  //       );
+  //     } else {
+  //       showError(response?.message || "Registration failed. Please try again.");
+  //     }
+  //   } catch (err) {
+  //     console.error("Register partner error:", err);
+  //     showError(err instanceof Error ? err.message : "An error occurred during registration.");
+  //     throw err;
+  //   }
+  // };
 
   /**
    * Updates an existing partner profile.
@@ -261,6 +261,34 @@ export const usePartnerProfiles = (
       return null;
     }
   };
+/**
+ * Updates the founder status of a partner profile.
+ *
+ * This function calls the backend service to toggle the founder status,
+ * shows success/error notifications, and refreshes the data on success.
+ *
+ * @param {string} id  The partner/professional ID to update
+ * @param {boolean} isFounder  Desired founder status (true = founder, false = not founder)
+ *
+ * @returns {Promise<void>} Resolves after update completes and refetch is triggered
+ *
+ * @throws Will rethrow error after showing error notification
+ */
+  const updateFounderStatus = async (id: string, isFounder: string) => {
+    try {
+      const response = await partnerProfileService.updateFounderStatus(id, isFounder);
+      if (response?.success) {
+        showSuccess("Partner founder status updated successfully!");
+        await refetch();
+      } else {
+        showError(response?.message || "Failed to update founder status");
+      }
+    } catch (err) {
+      console.error("Update founder status error:", err);
+      showError("An error occurred while updating founder status");
+      throw err;
+    }
+  };
 
   useEffect(() => {
     if (autoFetch) {
@@ -281,7 +309,7 @@ export const usePartnerProfiles = (
     previousPage,
     setItemsPerPage,
     uploadPartnersCsv,
-    registerPartner,
+    updateFounderStatus,
     updatePartner,
     deletePartner,
     refetch,

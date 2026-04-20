@@ -48,6 +48,7 @@ export interface PartnerProfileResponse {
   verifiedSource?: string;
   createdAt?: object | string;
   updatedAt?: object | string;
+  is_founder?:string
   // Modal flat fields (populated when editing a modal-created partner)
   speciality?: string[];
   address?: PartnerAddress;
@@ -91,6 +92,7 @@ export interface PartnerApiRequest {
   status?: PartnerProfileStatus;
   location?: PartnerLocation;
   contact?: PartnerContact;
+  is_founder?: string;
 }
 
 /** Request body sent to register a partner (pending → registered). */
@@ -140,12 +142,13 @@ export interface UsePartnerProfilesReturn {
   previousPage: () => void;
   setItemsPerPage: (limit: number) => void;
   uploadPartnersCsv: (file: File) => Promise<void>;
-  registerPartner: (partnerId: string, email: string) => Promise<void>;
+  // registerPartner: (partnerId: string, email: string) => Promise<void>;
   updatePartner: (id: string, data: Partial<PartnerApiRequest>) => Promise<void>;
   deletePartner: (id: string) => Promise<void>;
   refetch: () => Promise<void>;
   updatePartnerRating: (partnerId: string, rating: number) => Promise<void>;
   getPartnerById: (id: string) => Promise<PartnerProfileResponse | null>;
+  updateFounderStatus: (partnerId: string, isFounder: string) => Promise<void>;
 }
 
 /** Configuration options for usePartnerProfiles hook. */
