@@ -3,7 +3,7 @@
 ================================= */
 .sidebar_main {
   width: 250px;
-  background: var(--Dark-Green, #2e3a30);
+  background: var(--Dark-Green, #012411);
   padding: 0 15px;
   height: 100dvh;
   display: flex;
@@ -53,7 +53,7 @@
   display: flex;
   grid-gap: 10px;
   text-decoration: none;
-  opacity: 0.7;
+  opacity: 1;
   align-items: center;
   padding: 8px 15px;
   border-radius: 10px;
@@ -66,7 +66,7 @@
 
 .sidebar_links > li > a.active {
   opacity: 1;
-  background: var(--Brunt-Gold-Gradient);
+  background: var(--Green-Gradient);
 }
 
 .sidebar_links > li > a:hover {
@@ -86,7 +86,7 @@
 
 .logout_btn a {
   border-radius: 10px;
-  border: 1px solid var(--Burnt-Gold, #b48a3e);
+  border: 1px solid var(--Dark-Heavy-Gold, #004a24);
   color: var(--Off-White, #f4f4f4);
   text-align: center;
   font-size: 14px;
@@ -101,18 +101,20 @@
 }
 
 .logout_btn a:hover {
-  background: var(--Brunt-Gold-Gradient);
+  background: var(--Green-Gradient);
 }
 
 /* ================================
    LOGO
 ================================= */
 .dashboard_logo {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  background: var(--Dark-Green);
-  padding: 30px;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    padding: 0;
+    border-radius: 15px;
+    margin-top: 15px;
+    margin-bottom: 30px;
 }
 
 .dashboard_logo .k_logo {
@@ -138,7 +140,7 @@
 
 .close_btn a {
   border-radius: 10px;
-  border: 1px solid var(--Burnt-Gold, #b48a3e);
+  border: 1px solid var(--Dark-Heavy-Gold, #004a24);
   color: var(--Off-White, #f4f4f4);
   font-size: 13px;
   font-weight: 500;

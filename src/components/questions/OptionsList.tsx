@@ -83,8 +83,8 @@ const OptionsList = ({
                 y2="15.0592"
                 gradientUnits="userSpaceOnUse"
               >
-                <stop stopColor="#E0B669" />
-                <stop offset={1} stopColor="#B48A3E" />
+                <stop stopColor="#004a24" />
+                <stop offset={1} stopColor="#004a24" />
               </linearGradient>
             </defs>
           </svg>

@@ -54,7 +54,7 @@ const OptionsInput = ({
               width="23.3511"
               height="23.3511"
               rx={4}
-              fill="#B48A3E"
+              fill="#004a24"
             />
             <path
               fillRule="evenodd"

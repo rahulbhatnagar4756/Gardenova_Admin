@@ -163,7 +163,7 @@ td.star_rating > div > div:first-child:after {
     margin-top: 4px;
     border-radius: 10px;
     border: 1px solid rgba(244, 244, 244, 0.1);
-    background: #2d382f;
+    background: var(--Darkest-Green);
     padding: 13px 15px;
     color: #f4f4f4;
     font-size: 14px;
@@ -171,6 +171,12 @@ td.star_rating > div > div:first-child:after {
     font-weight: 500;
     line-height: normal;
 }
+.view_profile .row > div .lock_field:focus
+{
+    border-color: rgba(244, 244, 244, 0.3);
+    box-shadow: none;
+}
+
 .view_profile strong {
     font-size: 13px;
     font-style: normal;
@@ -191,7 +197,7 @@ td.star_rating > div > div:first-child:after {
 }
 .modal-content.view_modal{
     position: relative;
-    background: #2e3a30;
+    background: var(--Dark-Green, #012411);
     max-width: 95% !important;
     width: 827px !important;
     display: flex;
@@ -255,7 +261,7 @@ td.star_rating > div > div:first-child:after {
 }
 .modal_view_form .modal-content {
     position: relative;
-    background: #2e3a30;
+    background: var(--Dark-Green);
     border-radius: 10px;
     max-width: 95% !important;
     width: 100% !important;
@@ -342,7 +348,7 @@ td.star_rating > div > div:first-child:after {
     height: 30px;
     cursor: pointer;
     font-size: 18px;
-    background: linear-gradient(180deg, #E0B669 0%, #B48A3E 100%);
+    background: linear-gradient(180deg, #004a24 0%, #004a24 100%);
     padding: 0;
     display: flex;
     align-items: center;
@@ -360,7 +366,7 @@ td.star_rating > div > div:first-child:after {
     height: 34px;
     cursor: pointer;
     font-size: 18px;
-    background: linear-gradient(180deg, #E0B669 0%, #B48A3E 100%);
+    background: linear-gradient(180deg, #004a24 0%, #004a24 100%);
     padding: 0;
 }
 

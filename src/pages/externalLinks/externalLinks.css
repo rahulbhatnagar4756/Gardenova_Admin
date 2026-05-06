@@ -1,7 +1,7 @@
 :root {
   --Dark-Gray: #313131;
   --Charcoal-Gray: #4a4a4a;
-  --Burnt-Gold: #b48a3e;
+  --Dark-Heavy-Gold: #004a24;
   --Off-White: #f4f4f4;
 }
 
@@ -60,7 +60,7 @@
 .actions button {
   margin-left: 5px;
   border: none;
-  background: linear-gradient(180deg, #e0b669 0%, #b48a3e 100%);
+  background: linear-gradient(180deg, #004a24 0%, #004a24 100%);
   color: #fff;
   padding: 6px 12px;
   border-radius: 6px;
@@ -112,7 +112,7 @@
   width: 34px;
   height: 34px;
   font-size: 18px;
-  background: linear-gradient(180deg, #E0B669 0%, #B48A3E 100%);
+  background: linear-gradient(180deg, #004a24 0%, #004a24 100%);
   cursor: pointer;
 }
 
@@ -151,7 +151,7 @@
 }
 
 .modal_actions .save_btn {
-  background: linear-gradient(180deg, #e0b669 0%, #b48a3e 100%);
+  background: linear-gradient(180deg, #004a24 0%, #004a24 100%);
   color: #fff;
 }
 
@@ -259,7 +259,7 @@ input:checked + .slider:before {
     text-underline-offset: 3px;
 }
 input:checked + .slider {
-    background: var(--Brunt-Gold-Gradient);
+    background: var(--Green-Gradient);
 }
 
 .settings_submenu{
@@ -277,14 +277,14 @@ input:checked + .slider {
     text-decoration: none;
 }
 .submenu_item.active {
-    background: var(--Brunt-Gold-Gradient);
+    background: var(--Green-Gradient);
     
 }
 
 input[type="checkbox"] {
     width: 20px;
     height: 20px;
-    accent-color: #d3a95c;
+    accent-color: var(--Dark-Green);
 }
 input_field label {
   color: #f4f4f4 ;/* White text */

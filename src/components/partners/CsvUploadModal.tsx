@@ -161,10 +161,10 @@ export const CsvUploadModal: React.FC<CsvUploadModalProps> = ({
                 textAlign: "center",
                 cursor: "pointer",
                 backgroundColor: isDragging
-                  ? "rgba(76, 175, 80, 0.06)"
+                  ? "rgba(0, 30, 14, 0.06)"
                   : selectedFile
-                  ? "rgba(76, 175, 80, 0.04)"
-                  : "#fafafa",
+                  ? "rgba(0, 30, 14, 0.04)"
+                  : "#001e0e",
                 transition: "all 0.2s ease",
                 marginBottom: "16px",
               }}
@@ -219,9 +219,10 @@ export const CsvUploadModal: React.FC<CsvUploadModalProps> = ({
                     height="44"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke="#aaa"
+                    stroke="#169454"
                     strokeWidth="1.5"
                     style={{ marginBottom: "12px" }}
+                    className="mx-auto"
                   >
                     <path
                       strokeLinecap="round"
@@ -231,7 +232,7 @@ export const CsvUploadModal: React.FC<CsvUploadModalProps> = ({
                   </svg>
                   <p
                     style={{
-                      color: "#555",
+                      color: "#ffffff",
                       fontWeight: 500,
                       margin: "0 0 4px",
                       fontSize: "15px",

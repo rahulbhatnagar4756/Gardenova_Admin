@@ -75,7 +75,7 @@ export const DoughnutMiniChart = ({ total, today }: DoughnutMiniChartProps) => {
     datasets: [
       {
         data: [today, remaining],
-        backgroundColor: ["#2E3A30", "#B48A3E"],
+        backgroundColor: ["#2E3A30", "#004a24"],
         borderWidth: 0,
       },
     ],

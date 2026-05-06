@@ -22,7 +22,7 @@
   border-radius: 50% !important;
   animation: loading 1s linear infinite;
   background-color: #e0f2fe00 !important;
-  box-shadow: inset 2px 0 0 rgb(224, 182, 105), -3px 0 0 rgb(180, 138, 62);
+  box-shadow: inset 2px 0 0 #004A24, -3px 0 0 #179555;
 }
 @keyframes loading {
   to {

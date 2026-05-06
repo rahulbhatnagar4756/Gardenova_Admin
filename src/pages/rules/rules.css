@@ -180,7 +180,7 @@
 .rules-page .modal-component-content {
   border-radius: 30px;
   border: 5px solid rgba(244, 244, 244, 0.15);
-  background: var(--Dark-Green, #2e3a30);
+  background: var(--Dark-Green, #012411);
   box-shadow: 0 0 30px 0 rgba(244, 244, 244, 0.1);
 }
 #accordionCondition .accordion-item {
@@ -203,7 +203,7 @@
   padding: 14px 15px;
   border-radius: 10px !important;
   border: 1px solid rgba(244, 244, 244, 0.1) !important;
-  background: #2d382f;
+  background: var(--Darkest-Green);
   margin-bottom: 5px;
 }
 #accordionCondition
@@ -253,7 +253,7 @@
   color: #fff;
 }
 .add_more_value {
-  color: #b48a3e;
+  color: #004a24;
   font-family: "Inter", sans-serif;
   font-size: 11px;
   font-style: normal;

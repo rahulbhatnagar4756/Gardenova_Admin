@@ -5,7 +5,8 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(3, 33, 28, 0.8);
+      background: rgb(1 36 17 / 50%) !important;
+    backdrop-filter: blur(8.5px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -21,7 +22,7 @@
     position: relative;
     border-radius: 30px;
     border: 5px solid rgba(244, 244, 244, 0.10);
-    background: #2E3A30;
+    background: var(--Dark-Green, #012411);
 }
 
 /* Modal Header */
@@ -58,7 +59,7 @@
     height: 34px;
     cursor: pointer;
     font-size: 18px;
-    background: linear-gradient(180deg, #E0B669 0%, #B48A3E 100%);
+    background: linear-gradient(180deg, #004a24 0%, #004a24 100%);
 }
 
 /* Table */
@@ -67,7 +68,7 @@
     overflow-y: auto;
     border-radius: 12px;
     border: 1px solid rgba(244, 244, 244, 0.10);
-    background: #2D382F;
+    background: var(--Darkest-Green);
 }
 
 .pro-table {
@@ -129,7 +130,7 @@
     height: 34px;
     cursor: pointer;
     font-size: 18px;
-    background: linear-gradient(180deg, #E0B669 0%, #B48A3E 100%) !important;
+    background: linear-gradient(180deg, #004a24 0%, #004a24 100%) !important;
     padding: 0;
 }
 

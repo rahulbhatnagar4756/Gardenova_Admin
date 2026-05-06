@@ -1,9 +1,9 @@
 :root {
-   --Dark-Green: #2E3A30;
+   --Dark-Green: #012411;
    --Off-White: #F4F4F4;
-   --Burnt-Gold: #B48A3E;
-   --Gradient-Start: #E0B669;
-   --Gradient-End: #B48A3E;
+   --Dark-Heavy-Gold: #004a24;
+   --Gradient-Start: #004a24;
+   --Gradient-End: #004a24;
    --Dropdown-Background: #2E3A30;
 }
 
@@ -19,7 +19,7 @@
 .inner_header_main
 {
   border-radius: 10px;
-background: var(--Dark-Green, #2E3A30);
+background: var(--Dark-Green, #012411);
 padding: 13px;
 }
 
@@ -37,7 +37,7 @@ margin-left: 10px;
 .name_box
 {
   border-radius: 10px;
-background: linear-gradient(180deg, #E0B669 0%, #B48A3E 100%), var(--Burnt-Gold, #B48A3E);
+background: linear-gradient(180deg, #004a24 0%, #004a24 100%), var(--Dark-Heavy-Gold, #004a24);
 height: 40px;
 width: 40px;
 color: var(--Off-White, #F4F4F4);
@@ -116,7 +116,7 @@ margin-top: 5px;
   position: absolute;
   top: calc(100% + 10px); /* Position below the admin name */
   right: 0;
-  background: #2E3A30;
+  background: #159052;
   border-radius: 8px;
   min-width: 200px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -149,7 +149,7 @@ margin-top: 5px;
   position: absolute;
   top: 0;
   right: calc(100% + 5px); /* Position to the left of parent dropdown */
-  background: #2E3A30;
+  background: #159052;
   border-radius: 8px;
   min-width: 180px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);

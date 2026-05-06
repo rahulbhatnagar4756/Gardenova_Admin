@@ -1,7 +1,7 @@
 :root {
   --Dark-Gray: #313131;
   --Charcoal-Gray: #4a4a4a;
-  --Burnt-Gold: #b48a3e;
+  --Dark-Heavy-Gold: #004a24;
   --Off-White: #f4f4f4;
 }
 
@@ -77,7 +77,7 @@
 
 .status.active {
   background: rgba(180, 138, 62, 0.15);
-  color: var(--Burnt-Gold);
+  color: var(--Dark-Heavy-Gold);
 }
 
 .status.inactive {
@@ -140,7 +140,7 @@
 }
 
 .btn-outline:hover {
-  background: linear-gradient(180deg, #e0b669 0%, var(--Burnt-Gold) 100%);
+  background: linear-gradient(180deg, #004a24 0%, var(--Dark-Heavy-Gold) 100%);
   color: var(--Off-White);
   border-color: transparent;
 }
@@ -220,7 +220,7 @@ input:checked + .slider:before {
 }
 
 .question_modal .modal-checkbox input[type="checkbox"] {
-  accent-color: var(--Burnt-Gold);
+  accent-color: var(--Dark-Heavy-Gold);
 }
 
 /* Mobile fallback for checkboxes */

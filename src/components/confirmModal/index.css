@@ -4,7 +4,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(46, 58, 48, 0.4);
+     background: rgb(1 36 17 / 50%) !important;
+    backdrop-filter: blur(8.5px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -13,7 +14,7 @@
 
 .confirm-box {
     position: relative;
-    background: #2e3a30;
+    background: var(--Dark-Green);
     border-radius: 10px;
     max-width: 95% !important;
     width: 450px !important;
