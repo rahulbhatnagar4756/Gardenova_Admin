@@ -64,7 +64,7 @@ export const Header = ({
             {/* Header Title */}
             <div className="col">
               <h4 className="welcome_head">
-                Welcome to the <strong>Kasagardem Dashboard</strong>
+                Welcome to the <strong>Gardenova Dashboard</strong>
               </h4>
             </div>
 
