@@ -1,6 +1,6 @@
 // hooks/usePartnerProfiles.ts
 import { useState, useEffect, useCallback } from "react";
-import { partnerProfileService } from "../services/apiCalls/partnerProfile";
+import { partnerProfileService, Plants } from "../services/apiCalls/partnerProfile";
 import { useToast } from "./useToast";
 import type {
   PaginationParams,
@@ -10,6 +10,7 @@ import type {
   UsePartnerProfilesOptions,
   UsePartnerProfilesReturn,
 } from "../types/partnerProfile";
+import type { AdminPlant, PaginatedPlantsResponse } from "../types/adminPlants";
 
 /**
  * Custom hook to manage partner profiles including fetching, pagination, and CRUD operations.
@@ -21,8 +22,8 @@ export const usePartnerProfiles = (
   options: UsePartnerProfilesOptions = {}
 ): UsePartnerProfilesReturn => {
   const { initialPage = 1, initialLimit = 5, autoFetch = true } = options;
-
   const [partners, setPartners] = useState<PartnerProfileResponse[]>([]);
+  const [plant, setPlant] = useState<AdminPlant[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -38,38 +39,36 @@ export const usePartnerProfiles = (
    * @param {PaginationParams} params  Pagination parameters (page and limit).
    */
   const fetchPartners = useCallback(async (params?: PaginationParams) => {
-    try {
-      setLoading(true);
-      setError(null);
+  try {
+    setLoading(true);
+    setError(null);
 
-      const response = await partnerProfileService.getAll(params);
-      const { success, data, message } = response || {};
+    const response = await Plants.AdmingetAll(params);
+    const { success, message } = response || {};
+    // Cast since service return type hasn't been updated yet
+    const data = response?.data as unknown as PaginatedPlantsResponse | undefined;
 
-      if (success && data) {
-        const { professionals, currentPage, totalPages, totalCount, limit } = data;
+    if (success && data) {
+      const plantList    = data.data        ?? [];
+      const page         = data.currentPage ?? 1;
+      const pages        = data.totalPages  ?? 0;
+      const count        = data.totalCount  ?? 0;
+      const itemsPerPage = data.limit       ?? params?.limit ?? 5;
 
-        if (Array.isArray(professionals)) {
-          setPartners(professionals);
-        } else {
-          console.warn("Unexpected professionals format:", professionals);
-          setPartners([]);
-        }
-
-        setCurrentPage(currentPage ?? 1);
-        setTotalPages(totalPages ?? 0);
-        setTotalCount(totalCount ?? 0);
-        setLimit(limit ?? 5);
-      } else {
-        setError(message || "Failed to fetch partners");
-      }
-    } catch (err: unknown) {
-      setError(
-        err instanceof Error ? err.message : "Network or unknown error occurred"
-      );
-    } finally {
-      setLoading(false);
+      setPlant(Array.isArray(plantList) ? plantList : []);
+      setCurrentPage(page);
+      setTotalPages(pages);
+      setTotalCount(count);
+      setLimit(itemsPerPage);
+    } else {
+      setError(message || "Failed to fetch plants");
     }
-  }, []);
+  } catch (err: unknown) {
+    setError(err instanceof Error ? err.message : "Network or unknown error occurred");
+  } finally {
+    setLoading(false);
+  }
+}, []);
   /**
    * Changes the current page in the pagination.
    * 
@@ -239,28 +238,34 @@ export const usePartnerProfiles = (
     }
   };
 /**
+ * API response containing a single plant record.
+ */
+  interface SinglePlantApiResponse {
+  plant: AdminPlant;
+}
+/**
  * Fetches a partner profile by its unique ID.
  *
  * @param {string} id  The unique identifier of the partner profile.
- * @returns {Promise<PartnerProfileResponse | null>} The partner profile if found, otherwise null.
+ * @returns {Promise<AdminPlant | null>} The partner profile if found, otherwise null.
  */
-  const getPartnerById = async (
-    id: string
-  ): Promise<PartnerProfileResponse | null> => {
-    try {
-      const response = await partnerProfileService.getById(id);
-      if (response?.success && response.data) {
-        return response.data;
-      } else {
-        showError(response?.message || "Failed to fetch partner profile");
-        return null;
-      }
-    } catch (err) {
-      console.error("Get partner by ID error:", err);
-      showError("An error occurred while fetching partner profile");
+const getPartnerById = async (id: string): Promise<AdminPlant | null> => {
+  try {
+    const response = await Plants.AdmingetById(id);
+    if (response?.success && response.data) {
+      const data = response.data as unknown as SinglePlantApiResponse;
+      const plant = data.plant ?? (response.data as unknown as AdminPlant);
+      return plant;
+    } else {
+      showError(response?.message || "Failed to fetch plant details");
       return null;
     }
-  };
+  } catch (err) {
+    console.error("Get plant by ID error:", err);
+    showError("An error occurred while fetching plant details");
+    return null;
+  }
+};
 /**
  * Updates the founder status of a partner profile.
  *
@@ -297,7 +302,8 @@ export const usePartnerProfiles = (
   }, [currentPage, limit, fetchPartners, autoFetch]);
 
   return {
-    partners,
+    plant,
+    // partners,
     loading,
     error,
     currentPage,

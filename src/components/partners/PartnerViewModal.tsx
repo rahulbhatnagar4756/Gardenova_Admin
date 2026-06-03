@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/global.css";
 import { Loader } from "../loader";
-import type { PartnerProfileResponse, PartnerViewModalProps } from "../../types/partnerProfile";
+import type { PartnerViewModalProps } from "../../types/partnerProfile";
+import type { Plant } from "../../types/adminPlants";
 
 /**
  * Parses assessment string like "3,50" to a readable display string.
@@ -10,10 +11,10 @@ import type { PartnerProfileResponse, PartnerViewModalProps } from "../../types/
  * @param {string | null | undefined} assessment  The assessment value to format.
  * @returns {string} The formatted assessment string, or "N/A" if not provided.
  */
-const formatAssessment = (assessment?: string | null): string => {
-  if (!assessment) return "N/A";
-  return assessment.replace(",", ".");
-};
+// const formatAssessment = (assessment?: string | null): string => {
+//   if (!assessment) return "N/A";
+//   return assessment.replace(",", ".");
+// };
 
 /**
  * Extended props for PartnerViewModal supporting both view and edit modes.
@@ -22,7 +23,7 @@ interface PartnerViewModalExtendedProps extends PartnerViewModalProps {
   /** When "edit", renders editable form fields instead of read-only display. */
   mode?: "view" | "edit";
   /** Called with updated partner data when the user saves in edit mode. */
-  onSave?: (id: string, data: Partial<PartnerProfileResponse>) => Promise<void>;
+  onSave?: (id: string, data: Partial<Plant>) => Promise<void>;
 }
 
 /**
@@ -39,7 +40,7 @@ interface PartnerViewModalExtendedProps extends PartnerViewModalProps {
  */
 export const PartnerViewModal: React.FC<PartnerViewModalExtendedProps> = ({
   isOpen,
-  partner,
+  partner: plant, // prop name kept for compatibility
   onClose,
   mode = "view",
   onSave,
@@ -47,93 +48,97 @@ export const PartnerViewModal: React.FC<PartnerViewModalExtendedProps> = ({
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  // ── Editable form state ──
   const [form, setForm] = useState({
-    companyName: "",
-    email: "",
-    category: "",
+    scientific_name: "",
+    common_name: "",
+    family: "",
+    plant_type: "",
+    care_level: "",
+    watering: "",
+    sunlight: "",
+    cycle: "",
     description: "",
-    address: "",
-    city: "",
-    state: "",
-    telefone: "",
-    whatsapp: "",
-    website: ""
-   
   });
 
-  // Populate form when partner data arrives or mode changes
   useEffect(() => {
-    if (partner) {
+    if (plant) {
       setForm({
-        companyName: partner.companyName || "",
-        email: partner.email || "",
-        category: partner.category || "",
-        description: partner.description || "",
-        address: partner.location?.address || "",
-        city: partner.location?.city || "",
-        state: partner.location?.state || "",
-        telefone: partner.contact?.telefone || "",
-        whatsapp: partner.contact?.whatsapp || "",
-        website: partner.contact?.website || "",
-       
+        scientific_name: plant.scientific_name || "",
+        common_name:     plant.common_name     || "",
+        family:          plant.family          || "",
+        plant_type:      plant.plant_type      || plant.type || "",
+        care_level:      plant.care_level      || "",
+        watering:        plant.watering        || "",
+        sunlight:        plant.sunlight        || "",
+        cycle:           plant.cycle           || "",
+        description:     plant.description     || "",
       });
     }
-  }, [partner, mode]);
+  }, [plant, mode]);
 
   if (!isOpen) return null;
 
   const isEdit = mode === "edit";
-
+  const inputCls = "form-control lock_field";
 /**
- * Generic change handler for all text inputs.
- * 
- * @param {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>} e  The change event triggered by the input.
+ * Handles form field changes and updates the form state.
+ *
+ * @param {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>} e
+ * Event triggered when an input, textarea, or select value changes.
+ *
+ * @returns {void}
  */
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
-
-  /**
-   * Builds the nested update payload and calls onSave.
-   * Only closes the modal on success — stays open so the user can fix errors.
-   */
+/**
+ * Saves the current plant details by invoking the provided save callback.
+ *
+ * The function:
+ * - Validates that a plant and save handler are available.
+ * - Sets the saving state while the operation is in progress.
+ * - Sends the updated plant data to the save handler.
+ * - Closes the dialog on successful save.
+ * - Logs any errors encountered during the save operation.
+ * - Resets the saving state when the operation completes.
+ *
+ * @async
+ * @function handleSave
+ * @returns {Promise<void>} Resolves when the save operation completes.
+ */
   const handleSave = async () => {
-    if (!partner || !onSave) return;
+    if (!plant || !onSave) return;
     setIsSaving(true);
     try {
-      await onSave(partner.id, {
-        companyName: form.companyName,
-        email: form.email,
-        category: form.category,
-        description: form.description,
-        location: {
-          address: form.address,
-          city: form.city,
-          state: form.state,
-        },
-        contact: {
-          telefone: form.telefone,
-          whatsapp: form.whatsapp,
-          website: form.website,
-          
-        },
+      await onSave(String(plant.plant_id), {
+        scientific_name: form.scientific_name,
+        common_name:     form.common_name,
+        family:          form.family,
+        plant_type:      form.plant_type,
+        care_level:      form.care_level,
+        watering:        form.watering,
+        sunlight:        form.sunlight,
+        cycle:           form.cycle,
+        description:     form.description,
       });
-      // ✅ Only close on success — onSave throws on API failure
       onClose();
     } catch (err) {
-      // Error toast is already shown by the hook; just keep modal open
       console.error("Save failed:", err);
     } finally {
       setIsSaving(false);
     }
   };
 
-  // ── Shared input style ──
-  const inputCls = "form-control lock_field";
+  // Pick the best available image
+  const imgUrl =
+  plant?.image_url  ||
+    plant?.image_thumbnail  ||
+    plant?.image_small_url  ||
+    plant?.image_medium_url ||
+    plant?.image_regular_url;
 
   return (
     <div
@@ -154,64 +159,169 @@ export const PartnerViewModal: React.FC<PartnerViewModalExtendedProps> = ({
           </button>
 
           <div className="modal-body view_profile">
-            {!partner ? (
-              <Loader text="Loading partner profiles..." />
+            {!plant ? (
+              <Loader text="Loading plant details..." />
             ) : (
               <>
                 <div className="head_area">
                   <h4 className="head_modal">
-                    {isEdit ? "Edit Partner" : "Partner Details"}
+                    {isEdit ? "Edit Plant" : "Plant Details"}
                   </h4>
                 </div>
 
                 <div className="row g-3 text-start">
-                  {/* ── Basic Info ── */}
+
+                  {/* Common Name */}
                   <div className="col-md-6">
-                    <strong>Company Name:</strong>
+                    <strong>Common Name:</strong>
                     {isEdit ? (
                       <input
                         className={inputCls}
-                        name="companyName"
-                        value={form.companyName}
+                        name="common_name"
+                        value={form.common_name}
                         onChange={handleChange}
-                        placeholder="Company Name"
+                        placeholder="Common Name"
                       />
                     ) : (
-                      <p className="lock_field">{partner.companyName || "N/A"}</p>
+                      <p className="lock_field">{plant.common_name || "N/A"}</p>
                     )}
                   </div>
 
+                  {/* Scientific Name */}
                   <div className="col-md-6">
-                    <strong>Email:</strong>
+                    <strong>Scientific Name:</strong>
                     {isEdit ? (
                       <input
                         className={inputCls}
-                        name="email"
-                        type="email"
-                        value={form.email}
+                        name="scientific_name"
+                        value={form.scientific_name}
                         onChange={handleChange}
-                        placeholder="Email"
+                        placeholder="Scientific Name"
                       />
                     ) : (
-                      <p className="lock_field">{partner.email || "N/A"}</p>
+                      <p className="lock_field">
+                        <em>{plant.scientific_name || "N/A"}</em>
+                      </p>
                     )}
                   </div>
 
+                  {/* Family */}
                   <div className="col-md-6">
-                    <strong>Category:</strong>
+                    <strong>Family:</strong>
                     {isEdit ? (
                       <input
                         className={inputCls}
-                        name="category"
-                        value={form.category}
+                        name="family"
+                        value={form.family}
                         onChange={handleChange}
-                        placeholder="Category"
+                        placeholder="Family"
                       />
                     ) : (
-                      <p className="lock_field">{partner.category || "N/A"}</p>
+                      <p className="lock_field">{plant.family || "N/A"}</p>
                     )}
                   </div>
 
+                  {/* Plant Type */}
+                  <div className="col-md-6">
+                    <strong>Type:</strong>
+                    {isEdit ? (
+                      <input
+                        className={inputCls}
+                        name="plant_type"
+                        value={form.plant_type}
+                        onChange={handleChange}
+                        placeholder="Plant Type"
+                      />
+                    ) : (
+                      <p className="lock_field">{plant.plant_type || plant.type || "N/A"}</p>
+                    )}
+                  </div>
+
+                  {/* Cycle */}
+                  <div className="col-md-6">
+                    <strong>Cycle:</strong>
+                    {isEdit ? (
+                      <input
+                        className={inputCls}
+                        name="cycle"
+                        value={form.cycle}
+                        onChange={handleChange}
+                        placeholder="Cycle"
+                      />
+                    ) : (
+                      <p className="lock_field">{plant.cycle || "N/A"}</p>
+                    )}
+                  </div>
+
+                  {/* Care Level */}
+                  <div className="col-md-6">
+                    <strong>Care Level:</strong>
+                    {isEdit ? (
+                      <select
+                        className={inputCls}
+                        name="care_level"
+                        value={form.care_level}
+                        onChange={handleChange}
+                      >
+                        <option value="">Select care level</option>
+                        <option value="Easy">Easy</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
+                      </select>
+                    ) : (
+                      <p className="lock_field">
+                        {plant.care_level ? (
+                          <span
+                            className={`badge ${
+                              plant.care_level.toLowerCase() === "easy"
+                                ? "bg-success"
+                                : plant.care_level.toLowerCase() === "medium"
+                                ? "bg-warning text-dark"
+                                : "bg-danger"
+                            }`}
+                          >
+                            {plant.care_level}
+                          </span>
+                        ) : (
+                          <span style={{ color: "#ccc" }}>—</span>
+                        )}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Watering */}
+                  <div className="col-md-6">
+                    <strong>Watering:</strong>
+                    {isEdit ? (
+                      <input
+                        className={inputCls}
+                        name="watering"
+                        value={form.watering}
+                        onChange={handleChange}
+                        placeholder="Watering frequency"
+                      />
+                    ) : (
+                      <p className="lock_field">{plant.watering || "N/A"}</p>
+                    )}
+                  </div>
+
+                  {/* Sunlight */}
+                  <div className="col-md-6">
+                    <strong>Sunlight:</strong>
+                    {isEdit ? (
+                      <input
+                        className={inputCls}
+                        name="sunlight"
+                        value={form.sunlight}
+                        onChange={handleChange}
+                        placeholder="Sunlight requirement"
+                      />
+                    ) : (
+                      <p className="lock_field">{plant.sunlight || "N/A"}</p>
+                    )}
+                  </div>
+
+                  {/* Description — full width */}
                   <div className="col-md-12">
                     <strong>Description:</strong>
                     {isEdit ? (
@@ -224,164 +334,19 @@ export const PartnerViewModal: React.FC<PartnerViewModalExtendedProps> = ({
                         rows={3}
                       />
                     ) : (
-                      <p className="lock_field">{partner.description || "N/A"}</p>
+                      <p className="lock_field">{plant.description || "N/A"}</p>
                     )}
                   </div>
 
-                  {/* ── Location ── */}
-                  <div className="col-md-12">
-                    <strong>Address:</strong>
-                    {isEdit ? (
-                      <input
-                        className={inputCls}
-                        name="address"
-                        value={form.address}
-                        onChange={handleChange}
-                        placeholder="Address"
-                      />
-                    ) : (
-                      <p className="lock_field">
-                        {partner.location?.address || "N/A"}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="col-md-6">
-                    <strong>City:</strong>
-                    {isEdit ? (
-                      <input
-                        className={inputCls}
-                        name="city"
-                        value={form.city}
-                        onChange={handleChange}
-                        placeholder="City"
-                      />
-                    ) : (
-                      <p className="lock_field">
-                        {partner.location?.city || "N/A"}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="col-md-6">
-                    <strong>State:</strong>
-                    {isEdit ? (
-                      <input
-                        className={inputCls}
-                        name="state"
-                        value={form.state}
-                        onChange={handleChange}
-                        placeholder="State"
-                      />
-                    ) : (
-                      <p className="lock_field">
-                        {partner.location?.state || "N/A"}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* ── Contact ── */}
-                  <div className="col-md-6">
-                    <strong>Phone:</strong>
-                    {isEdit ? (
-                      <input
-                        className={inputCls}
-                        name="telefone"
-                        value={form.telefone}
-                        onChange={handleChange}
-                        placeholder="Phone"
-                      />
-                    ) : (
-                      <p className="lock_field">
-                        {partner.contact?.telefone || "N/A"}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="col-md-6">
-                    <strong>WhatsApp:</strong>
-                    {isEdit ? (
-                      <input
-                        className={inputCls}
-                        name="whatsapp"
-                        value={form.whatsapp}
-                        onChange={handleChange}
-                        placeholder="WhatsApp"
-                      />
-                    ) : (
-                      <p className="lock_field">
-                        {partner.contact?.whatsapp || "N/A"}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="col-md-6">
-                    <strong>Website:</strong>
-                    {isEdit ? (
-                      <input
-                        className={inputCls}
-                        name="website"
-                        value={form.website}
-                        onChange={handleChange}
-                        placeholder="Website"
-                      />
-                    ) : (
-                      <p className="lock_field">
-                        {partner.contact?.website || "N/A"}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* <div className="col-md-6">
-                    <strong>Instagram:</strong>
-                    {isEdit ? (
-                      <input
-                        className={inputCls}
-                        name="instagram"
-                        value={form.instagram}
-                        onChange={handleChange}
-                        placeholder="Instagram"
-                      />
-                    ) : (
-                      <p className="lock_field">
-                        {partner.contact?.instagram || "N/A"}
-                      </p>
-                    )}
-                  </div> */}
-
-                  {/* ── Ratings (read-only even in edit mode) ── */}
-                  <div className="col-md-6">
-                    <strong>Rating:</strong>
-                    <p className="lock_field">
-                      {formatAssessment(partner.ratings)}
-                    </p>
-                  </div>
-
-                  <div className="col-md-6">
-                    <strong>No. of Reviews:</strong>
-                    <p className="lock_field">
-                      {partner.ratings ?? "N/A"}
-                    </p>
-                  </div>
-
-                  <div className="col-md-6">
-                    <strong>Verified Source:</strong>
-                    <p className="lock_field">
-                      {partner.verifiedSource || "N/A"}
-                    </p>
-                  </div>
-
-                  {/* ── Project Image ── */}
-                  {partner.image_url && (
+                  {/* Plant Image */}
+                  {imgUrl && (
                     <div className="col-md-12 text-center mt-4">
-                      <strong>Project Image:</strong>
+                      <strong>Plant Image:</strong>
                       <div className="position-relative mt-2">
-                        {!imageLoaded && (
-                          <Loader text="Loading project image." />
-                        )}
+                        {!imageLoaded && <Loader text="Loading plant image..." />}
                         <img
-                          src={partner.image_url}
-                          alt="Project"
+                          src={imgUrl}
+                          alt={plant.common_name || "Plant"}
                           className="img-fluid rounded shadow-sm"
                           onLoad={() => setImageLoaded(true)}
                           style={{
@@ -396,7 +361,7 @@ export const PartnerViewModal: React.FC<PartnerViewModalExtendedProps> = ({
                     </div>
                   )}
 
-                  {/* ── Save / Cancel buttons (edit mode only) ── */}
+                  {/* Save / Cancel (edit mode only) */}
                   {isEdit && (
                     <div className="col-12 d-flex justify-content-end gap-2 mt-3">
                       <button
@@ -428,6 +393,7 @@ export const PartnerViewModal: React.FC<PartnerViewModalExtendedProps> = ({
                       </button>
                     </div>
                   )}
+
                 </div>
               </>
             )}

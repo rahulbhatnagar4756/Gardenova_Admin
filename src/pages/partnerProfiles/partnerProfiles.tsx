@@ -4,61 +4,32 @@ import "./partnerProfiles.css";
 import { usePartnerProfiles } from "../../hooks/usePartnerProfiles";
 import { Pagination } from "../../components/pagination";
 import { useToast } from "../../hooks/useToast";
-import StarRating from "../../components/starRating";
 import { ImagePopup } from "../../components/partners/ImagePopup";
 import { CsvUploadModal } from "../../components/partners/CsvUploadModal";
 import { PartnerViewModal } from "../../components/partners/PartnerViewModal";
 import { TableLoader } from "../../components/loader";
-import type {
-  PartnerProfileResponse,
-  PartnerProfilesProps,
-} from "../../types/partnerProfile";
-
-/**
- * Formats a partner's location object into a readable address string.
- *
- * @param {PartnerProfileResponse["location"] | undefined} location  The location object of the partner, may be undefined.
- * @returns {string} A formatted address string combining address, city, and state, or "N/A" if location is missing.
- */
-const formatLocation = (
-  location?: PartnerProfileResponse["location"]
-): string => {
-  if (!location) return "N/A";
-  return [location.address, location.city, location.state]
-    .filter(Boolean)
-    .join(", ");
-};
-
-/**
- * Parses a partner's assessment string into a number suitable for StarRating.
- *
- * @param {string | null | undefined} assessment  The assessment value as a string (e.g., "3,50").
- * @returns {number} The numeric rating. Returns 0 if the input is null, undefined, or invalid.
- */
-const parseRating = (assessment?: string | null): number => {
-  if (!assessment) return 0;
-  return parseFloat(assessment.replace(",", ".")) || 0;
-};
+import type { Plant } from "../../types/adminPlants"; // ← updated import
+import type { PartnerProfilesProps } from "../../types/partnerProfile";
 
 /** Shared modal state shape used for both view and edit. */
 interface ModalState {
   isOpen: boolean;
   mode: "view" | "edit";
-  partner: PartnerProfileResponse | null;
+  plant: Plant | null; // ← was partner
 }
 
-const CLOSED_MODAL: ModalState = { isOpen: false, mode: "view", partner: null };
+const CLOSED_MODAL: ModalState = { isOpen: false, mode: "view", plant: null };
 
 /**
- * Partner Profiles listing page component.
+ * Plant listing page component.
  *
  * @param {PartnerProfilesProps} props Component props
  * @param {number | undefined} props.limit Initial items per page
- * @returns {JSX.Element} The rendered PartnerProfiles component.
+ * @returns {JSX.Element} The rendered Plant list component.
  */
 export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
   const {
-    partners,
+    plant,
     loading,
     error,
     currentPage,
@@ -68,22 +39,16 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
     goToPage,
     setItemsPerPage,
     uploadPartnersCsv,
-    updatePartnerRating,
-    updatePartner,
-    // registerPartner,
-    updateFounderStatus,
     getPartnerById,
+    updatePartner,
   } = usePartnerProfiles({
     initialLimit: limit ?? 5,
   });
+
   const { showError } = useToast();
 
-  // const [registeringIds, setRegisteringIds] = useState<Set<string>>(new Set());
   const [csvModalOpen, setCsvModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  // const [updatingFounderIds, setUpdatingFounderIds] = useState<Set<string>>(new Set());
-
-  // Single modal state drives both view and edit
   const [modal, setModal] = useState<ModalState>(CLOSED_MODAL);
 
   useEffect(() => {
@@ -102,98 +67,83 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
   );
 
   /**
-   * Opens the modal and loads partner details from API.
+   * Opens the modal and loads plant details from API.
    *
-   * @param {string} partnerId The partner's ID.
+   * @param {string} plantId The plant's ID.
    * @param {"view" | "edit"} mode Modal mode.
-   * @returns {Promise<void>}
    */
-  const handleOpenModal = async (
-    partnerId: string,
-    mode: "view" | "edit"
-  ) => {
-    try {
-      setModal({ isOpen: true, mode, partner: null }); // show loader immediately
-      const partner = await getPartnerById(partnerId);
-      if (partner) {
-        setModal({ isOpen: true, mode, partner });
-      } else {
-        setModal(CLOSED_MODAL);
-      }
-    } catch (err) {
-      console.error("Failed to load partner details:", err);
-      showError("Failed to fetch partner details");
+  const handleOpenModal = async (plantId: string, mode: "view" | "edit") => {
+  try {
+    setModal({ isOpen: true, mode, plant: null });
+    const fetched = await getPartnerById(plantId);
+    if (fetched) {
+      // Normalize: single plant API uses "id", list uses "plant_id"
+      const normalized = {
+        ...fetched,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        plant_id: fetched.plant_id ?? (fetched as any).id,
+      };
+      setModal({ isOpen: true, mode, plant: normalized as Plant });
+    } else {
       setModal(CLOSED_MODAL);
     }
-  };
-  /** 
-   * Closes the modal.
-   * @returns {void} 
-   */
-  const handleCloseModal = () => setModal(CLOSED_MODAL);
+  } catch (err) {
+    console.error("Failed to load plant details:", err);
+    showError("Failed to fetch plant details");
+    setModal(CLOSED_MODAL);
+  }
+};
+/**
+ * Closes the plant modal and resets its state to the default closed state.
+ *
+ * @returns {void}
+ */
+const handleCloseModal = () => setModal(CLOSED_MODAL);
 
   /**
-   * Saves edited partner details.
+   * Saves edited plant details.
    *
-   * @param {string} id Partner ID.
-   * @param {Partial<PartnerProfileResponse>} data Partial partner data to update.
-   * @returns {Promise<void>}
+   * @param {string} id Plant ID.
+   * @param {Partial<Plant>} data Partial plant data to update.
    */
-  const handleSavePartner = async (
-    id: string,
-    data: Partial<PartnerProfileResponse>
-  ) => {
+  const handleSavePlant = async (id: string, data: Partial<Plant>) => {
     const payload = {
-      // ── Basic fields (camelCase → snake_case) ──
-      company_name: data.companyName,
-      email: data.email,
-      category: data.category,
+      scientific_name: data.scientific_name,
+      common_name: data.common_name,
+      family: data.family,
+      plant_type: data.plant_type,
+      care_level: data.care_level,
+      watering: data.watering,
+      sunlight: data.sunlight,
+      cycle: data.cycle,
       description: data.description,
-
-
-      // ── Flatten location ──
-      address: data.location?.address,
-      city: data.location?.city,
-      state: data.location?.state,
-
-      // ── Flatten contact ──
-      telefone: data.contact?.telefone,
-      whatsapp: data.contact?.whatsapp,
-      website: data.contact?.website,
-      // instagram: data.contact?.instagram,
     };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await updatePartner(id, payload as any);
   };
-
-  /**
-   * Validates email and then registers the partner (pending → registered).
-   * 
-   * @param {PartnerProfileResponse} partner  The partner profile to register.
-   * @returns {Promise<void>} A promise that resolves when the registration process is complete.
-   */
-  const handleToggleFounder = async (partner: PartnerProfileResponse) => {
-    const newValue = partner.is_founder === "true"? "false" : "true";
-    
-
-    try {
-      await updateFounderStatus(partner.id, newValue);
-      // Optional: update UI immediately (optimistic update)
-      partner.is_founder = newValue;
-    } catch (err) {
-      console.error("Failed to update founder status:", err);
-      showError("Failed to update founder status");
-    }
-  };
-  /**
-   * Handles the CSV file upload and calls the appropriate service to process the file.
-   * 
-   * @param {File} file  The CSV file to be uploaded.
-   * @returns {Promise<void>} A promise that resolves when the file is successfully uploaded.
-   */
+/**
+ * Uploads a CSV file containing partner data.
+ *
+ * @async
+ * @param {File} file  The CSV file selected by the user.
+ * @returns {Promise<void>} Resolves when the upload completes.
+ */
   const handleCsvUpload = async (file: File) => {
     await uploadPartnersCsv(file);
   };
+
+  /**
+   * Returns the best available image URL from a plant record.
+   *
+   * @param {Plant} p The plant record.
+   * @returns {string | undefined} The URL of the best available image, or undefined if none found.
+   */
+  const getPlantImage = (p: Plant): string | undefined =>
+    p.image_url ||
+    p.image_small_url ||
+    p.image_medium_url ||
+    p.image_regular_url ||
+    undefined;
 
   return (
     <>
@@ -201,7 +151,7 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
         <div className="main_heading_area">
           <div className="row g-3">
             <div className="col">
-              <h4 className="page_heading">Manage Professionals</h4>
+              <h4 className="page_heading">Manage Plants</h4>
             </div>
             <div className="col-auto">
               <button
@@ -223,7 +173,7 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
                     fill="white"
                   />
                 </svg>
-                Add Professionals
+                Add Plants
               </button>
             </div>
           </div>
@@ -233,34 +183,34 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
           <table className="table mb-0">
             <thead>
               <tr>
-                <th scope="col">Project Image</th>
-                <th scope="col">Company Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Contact</th>
-                <th scope="col">Category</th>
-                <th scope="col">Address</th>
-                <th scope="col">Rating</th>
-                <th scope="col">Status</th>
+                <th scope="col">Image</th>
+                <th scope="col">Common Name</th>
+                <th scope="col">Scientific Name</th>
+                <th scope="col">Family</th>
+                <th scope="col">Type</th>
+                <th scope="col">Cycle</th>
+                <th scope="col">Care Level</th>
+                <th scope="col">Watering</th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 <TableLoader />
-              ) : partners.length > 0 ? (
-                partners.map((partner) => {
-                  const isFounder = partner.is_founder === "true";
+              ) : (plant ?? []).length > 0 ? (
+                plant?.map((p) => {
+                  const imgUrl = getPlantImage(p);
 
                   return (
-                    <tr key={partner.id}>
-                      {/* Project Image */}
+                    <tr key={p.plant_id}>
+                      {/* Image */}
                       <td scope="row">
-                        {partner.image_url ? (
+                        {imgUrl ? (
                           <img
-                            src={partner.image_url}
+                            src={imgUrl}
                             className="profile_img"
-                            alt={partner.companyName || "Profile"}
-                            onClick={() => setSelectedImage(partner.image_url!)}
+                            alt={p.common_name || "Plant"}
+                            onClick={() => setSelectedImage(imgUrl)}
                             style={{ cursor: "pointer" }}
                           />
                         ) : (
@@ -268,72 +218,46 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
                         )}
                       </td>
 
-                      <td>{partner.companyName || "N/A"}</td>
+                      {/* Common Name */}
+                      <td>{p.common_name || "N/A"}</td>
 
+                      {/* Scientific Name */}
                       <td>
-                        {partner.email ? (
-                          <a
-                            href={`mailto:${partner.email}`}
-                            style={{ color: "inherit", textDecoration: "none" }}
-                            title={partner.email}
+                        <em>{p.scientific_name || "N/A"}</em>
+                      </td>
+
+                      {/* Family */}
+                      <td>{p.family || "N/A"}</td>
+
+                      {/* Plant Type */}
+                      <td>{p.plant_type || p.type || "N/A"}</td>
+
+                      {/* Cycle */}
+                      <td>{p.cycle || "N/A"}</td>
+
+                      {/* Care Level */}
+                      <td>
+                        {p.care_level ? (
+                          <span
+                            className={`badge ${
+                              p.care_level.toLowerCase() === "easy"
+                                ? "bg-success"
+                                : p.care_level.toLowerCase() === "medium"
+                                ? "bg-warning text-dark"
+                                : "bg-danger"
+                            }`}
                           >
-                            {partner.email}
-                          </a>
+                            {p.care_level}
+                          </span>
                         ) : (
                           <span style={{ color: "#ccc" }}>—</span>
                         )}
                       </td>
 
-                      <td>
-                        {partner.contact?.telefone || (
-                          <span style={{ color: "#ccc" }}>—</span>
-                        )}
-                      </td>
+                      {/* Watering */}
+                      <td>{p.watering || "N/A"}</td>
 
-                      <td>{partner.category || "N/A"}</td>
-
-                      <td>{formatLocation(partner.location)}</td>
-
-                      <td className="star_rating">
-                        <StarRating
-                          rating={parseRating(partner.ratings)}
-                          onChange={async (newRating) => {
-                            if (partner.ratings) {
-                              partner.ratings = String(newRating);
-                            }
-                            try {
-                              await updatePartnerRating(partner.id, newRating);
-                            } catch (err) {
-                              console.error("Rating update failed:", err);
-                            }
-                          }}
-                        />
-                      </td>
-
-                      <td>
-                        <span
-                          className={
-                            isFounder
-                              ? "badge bg-success"
-                              : "badge bg-warning text-dark"
-                          }
-                          style={{
-                            cursor: "pointer",
-                            transition: "opacity 0.2s ease",
-                            userSelect: "none",
-                          }}
-                          title={
-                            isFounder
-                              ? "Click to remove Founder"
-                              : "Click to set as Founder"
-                          }
-                          onClick={() => handleToggleFounder(partner)}
-                        >
-                          {isFounder ? "Founder" : "Pending"}
-                        </span>
-                      </td>
-
-                      {/* ── Actions: View icon + Edit icon ── */}
+                      {/* Actions */}
                       <td>
                         <span
                           className="action_icons"
@@ -341,9 +265,11 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
                         >
                           {/* 👁 View Details */}
                           <span
-                            onClick={() => handleOpenModal(partner.id, "view")}
+                            onClick={() =>
+                              handleOpenModal(String(p.plant_id), "view")
+                            }
                             style={{ cursor: "pointer" }}
-                            title="View Partner Details"
+                            title="View Plant Details"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -363,11 +289,13 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
                             </svg>
                           </span>
 
-                          {/* ✏️ Edit Partner */}
+                          {/* ✏️ Edit Plant */}
                           <span
-                            onClick={() => handleOpenModal(partner.id, "edit")}
+                            onClick={() =>
+                              handleOpenModal(String(p.plant_id), "edit")
+                            }
                             style={{ cursor: "pointer" }}
-                            title="Edit Partner"
+                            title="Edit Plant"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -389,11 +317,8 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
                 })
               ) : (
                 <tr>
-                  <td
-                    colSpan={9}
-                    style={{ textAlign: "center", padding: "20px" }}
-                  >
-                    No partners found
+                  <td colSpan={9} style={{ textAlign: "center", padding: "20px" }}>
+                    No plants found
                   </td>
                 </tr>
               )}
@@ -424,13 +349,12 @@ export const PartnerProfiles = ({ limit }: PartnerProfilesProps) => {
         onUpload={handleCsvUpload}
       />
 
-      {/* One modal instance — driven by modal.mode ("view" | "edit") */}
       <PartnerViewModal
         isOpen={modal.isOpen}
-        partner={modal.partner}
+        partner={modal.plant} // adapt once PartnerViewModal supports Plant
         onClose={handleCloseModal}
         mode={modal.mode}
-        onSave={handleSavePartner}
+        onSave={handleSavePlant }
       />
     </>
   );

@@ -6,7 +6,8 @@ const PARTNER_PROFILE_BASE = "/api/v1/partnerProfile";
 const STATE_CITY_BASE = "/api/v1/stateCityData/countries";
 const LEADS = "/api/v1/admin/admin/leads";
 const DASHBOARD = "/api/v1/admin/dashboard";
-const PLANTS = "/api/v1/admin/plants";
+const PLANTS = "/api/v1/allplants";
+// const PLANTS = "/api/v1/admin/plants";
 const SUBSCRIPTION_PLANS = "/api/v1/subscription";
 const EXTERNAL_LINKS = "/api/v1/externalLinks";
 const PROFESSIONALS = "/api/v1/professional";
@@ -61,9 +62,10 @@ export const API_ROUTES = {
   plants: {
     create: `${PLANTS}`,
     getAll: `${PLANTS}`,
-    getById: `${PLANTS}/`,
+    getById: `${PLANTS}`,
     update: `${PLANTS}/`,
     delete: `${PLANTS}/`,
+    AdmingetAll: `${PLANTS}/admin/getAllPlants`,
   },
   subscriptionPlans: {
     createPlan: `${SUBSCRIPTION_PLANS}/`,

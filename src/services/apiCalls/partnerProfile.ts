@@ -1,5 +1,6 @@
 // services/apiCalls/partnerProfile.ts
 import { apiService } from "..";
+import type { AdminPlant } from "../../types/adminPlants";
 import type { ApiResponse } from "../../types/apiResponse";
 import type {
   PaginatedPartnerProfilesResponse,
@@ -143,4 +144,43 @@ export const partnerProfileService = {
       { is_founder: isFounderString }
     );
   }
+};
+
+/**
+ * Plant management API service.
+ */
+export const Plants = {
+  /**
+   * Retrieves a paginated list of plants.
+   *
+   * @param {PaginationParams} [params]  Pagination options.
+   * @param {number} [params.page]  Page number to retrieve.
+   * @param {number} [params.limit]  Number of records per page.
+   * @returns {Promise<ApiResponse<AdminPlant[]>>} A paginated list of plants.
+   */
+  AdmingetAll: (
+    params?: PaginationParams
+  ): Promise<ApiResponse<AdminPlant[]>> => {
+    const queryParams = new URLSearchParams();
+
+    if (params?.page) queryParams.append("page", params.page.toString());
+    if (params?.limit) queryParams.append("limit", params.limit.toString());
+
+    const url = queryParams.toString()
+      ? `${API_ROUTES.plants.AdmingetAll}?${queryParams}`
+      : API_ROUTES.plants.AdmingetAll;
+
+    return apiService.get<AdminPlant[]>(url);
+  },
+
+  /**
+   * Retrieves a plant by its unique identifier.
+   *
+   * @param {string} id  The plant ID.
+   * @returns {Promise<ApiResponse<AdminPlant>>} The requested plant details.
+   */
+  AdmingetById: (id: string): Promise<ApiResponse<AdminPlant>> =>
+    apiService.get<AdminPlant>(
+      `${API_ROUTES.plants.getById}/${id}`
+    ),
 };

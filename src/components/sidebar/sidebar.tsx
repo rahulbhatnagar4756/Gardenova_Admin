@@ -161,7 +161,7 @@ export const Sidebar = ({
                 fill="#F4F4F4"
               />
             </svg>
-            <span>Professionals</span>
+            <span>Plants</span>
           </NavLink>
         </li>
         {/* Diagnostic Questions */}
@@ -204,7 +204,7 @@ export const Sidebar = ({
         </li>
         {/* Leads */}
         <li>
-          <NavLink
+          {/* <NavLink
             to={APP_ROUTES.admin.leads}
             className={({ isActive }) => (isActive ? "active" : "")}
             onClick={() => handleMenuClick(APP_ROUTES.admin.leads)}
@@ -224,11 +224,11 @@ export const Sidebar = ({
               />
             </svg>
             <span>Leads</span>
-          </NavLink>
+          </NavLink> */}
         </li>
         {/* Create Rules */}
         <li>
-          <NavLink
+          {/* <NavLink
             to={APP_ROUTES.admin.rules}
             className={({ isActive }) => (isActive ? "active" : "")}
             onClick={() => handleMenuClick(APP_ROUTES.admin.rules)}
@@ -248,7 +248,7 @@ export const Sidebar = ({
               />
             </svg>
             <span>Create Rules</span>
-          </NavLink>
+          </NavLink> */}
         </li>
         {/* Knowledge Library */}
         {/* <li>

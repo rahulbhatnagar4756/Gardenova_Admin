@@ -1,5 +1,6 @@
 // types/partnerProfile.ts
 
+import type { AdminPlant, Plant } from "./adminPlants";
 import type { ApiResponse } from "./apiResponse";
 
 /** Represents possible status values for a partner profile. */
@@ -130,7 +131,10 @@ export interface PartnerProfilesProps {
 
 /** Return type for usePartnerProfiles hook. */
 export interface UsePartnerProfilesReturn {
-  partners: PartnerProfileResponse[];
+  plant: AdminPlant[] | null;
+getPartnerById: (id: string) => Promise<AdminPlant | null>;
+
+  // partners: PartnerProfileResponse[];
   loading: boolean;
   error: string | null;
   currentPage: number;
@@ -147,7 +151,7 @@ export interface UsePartnerProfilesReturn {
   deletePartner: (id: string) => Promise<void>;
   refetch: () => Promise<void>;
   updatePartnerRating: (partnerId: string, rating: number) => Promise<void>;
-  getPartnerById: (id: string) => Promise<PartnerProfileResponse | null>;
+  // getPartnerById: (id: string) => Promise<PartnerProfileResponse | null>;
   updateFounderStatus: (partnerId: string, isFounder: string) => Promise<void>;
 }
 
@@ -162,7 +166,7 @@ export interface UsePartnerProfilesOptions {
 /** Props for viewing partner details inside a modal. */
 export interface PartnerViewModalProps {
   isOpen: boolean;
-  partner: PartnerProfileResponse | null;
+  partner: Plant | null;
   onClose: () => void;
 }
 
