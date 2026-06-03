@@ -1,41 +1,40 @@
 import { apiService } from "..";
 import type { ApiResponse } from "../../types/apiResponse";
 import type {
+  RawSubscriptionPlan,
   SubscriptionPlan,
-  SubscriptionPlansResponse,
-  CreateSubscriptionPlanRequest,
   UpdateSubscriptionPlanRequest,
+  CreateSubscriptionPlanRequest,
 } from "../../types/subscription";
 import { API_ROUTES } from "../apiRoutes";
 
+
 /**
- * Subscription Service
+ * Subscription plan API service layer.
  *
- * Provides all API operations related to subscription plans,
- * including fetching, creating, updating, and toggling plan status.
+ * Provides methods to fetch, create, and update subscription plans.
  */
 export const subscriptionService = {
-  /**
-   * Fetch all subscription plans.
-   *
-   * GET /subscription
-   *
-   * @returns Promise resolving to an API response containing all subscription plans
-   */
-  getAllPlans: async (): Promise<ApiResponse<SubscriptionPlansResponse>> => {
-    return apiService.get<SubscriptionPlansResponse>(
+/**
+ * Fetches all subscription plans from the backend.
+ *
+ * @async
+ * @function getAllPlans
+ * @returns {Promise<ApiResponse<RawSubscriptionPlan[]>>} List of raw subscription plans
+ */
+  getAllPlans: async (): Promise<ApiResponse<RawSubscriptionPlan[]>> => {
+    return apiService.get<RawSubscriptionPlan[]>(
       API_ROUTES.subscriptionPlans.getAllPlans
     );
-  },
-
-  /**
-   * Create a new subscription plan.
-   *
-   * POST /subscription
-   *
-   * @param data Payload containing new subscription plan details
-   * @returns Promise resolving to an API response with the created plan
-   */
+  },  // ← comma was missing here
+/**
+ * Creates a new subscription plan.
+ *
+ * @async
+ * @function createPlan
+ * @param {CreateSubscriptionPlanRequest} data  Plan payload
+ * @returns {Promise<ApiResponse<SubscriptionPlan>>} Created subscription plan
+ */
   createPlan: async (
     data: CreateSubscriptionPlanRequest
   ): Promise<ApiResponse<SubscriptionPlan>> => {
@@ -44,33 +43,15 @@ export const subscriptionService = {
       data
     );
   },
-
-  /**
-   * Update an existing subscription plan.
-   *
-   * PUT /subscription
-   *
-   * @param data  Updated subscription plan payload
-   * @returns Promise resolving to an API response with the updated plan
-   */
-  updatePlan: async (
-    data: UpdateSubscriptionPlanRequest
-  ): Promise<ApiResponse<SubscriptionPlan>> => {
-    return apiService.put<SubscriptionPlan>(
-      API_ROUTES.subscriptionPlans.updatePlan,
-      data
-    );
-  },
-
-  /**
-   * Update the status of a subscription plan by ID.
-   *
-   * PATCH /subscription/status/:id
-   *
-   * @param id  Unique identifier of the subscription plan
-   * @param status  New status of the plan ("active" or "inactive")
-   * @returns Promise resolving to an API response with the updated plan
-   */
+/**
+ * Updates the active/inactive status of a subscription plan.
+ *
+ * @async
+ * @function updateStatusById
+ * @param {string | undefined} id  Subscription plan ID
+ * @param {"active" | "inactive"} status  New plan status
+ * @returns {Promise<ApiResponse<SubscriptionPlan>>} Updated subscription plan
+ */
   updateStatusById: async (
     id: string | undefined,
     status: "active" | "inactive"
@@ -80,28 +61,22 @@ export const subscriptionService = {
       { status }
     );
   },
-
-  /**
-   * Update a subscription plan by ID.
-   *
-   * PUT /subscription/:id
-   *
-   * @param id  Unique identifier of the subscription plan
-   * @param data  Updated subscription plan fields (excluding ID)
-   * @returns Promise resolving to an API response with the updated plan
-   */
+/**
+ * Updates an existing subscription plan by ID.
+ *
+ * @async
+ * @function updatePlanById
+ * @param {string} id  Subscription plan ID
+ * @param {UpdateSubscriptionPlanRequest} data  Updated plan data
+ * @returns {Promise<ApiResponse<SubscriptionPlan>>} Updated subscription plan
+ */
   updatePlanById: async (
     id: string,
     data: UpdateSubscriptionPlanRequest
   ): Promise<ApiResponse<SubscriptionPlan>> => {
-    // Backend expects: PUT /subscription/update
-    // With ID in the request body, not in the URL
     return apiService.put<SubscriptionPlan>(
       API_ROUTES.subscriptionPlans.updatePlan,
-      {
-        id,  // Include ID in the body
-        ...data
-      }
+      { id, ...data }
     );
   },
 };

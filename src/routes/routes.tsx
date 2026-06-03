@@ -41,7 +41,7 @@ export const AppRoutes = () => {
         <Route index element={<Dashboard />} />
         <Route path="diagnostic-questions" element={<DiagnosticQuestions />} />
         <Route path="rules" element={<Rules />} />
-        <Route path="partner-profiles" element={<PartnerProfiles />} />
+        <Route path="plants-detail" element={<PartnerProfiles />} />
         <Route path="leads" element={<Leads />} />
         {/* <Route path="knowledge-library" element={<KnowledgeLibrary />} /> */}
         <Route

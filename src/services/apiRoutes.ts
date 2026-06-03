@@ -8,7 +8,7 @@ const LEADS = "/api/v1/admin/admin/leads";
 const DASHBOARD = "/api/v1/admin/dashboard";
 const PLANTS = "/api/v1/allplants";
 // const PLANTS = "/api/v1/admin/plants";
-const SUBSCRIPTION_PLANS = "/api/v1/subscription";
+const SUBSCRIPTION_PLANS = "/api/v1/plans";
 const EXTERNAL_LINKS = "/api/v1/externalLinks";
 const PROFESSIONALS = "/api/v1/professional";
 
@@ -69,7 +69,7 @@ export const API_ROUTES = {
   },
   subscriptionPlans: {
     createPlan: `${SUBSCRIPTION_PLANS}/`,
-    getAllPlans: `${SUBSCRIPTION_PLANS}/`,
+    getAllPlans: `${SUBSCRIPTION_PLANS}/getplans`,
     updatePlan: `${SUBSCRIPTION_PLANS}/update`,
     updateStatus: `${SUBSCRIPTION_PLANS}/status`, 
   },   
