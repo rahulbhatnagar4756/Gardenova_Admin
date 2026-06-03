@@ -52,7 +52,7 @@ export const usePartnerProfiles = (
       const plantList    = data.data        ?? [];
       const page         = data.currentPage ?? 1;
       const pages        = data.totalPages  ?? 0;
-      const count        = data.totalCount  ?? 0;
+      const count        = data.totalItems  ?? 0;
       const itemsPerPage = data.limit       ?? params?.limit ?? 5;
 
       setPlant(Array.isArray(plantList) ? plantList : []);

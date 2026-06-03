@@ -103,7 +103,7 @@ export interface PaginatedPlantsResponse {
   data: AdminPlant[];
   currentPage: number;
   totalPages: number;
-  totalCount: number;
+  totalItems: number;
   limit: number;
 }
 /**
