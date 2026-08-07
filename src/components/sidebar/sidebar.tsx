@@ -164,6 +164,104 @@ export const Sidebar = ({
             <span>Plants</span>
           </NavLink>
         </li>
+        {/* Plant Catalog */}
+        <li>
+          <NavLink
+            to={APP_ROUTES.admin.plantCatalog}
+            className={({ isActive }) => (isActive ? "active" : "")}
+            onClick={() => handleMenuClick(APP_ROUTES.admin.plantCatalog)}
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 2C8.5 2 6 5 6 8.5C6 12.5 10 16 12 21C14 16 18 12.5 18 8.5C18 5 15.5 2 12 2Z"
+                stroke="#F4F4F4"
+                strokeWidth="1.6"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M12 21V10"
+                stroke="#F4F4F4"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+              />
+            </svg>
+            <span>Plant Catalog</span>
+          </NavLink>
+        </li>
+        {/* Admin Users */}
+        <li>
+          <NavLink
+            to={APP_ROUTES.admin.adminUsers}
+            className={({ isActive }) => (isActive ? "active" : "")}
+            onClick={() => handleMenuClick(APP_ROUTES.admin.adminUsers)}
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M16 11C17.6569 11 19 9.65685 19 8C19 6.34315 17.6569 5 16 5C14.3431 5 13 6.34315 13 8C13 9.65685 14.3431 11 16 11Z"
+                fill="#F4F4F4"
+              />
+              <path
+                d="M8 11C9.65685 11 11 9.65685 11 8C11 6.34315 9.65685 5 8 5C6.34315 5 5 6.34315 5 8C5 9.65685 6.34315 11 8 11Z"
+                fill="#F4F4F4"
+              />
+              <path
+                d="M8 13C5.23858 13 3 15.2386 3 18V19C3 19.5523 3.44772 20 4 20H12C12.5523 20 13 19.5523 13 19V18C13 15.2386 10.7614 13 8 13Z"
+                fill="#F4F4F4"
+              />
+              <path
+                d="M16.5 13C14.8783 13 13.4516 13.7904 12.5752 15.0007C13.4701 15.8711 14 17.0533 14 18.25V19C14 19.1712 13.9829 19.3389 13.9502 19.5023H20C20.5523 19.5023 21 19.0546 21 18.5023V18.25C21 15.3505 18.6495 13 15.75 13H16.5Z"
+                fill="#F4F4F4"
+              />
+            </svg>
+            <span>Users</span>
+          </NavLink>
+        </li>
+        {/* Diagnosis Scans */}
+        <li>
+          <NavLink
+            to={APP_ROUTES.admin.diagnosisScans}
+            className={({ isActive }) => (isActive ? "active" : "")}
+            onClick={() => handleMenuClick(APP_ROUTES.admin.diagnosisScans)}
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M4 5C4 3.89543 4.89543 3 6 3H14L20 9V19C20 20.1046 19.1046 21 18 21H6C4.89543 21 4 20.1046 4 19V5Z"
+                stroke="#F4F4F4"
+                strokeWidth="1.6"
+              />
+              <path
+                d="M14 3V9H20"
+                stroke="#F4F4F4"
+                strokeWidth="1.6"
+              />
+              <path
+                d="M8 13H16M8 17H13"
+                stroke="#F4F4F4"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+              />
+            </svg>
+            <span>Diagnosis Scans</span>
+          </NavLink>
+        </li>
         {/* Diagnostic Questions */}
         <li>
           <NavLink

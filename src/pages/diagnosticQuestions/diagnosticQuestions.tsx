@@ -33,6 +33,7 @@ export const DiagnosticQuestions = ({
     createQuestion,
     updateQuestion,
     deleteQuestion,
+    reorderQuestions,
   } = useDiagnosticQuestions();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,11 +41,12 @@ export const DiagnosticQuestions = ({
     null
   );
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [reordering, setReordering] = useState(false);
   const { showSuccess, showError } = useToast();
 
-  const questionsWithId: QuestionWithId[] = questions.map((q, index) => ({
+  const questionsWithId: QuestionWithId[] = questions.map((q) => ({
     ...q,
-    id: index.toString(),
+    id: q.question_id,
   }));
 
   const displayedQuestions = limit
@@ -108,6 +110,24 @@ export const DiagnosticQuestions = ({
   };
 
   /**
+   * Persists a new question order from drag-and-drop or move buttons.
+   *
+   * @param {QuestionWithId[]} reordered Questions in the new display order.
+   * @returns {Promise<void>}
+   */
+  const handleReorder = async (reordered: QuestionWithId[]) => {
+    try {
+      setReordering(true);
+      await reorderQuestions(reordered);
+      showSuccess("Questions reordered successfully!");
+    } catch {
+      showError("Failed to reorder questions");
+    } finally {
+      setReordering(false);
+    }
+  };
+
+  /**
    * Saves a question — either creates a new one or updates an existing one.
    *
    * @param {CreateQuestionRequest | UpdateQuestionRequest} questionData Data to save.
@@ -120,6 +140,9 @@ export const DiagnosticQuestions = ({
   ) => {
     try {
       if (isEditing && editingQuestion) {
+        if (!editingQuestion.question_id) {
+          throw new Error("Missing question id");
+        }
         await updateQuestion(editingQuestion.question_id, questionData);
         showSuccess("Question updated successfully!");
       } else {
@@ -128,8 +151,10 @@ export const DiagnosticQuestions = ({
       }
       setIsModalOpen(false);
       setEditingQuestion(null);
-    } catch {
-      showError("Failed to save question");
+    } catch (err) {
+      showError(
+        err instanceof Error ? err.message : "Failed to save question"
+      );
     }
   };
 
@@ -145,6 +170,8 @@ export const DiagnosticQuestions = ({
           isActionShow={isActionShow}
           onEdit={handleEdit}
           onDelete={setDeleteId}
+          onReorder={isActionShow && !limit ? handleReorder : undefined}
+          reordering={reordering}
         />
       </div>
 

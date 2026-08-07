@@ -1,4 +1,4 @@
-import type { Dispatch, SetStateAction } from "react";
+import type { Dispatch, DragEvent, SetStateAction } from "react";
 
 /**
  * Represents a diagnostic question stored in the system.
@@ -41,10 +41,12 @@ export interface Question {
  *
  * @property id - Unique identifier for the option.
  * @property option_text - Text displayed for the option.
+ * @property order - Optional display order returned by the API.
  */
 export interface QuestionOption {
   id: string;
   option_text: string;
+  order?: number | null;
 }
 
 /**
@@ -71,6 +73,26 @@ export interface UpdateQuestionRequest {
   question_text: string;
   options: QuestionOption[];
   order: number;
+}
+
+/**
+ * Single item in a bulk reorder payload.
+ *
+ * @property id - Question UUID.
+ * @property order - New 1-based display order.
+ */
+export interface ReorderItem {
+  id: string;
+  order: number;
+}
+
+/**
+ * Payload for bulk reordering diagnostic questions.
+ *
+ * @property items - Ordered list of question id + order pairs.
+ */
+export interface ReorderQuestionsRequest {
+  items: ReorderItem[];
 }
 
 /**
@@ -108,6 +130,8 @@ export interface QuestionWithId extends Question {
  * @property isActionShow - Whether actions should be shown.
  * @property onEdit - Handler triggered on question edit.
  * @property onDelete - Handler triggered on question delete.
+ * @property onReorder - Handler when the list order changes.
+ * @property reordering - Whether a reorder request is in flight.
  */
 export interface QuestionsListProps {
   questions: QuestionWithId[];
@@ -115,6 +139,8 @@ export interface QuestionsListProps {
   isActionShow: boolean;
   onEdit: (question: QuestionWithId) => void;
   onDelete: (id: string) => void;
+  onReorder?: (reordered: QuestionWithId[]) => void;
+  reordering?: boolean;
 }
 
 /**
@@ -125,6 +151,18 @@ export interface QuestionsListProps {
  * @property isActionShow - Whether edit/delete buttons are visible.
  * @property onEdit - Edit handler.
  * @property onDelete - Delete handler.
+ * @property onMoveUp - Move question one position up.
+ * @property onMoveDown - Move question one position down.
+ * @property canMoveUp - Whether move-up is allowed.
+ * @property canMoveDown - Whether move-down is allowed.
+ * @property isDragging - Whether this card is being dragged.
+ * @property isDragOver - Whether another card is dragged over this one.
+ * @property onDragStart - Drag start handler.
+ * @property onDragOver - Drag over handler.
+ * @property onDragLeave - Drag leave handler.
+ * @property onDrop - Drop handler.
+ * @property onDragEnd - Drag end handler.
+ * @property reordering - Whether a reorder request is in flight.
  */
 export interface QuestionCardProps {
   question: QuestionWithId;
@@ -132,6 +170,18 @@ export interface QuestionCardProps {
   isActionShow: boolean;
   onEdit: (question: QuestionWithId) => void;
   onDelete: (id: string) => void;
+  onMoveUp?: () => void;
+  onMoveDown?: () => void;
+  canMoveUp?: boolean;
+  canMoveDown?: boolean;
+  isDragging?: boolean;
+  isDragOver?: boolean;
+  onDragStart?: (e: DragEvent) => void;
+  onDragOver?: (e: DragEvent) => void;
+  onDragLeave?: () => void;
+  onDrop?: (e: DragEvent) => void;
+  onDragEnd?: () => void;
+  reordering?: boolean;
 }
 
 /**

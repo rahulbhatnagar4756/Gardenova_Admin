@@ -4,11 +4,6 @@ import type { QuestionCardProps } from "../../types/diagnosticQuestion";
  * Renders a single question card with index, text, and optional action buttons.
  *
  * @param {QuestionCardProps} root0 Component props.
- * @param {any} root0.question The question object to display.
- * @param {number} root0.index Position index of the question in the list.
- * @param {boolean} root0.isActionShow Whether edit/delete actions should be shown.
- * @param {(question: any) => void} root0.onEdit Callback when editing the question.
- * @param {(id: string) => void} root0.onDelete Callback when deleting the question.
  * @returns {JSX.Element} The rendered question card UI.
  */
 const QuestionCard = ({
@@ -17,19 +12,61 @@ const QuestionCard = ({
   isActionShow,
   onEdit,
   onDelete,
+  onMoveUp,
+  onMoveDown,
+  canMoveUp = false,
+  canMoveDown = false,
+  isDragging = false,
+  isDragOver = false,
+  onDragStart,
+  onDragOver,
+  onDragLeave,
+  onDrop,
+  onDragEnd,
+  reordering = false,
 }: QuestionCardProps) => {
   return (
-    <div className="single_question">
+    <div
+      className={`single_question${isDragging ? " is-dragging" : ""}${
+        isDragOver ? " is-drag-over" : ""
+      }`}
+      onDragOver={onDragOver}
+      onDragLeave={onDragLeave}
+      onDrop={onDrop}
+    >
       <div className="row align-items-end">
         <div className="col-md">
           <ul className="question_heading">
+            {isActionShow && (
+              <li
+                className="question_drag_handle"
+                title="Drag to reorder"
+                aria-label="Drag to reorder"
+                draggable={!reordering}
+                onDragStart={onDragStart}
+                onDragEnd={onDragEnd}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                >
+                  <path
+                    d="M7 5.5C7 6.32843 6.32843 7 5.5 7C4.67157 7 4 6.32843 4 5.5C4 4.67157 4.67157 4 5.5 4C6.32843 4 7 4.67157 7 5.5ZM7 10C7 10.8284 6.32843 11.5 5.5 11.5C4.67157 11.5 4 10.8284 4 10C4 9.17157 4.67157 8.5 5.5 8.5C6.32843 8.5 7 9.17157 7 10ZM7 14.5C7 15.3284 6.32843 16 5.5 16C4.67157 16 4 15.3284 4 14.5C4 13.6716 4.67157 13 5.5 13C6.32843 13 7 13.6716 7 14.5ZM16 5.5C16 6.32843 15.3284 7 14.5 7C13.6716 7 13 6.32843 13 5.5C13 4.67157 13.6716 4 14.5 4C15.3284 4 16 4.67157 16 5.5ZM16 10C16 10.8284 15.3284 11.5 14.5 11.5C13.6716 11.5 13 10.8284 13 10C13 9.17157 13.6716 8.5 14.5 8.5C15.3284 8.5 16 9.17157 16 10ZM16 14.5C16 15.3284 15.3284 16 14.5 16C13.6716 16 13 15.3284 13 14.5C13 13.6716 13.6716 13 14.5 13C15.3284 13 16 13.6716 16 14.5Z"
+                    fill="#4A4A4A"
+                  />
+                </svg>
+              </li>
+            )}
             <li className="question_number">Q.{index + 1}</li>
             <li className="question_name">{question.question_text}</li>
           </ul>
           <ul className="question_options_area">
             <li className="question_options_head">Options:</li>
             {question.options.map((option, optionIndex) => (
-              <li key={optionIndex}>
+              <li key={option.id || optionIndex}>
                 <span className="question_answer">{option.option_text}</span>
               </li>
             ))}
@@ -41,12 +78,57 @@ const QuestionCard = ({
               <li className="ms-auto question_actions">
                 <button
                   type="button"
+                  onClick={onMoveUp}
+                  disabled={!canMoveUp || reordering}
+                  title="Move up"
+                  aria-label="Move question up"
+                  className="question_icon_btn"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                  >
+                    <path
+                      d="M10 4L4 10H8V16H12V10H16L10 4Z"
+                      fill="#4A4A4A"
+                    />
+                  </svg>
+                </button>
+              </li>
+              <li className="question_actions">
+                <button
+                  type="button"
+                  onClick={onMoveDown}
+                  disabled={!canMoveDown || reordering}
+                  title="Move down"
+                  aria-label="Move question down"
+                  className="question_icon_btn"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                  >
+                    <path
+                      d="M10 16L16 10H12V4H8V10H4L10 16Z"
+                      fill="#4A4A4A"
+                    />
+                  </svg>
+                </button>
+              </li>
+              <li className="question_actions">
+                <button
+                  type="button"
                   onClick={() => onEdit(question)}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    padding: "5px",
-                  }}
+                  disabled={reordering}
+                  className="question_icon_btn"
+                  title="Edit"
+                  aria-label="Edit question"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -66,11 +148,10 @@ const QuestionCard = ({
                 <button
                   type="button"
                   onClick={() => onDelete(question.question_id)}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    padding: "5px",
-                  }}
+                  disabled={reordering}
+                  className="question_icon_btn"
+                  title="Delete"
+                  aria-label="Delete question"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

@@ -7,6 +7,15 @@ import type {
 } from "../types/diagnosticQuestion";
 
 /**
+ * Sorts questions by their display order ascending.
+ *
+ * @param {Question[]} list Questions to sort.
+ * @returns {Question[]} Sorted copy of the list.
+ */
+const sortByOrder = (list: Question[]): Question[] =>
+  [...list].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+/**
  * Custom hook to manage diagnostic questions with CRUD operations and state.
  *
  * @returns {{
@@ -17,6 +26,7 @@ import type {
  *   createQuestion: (data: CreateQuestionRequest) => Promise<any>,
  *   updateQuestion: (id: string, data: UpdateQuestionRequest) => Promise<any>,
  *   deleteQuestion: (id: string) => Promise<any>,
+ *   reorderQuestions: (reordered: Question[]) => Promise<any>,
  *   clearError: () => void
  * }} Diagnostic questions hook API.
  */
@@ -36,7 +46,7 @@ export const useDiagnosticQuestions = () => {
       const response = await questionService.getAllQuestions();
 
       if (response.success) {
-        setQuestions(response.data.questions);
+        setQuestions(sortByOrder(response.data.questions));
         setError(null);
       } else {
         setError("Failed to fetch questions");
@@ -101,15 +111,14 @@ export const useDiagnosticQuestions = () => {
    * @returns {Promise<any>} The API response after update.
    */
   const updateQuestion = async (id: string, data: UpdateQuestionRequest) => {
+    const originalQuestions = [...questions];
+    const questionIndex = questions.findIndex((q) => q.question_id === id);
+
+    if (questionIndex === -1) {
+      throw new Error("Question not found");
+    }
+
     try {
-      // Find question by some criteria (since we don't have ID in response)
-      const questionIndex = questions.findIndex((q) => q.question_id === id);
-
-      if (questionIndex === -1) {
-        throw new Error("Question not found");
-      }
-
-      // Optimistic update
       const updatedQuestion: Question = {
         question_id: id,
         question_text: data.question_text,
@@ -124,16 +133,14 @@ export const useDiagnosticQuestions = () => {
       const response = await questionService.updateQuestion(id, data);
 
       if (response.success) {
-        // Keep the optimistic update or refetch for consistency
-        return response;
-      } else {
-        // Rollback optimistic update
         await fetchQuestions();
-        throw new Error("Failed to update question");
+        return response;
       }
+
+      setQuestions(originalQuestions);
+      throw new Error("Failed to update question");
     } catch (err) {
-      // Rollback optimistic update
-      await fetchQuestions();
+      setQuestions(originalQuestions);
       setError(
         err instanceof Error ? err.message : "Failed to update question"
       );
@@ -175,6 +182,44 @@ export const useDiagnosticQuestions = () => {
   };
 
   /**
+   * Persists a new question order after drag-and-drop or move up/down.
+   *
+   * @param {Question[]} reordered Questions in the desired order.
+   * @returns {Promise<any>} The API response after reorder.
+   */
+  const reorderQuestions = async (reordered: Question[]) => {
+    const originalQuestions = [...questions];
+    const withOrder = reordered.map((q, index) => ({
+      ...q,
+      order: index + 1,
+    }));
+
+    try {
+      setQuestions(withOrder);
+
+      const response = await questionService.reorderQuestions({
+        items: withOrder.map((q) => ({
+          id: q.question_id,
+          order: q.order,
+        })),
+      });
+
+      if (response.success) {
+        return response;
+      }
+
+      setQuestions(originalQuestions);
+      throw new Error("Failed to reorder questions");
+    } catch (err) {
+      setQuestions(originalQuestions);
+      setError(
+        err instanceof Error ? err.message : "Failed to reorder questions"
+      );
+      throw err;
+    }
+  };
+
+  /**
    * Clears the current error state.
    *
    * @returns {void}
@@ -190,6 +235,7 @@ export const useDiagnosticQuestions = () => {
     createQuestion,
     updateQuestion,
     deleteQuestion,
+    reorderQuestions,
     refetch: fetchQuestions,
     clearError,
   };

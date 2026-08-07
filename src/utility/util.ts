@@ -124,3 +124,61 @@ export const fileToBase64 = (file: File): Promise<string> =>
     reader.onerror = reject;
     reader.readAsDataURL(file);
   });
+
+/**
+ * Resolves a media path that may be absolute or relative to the API host.
+ *
+ * @param url Absolute URL, relative path, or null/undefined.
+ * @returns Absolute URL suitable for img src, or undefined when empty.
+ */
+export const resolveMediaUrl = (
+  url?: string | null
+): string | undefined => {
+  if (!url?.trim()) return undefined;
+  const trimmed = url.trim();
+  if (/^https?:\/\//i.test(trimmed) || trimmed.startsWith("data:")) {
+    return trimmed;
+  }
+  const base = (import.meta.env.VITE_API_BASE_URL as string | undefined)?.replace(
+    /\/$/,
+    ""
+  );
+  if (!base) return trimmed;
+  return `${base}/${trimmed.replace(/^\//, "")}`;
+};
+
+/**
+ * Formats an ISO date string for admin tables.
+ *
+ * @param value ISO timestamp or null/undefined.
+ * @returns Locale date string, or "—" when missing/invalid.
+ */
+export const formatAdminDate = (value?: string | null): string => {
+  if (!value) return "—";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "—";
+  return date.toLocaleDateString(undefined, {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+};
+
+/**
+ * Formats an ISO date-time string for admin detail views.
+ *
+ * @param value ISO timestamp or null/undefined.
+ * @returns Locale date-time string, or "—" when missing/invalid.
+ */
+export const formatAdminDateTime = (value?: string | null): string => {
+  if (!value) return "—";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "—";
+  return date.toLocaleString(undefined, {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};

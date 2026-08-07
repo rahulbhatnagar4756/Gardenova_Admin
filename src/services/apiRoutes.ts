@@ -28,6 +28,7 @@ export const API_ROUTES = {
     updateQuestion: `${ADMIN_BASE}/question/`,
     getAllQuestion: `${ADMIN_BASE}/question`,
     deleteQuestion: `${ADMIN_BASE}/question/`,
+    reorderQuestions: `${ADMIN_BASE}/question/reorder`,
     questionOptionsGrouped: `${ADMIN_BASE}/question/options-grouped`,
   },
   rules: {
@@ -58,6 +59,12 @@ export const API_ROUTES = {
   },
   admin: {
     dashboard: `${DASHBOARD}`,
+    users: `${ADMIN_BASE}/users`,
+    userById: `${ADMIN_BASE}/users`,
+    diagnosisScans: `${ADMIN_BASE}/diagnosis-scans`,
+    diagnosisScanById: `${ADMIN_BASE}/diagnosis-scans`,
+    plantCatalog: `${ADMIN_BASE}/plant-catalog`,
+    plantCatalogById: `${ADMIN_BASE}/plant-catalog`,
   },
   plants: {
     create: `${PLANTS}`,

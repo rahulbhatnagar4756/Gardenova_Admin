@@ -4,10 +4,38 @@ import type {
   CreateQuestionRequest,
   GroupedOptionsResponse,
   Question,
+  QuestionOption,
   QuestionsResponse,
+  ReorderQuestionsRequest,
   UpdateQuestionRequest,
 } from "../../types/diagnosticQuestion";
 import { API_ROUTES } from "../apiRoutes";
+
+/**
+ * Strips extra fields (e.g. `order`) from options before create/update.
+ *
+ * @param {QuestionOption[]} options Options from the form/API.
+ * @returns {{ id?: string; option_text: string }[]} Payload-safe options.
+ */
+const sanitizeOptions = (options: QuestionOption[]) =>
+  options.map((opt) => ({
+    ...(opt.id ? { id: opt.id } : {}),
+    option_text: opt.option_text,
+  }));
+
+/**
+ * Builds a clean create/update payload for the questions API.
+ *
+ * @param {CreateQuestionRequest | UpdateQuestionRequest} data Form data.
+ * @returns {CreateQuestionRequest} Sanitized request body.
+ */
+const sanitizeQuestionPayload = (
+  data: CreateQuestionRequest | UpdateQuestionRequest
+): CreateQuestionRequest => ({
+  question_text: data.question_text,
+  order: data.order,
+  options: sanitizeOptions(data.options),
+});
 
 /**
  * Question Service - Contains all question-related API calls.
@@ -39,7 +67,7 @@ export const questionService = {
   ): Promise<ApiResponse<null>> => {
     return apiService.post<null>(
       API_ROUTES.diagnosticQuestion.createQuestion,
-      data
+      sanitizeQuestionPayload(data)
     );
   },
 
@@ -57,7 +85,7 @@ export const questionService = {
   ): Promise<ApiResponse<Question>> => {
     return apiService.put<Question>(
       API_ROUTES.diagnosticQuestion.updateQuestion + `${id}`,
-      data
+      sanitizeQuestionPayload(data)
     );
   },
 
@@ -71,6 +99,22 @@ export const questionService = {
   deleteQuestion: async (id: string): Promise<ApiResponse<null>> => {
     return apiService.delete<null>(
       API_ROUTES.diagnosticQuestion.deleteQuestion + `${id}`
+    );
+  },
+
+  /**
+   * Bulk reorder diagnostic questions.
+   * PUT /question/reorder
+   *
+   * @param data Payload with question id + order pairs.
+   * @returns A promise resolving to an ApiResponse with updated count.
+   */
+  reorderQuestions: async (
+    data: ReorderQuestionsRequest
+  ): Promise<ApiResponse<{ updated: number }>> => {
+    return apiService.put<{ updated: number }>(
+      API_ROUTES.diagnosticQuestion.reorderQuestions,
+      data
     );
   },
 

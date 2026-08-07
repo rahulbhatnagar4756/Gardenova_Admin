@@ -11,6 +11,9 @@ import { ProtectedRoute } from "./ProtectedRoute";
 import { Rules } from "../pages/rules/rules";
 import { SubscriptionPlans } from "../pages/SubscriptionPlans/SubscriptionPlans";
 import {ExternalLinks} from "../pages/externalLinks/externalLinks";
+import { AdminUsers } from "../pages/adminUsers/adminUsers";
+import { DiagnosisScans } from "../pages/diagnosisScans/diagnosisScans";
+import { PlantCatalog } from "../pages/plantCatalog/plantCatalog";
 //import { KnowledgeLibrary } from "../pages/knowledgeLibrary/knowledgeLibrary";
 
 /**
@@ -43,6 +46,9 @@ export const AppRoutes = () => {
         <Route path="rules" element={<Rules />} />
         <Route path="plants-detail" element={<PartnerProfiles />} />
         <Route path="leads" element={<Leads />} />
+        <Route path="users" element={<AdminUsers />} />
+        <Route path="diagnosis-scans" element={<DiagnosisScans />} />
+        <Route path="plant-catalog" element={<PlantCatalog />} />
         {/* <Route path="knowledge-library" element={<KnowledgeLibrary />} /> */}
         <Route
           path="setting/subscription-plans"
