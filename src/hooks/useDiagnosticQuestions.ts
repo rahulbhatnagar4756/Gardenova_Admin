@@ -76,7 +76,10 @@ export const useDiagnosticQuestions = () => {
       const tempQuestion: Question = {
         question_id: "",
         question_text: data.question_text,
-        options: data.options,
+        options: data.options.map((opt, index) => ({
+          id: opt.id ?? `temp-${index}`,
+          option_text: opt.option_text,
+        })),
         order: data.order,
       };
 
@@ -122,7 +125,10 @@ export const useDiagnosticQuestions = () => {
       const updatedQuestion: Question = {
         question_id: id,
         question_text: data.question_text,
-        options: data.options,
+        options: data.options.map((opt, index) => ({
+          id: opt.id ?? `temp-${index}`,
+          option_text: opt.option_text,
+        })),
         order: data.order,
       };
 
