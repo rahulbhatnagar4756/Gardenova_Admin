@@ -50,6 +50,15 @@ export interface QuestionOption {
 }
 
 /**
+ * Option payload for create/update requests.
+ * `id` is optional so new options can be created without one.
+ */
+export interface QuestionOptionPayload {
+  id?: string;
+  option_text: string;
+}
+
+/**
  * Structure used to create a new question.
  *
  * @property question_text - The question text.
@@ -58,7 +67,7 @@ export interface QuestionOption {
  */
 export interface CreateQuestionRequest {
   question_text: string;
-  options: QuestionOption[];
+  options: QuestionOptionPayload[];
   order: number;
 }
 
@@ -71,7 +80,7 @@ export interface CreateQuestionRequest {
  */
 export interface UpdateQuestionRequest {
   question_text: string;
-  options: QuestionOption[];
+  options: QuestionOptionPayload[];
   order: number;
 }
 

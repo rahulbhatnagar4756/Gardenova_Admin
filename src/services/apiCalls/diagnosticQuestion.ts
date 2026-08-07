@@ -4,7 +4,7 @@ import type {
   CreateQuestionRequest,
   GroupedOptionsResponse,
   Question,
-  QuestionOption,
+  QuestionOptionPayload,
   QuestionsResponse,
   ReorderQuestionsRequest,
   UpdateQuestionRequest,
@@ -14,10 +14,12 @@ import { API_ROUTES } from "../apiRoutes";
 /**
  * Strips extra fields (e.g. `order`) from options before create/update.
  *
- * @param {QuestionOption[]} options Options from the form/API.
- * @returns {{ id?: string; option_text: string }[]} Payload-safe options.
+ * @param {QuestionOptionPayload[]} options Options from the form/API.
+ * @returns {QuestionOptionPayload[]} Payload-safe options.
  */
-const sanitizeOptions = (options: QuestionOption[]) =>
+const sanitizeOptions = (
+  options: QuestionOptionPayload[]
+): QuestionOptionPayload[] =>
   options.map((opt) => ({
     ...(opt.id ? { id: opt.id } : {}),
     option_text: opt.option_text,
